@@ -2,6 +2,9 @@
  * Dados centrais da unidade. Apenas informações confirmadas pelo cliente
  * (especificação v1.0, seção 1). Campos pendentes ficam `null` até confirmação.
  */
+/** Domínio final ainda não definido; configure NEXT_PUBLIC_SITE_URL no deploy. */
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+
 export const site = {
   name: 'Gracie Barra Jardim das Américas',
   shortName: 'GB Jardim das Américas',

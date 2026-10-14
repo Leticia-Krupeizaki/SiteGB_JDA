@@ -2,31 +2,36 @@ import type { Metadata } from 'next';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { ProgramList } from '@/components/home/ProgramList';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { ScheduleBoard } from '@/components/schedules/ScheduleBoard';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 
 export const metadata: Metadata = {
   title: 'Horários',
-  description: 'Grade de aulas de Jiu-Jitsu da Gracie Barra Jardim das Américas, de segunda a sexta.',
+  description:
+    'Grade de aulas de Jiu-Jitsu da Gracie Barra Jardim das Américas, de segunda a sexta: infantil (GBK), adultos (GB1 e GB2), feminino (GBF) e No-Gi.',
+  alternates: { canonical: '/horarios' },
 };
 
-// A grade interativa com os 22 blocos e filtros entra na Etapa 2.
 export default function HorariosPage() {
   return (
     <>
-      <PageHeader title="Horários" description="De segunda a sexta-feira. Grade vigente desde 26/02/2026." />
-      <section className="py-16 sm:py-20">
+      <PageHeader title="Horários" description="Aulas de segunda a sexta-feira. Grade vigente desde 26/02/2026." />
+
+      <section className="bg-gb-line/60 py-12 sm:py-16">
         <Container>
-          <p className="border-l-4 border-gb-red pl-4 font-display text-2xl font-semibold uppercase">
-            Grade interativa em construção
-          </p>
-          <div className="mt-14 space-y-8">
-            <SectionHeading title="Legenda das turmas" />
-            <ProgramList />
-          </div>
+          <ScheduleBoard />
         </Container>
       </section>
-      <ContactCTA />
+
+      <section className="py-16 sm:py-20">
+        <Container className="space-y-8">
+          <SectionHeading title="Legenda das turmas" description="Competição e defesa pessoal indicam o foco do treino naquele horário, nas turmas GB1 + GB2." />
+          <ProgramList />
+        </Container>
+      </section>
+
+      <ContactCTA title="Escolheu o horário?" description="Chame no WhatsApp para agendar sua aula experimental." />
     </>
   );
 }

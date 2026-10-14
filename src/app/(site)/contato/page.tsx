@@ -9,6 +9,7 @@ import { contact, phoneUrl, whatsappTrialUrl, whatsappUrl } from '@/config/site'
 export const metadata: Metadata = {
   title: 'Contato',
   description: 'Fale com a Gracie Barra Jardim das Américas pelo telefone ou WhatsApp (41) 3205-8109.',
+  alternates: { canonical: '/contato' },
 };
 
 export default function ContatoPage() {

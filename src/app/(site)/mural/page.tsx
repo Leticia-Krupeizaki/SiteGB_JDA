@@ -5,6 +5,7 @@ import { Container } from '@/components/ui/Container';
 export const metadata: Metadata = {
   title: 'Mural',
   description: 'Mural da comunidade da Gracie Barra Jardim das Américas: fotos de treinos, graduações e eventos.',
+  alternates: { canonical: '/mural' },
 };
 
 // Galeria, filtros e formulário de envio (em modo demonstração) entram na Etapa 3.

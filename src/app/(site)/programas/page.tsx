@@ -10,6 +10,7 @@ import { trainingFocuses } from '@/data/programs';
 export const metadata: Metadata = {
   title: 'Programas',
   description: 'Turmas de Jiu-Jitsu infantil, adulto, feminino e No-Gi na Gracie Barra Jardim das Américas.',
+  alternates: { canonical: '/programas' },
 };
 
 export default function ProgramasPage() {
