@@ -1,43 +1,33 @@
 import { primaryCta } from '@/config/navigation';
-import { whatsappTrialUrl } from '@/config/site';
+import { site, whatsappTrialUrl } from '@/config/site';
 import { Belt } from '@/components/ui/Belt';
 import { ButtonLink } from '@/components/ui/ButtonLink';
-import { Container } from '@/components/ui/Container';
-import { TodayOnMat } from './TodayOnMat';
+import { PlaceholderBadge } from '@/components/ui/PlaceholderNotice';
 
 /**
- * Sem foto até o cliente fornecer imagens licenciadas. Em vez de uma imagem
- * genérica, o hero mostra a informação mais útil: as aulas do dia.
+ * Hero em tela cheia, pensado para receber uma foto oficial de treino em P&B
+ * com sobreposição escura. Até lá, fundo gráfico identificado.
  */
 export function Hero() {
   return (
-    <section className="bg-gb-navy text-gb-white">
-      <Container className="grid gap-12 py-14 sm:py-20 lg:grid-cols-[1.3fr_1fr] lg:items-end lg:py-24">
-        <div>
-          <p className="font-display text-xl font-semibold uppercase tracking-wide text-gb-line">
-            Jiu-Jitsu no Jardim das Américas · Curitiba
-          </p>
-          <h1 className="mt-4 font-display text-6xl font-extrabold uppercase leading-[0.9] sm:text-8xl">
-            Disciplina.
-            <br />
-            Respeito.
-            <br />
-            <span className="underline decoration-gb-red decoration-8 underline-offset-[0.12em] [text-decoration-skip-ink:none]">Evolução.</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-lg leading-relaxed text-gb-line">
-            Turmas para crianças, adultos e mulheres, de segunda a sexta, de manhã, no almoço e à noite.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={whatsappTrialUrl} external>
-              {primaryCta.label}
-            </ButtonLink>
-            <ButtonLink href="/horarios" variant="outline-light">
-              Grade completa
-            </ButtonLink>
-          </div>
-        </div>
-        <TodayOnMat />
-      </Container>
+    <section className="relative isolate bg-gb-ink text-gb-white">
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(17,17,17,0.2),rgba(17,17,17,0.85)),repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_10px)]"
+      />
+      <div className="mx-auto flex min-h-[34rem] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[40rem] sm:px-6 lg:px-8">
+        <p className="font-display text-xl font-semibold uppercase tracking-[0.15em] text-gb-line">{site.name}</p>
+        <h1 className="mt-4 font-display text-6xl font-extrabold uppercase leading-[0.9] sm:text-8xl lg:text-9xl">
+          Disciplina. Respeito. Evolução.
+        </h1>
+        <p className="mt-6 max-w-xl text-xl text-gb-line">Começar no Jiu-Jitsu é mais simples do que parece. Agende uma aula experimental e venha conhecer o tatame.</p>
+        <ButtonLink href={whatsappTrialUrl} external className="mt-10 px-10 text-xl">
+          {primaryCta.label}
+        </ButtonLink>
+      </div>
+      <div className="absolute right-4 bottom-6 text-gb-line">
+        <PlaceholderBadge label="Foto oficial a definir" />
+      </div>
       <Belt />
     </section>
   );
