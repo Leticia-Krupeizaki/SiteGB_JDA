@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+
+/*
+ * Paleta inicial proposta (especificação, seção 5).
+ * Não são as cores oficiais da marca: validar com o manual da Gracie Barra.
+ */
+@theme {
+  --color-brand-red: #c8102e;
+  --color-brand-red-dark: #990f24;
+  --color-neutral-900: #111111;
+  --color-neutral-600: #6b7280;
+  --color-neutral-100: #f5f5f5;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-oswald), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-neutral-900);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
