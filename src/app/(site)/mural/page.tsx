@@ -12,18 +12,13 @@ export default function MuralPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Mural da comunidade"
         title="Nosso tatame, nossa história"
         description="Fotos de treinos, graduações, campeonatos e eventos enviadas pelos alunos, sempre revisadas pela equipe antes da publicação."
       />
       <section className="py-16 sm:py-20">
-        <Container>
-          <div className="rounded-lg border border-dashed border-neutral-300 bg-neutral-100 p-10 text-center">
-            <p className="font-display text-2xl uppercase">Ainda não há fotos publicadas</p>
-            <p className="mx-auto mt-2 max-w-md text-neutral-600">
-              O envio de fotos estará disponível em breve. Nenhuma foto é publicada sem aprovação da equipe.
-            </p>
-          </div>
+        <Container className="max-w-3xl">
+          <p className="font-display text-3xl font-bold uppercase">Ainda não há fotos publicadas</p>
+          <p className="mt-3 text-gb-mute">O envio de fotos estará disponível em breve. Nenhuma foto é publicada sem aprovação da equipe.</p>
         </Container>
       </section>
     </>
