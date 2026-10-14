@@ -30,3 +30,10 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@utility focus-ring {
+  &:focus-visible {
+    outline: 3px solid var(--color-brand-red);
+    outline-offset: 3px;
+  }
+}
