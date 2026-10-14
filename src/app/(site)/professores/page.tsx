@@ -7,6 +7,7 @@ import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 export const metadata: Metadata = {
   title: 'Professores',
   description: 'Equipe de professores da Gracie Barra Jardim das Américas.',
+  alternates: { canonical: '/professores' },
 };
 
 export default function ProfessoresPage() {

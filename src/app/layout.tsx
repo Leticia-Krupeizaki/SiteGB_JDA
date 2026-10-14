@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Barlow, Barlow_Condensed } from 'next/font/google';
-import { site } from '@/config/site';
+import { site, siteUrl } from '@/config/site';
 import './globals.css';
 
 const body = Barlow({
@@ -22,7 +22,14 @@ export const metadata: Metadata = {
     default: `${site.name} | Jiu-Jitsu em ${site.city}`,
     template: `%s | ${site.name}`,
   },
-  description: `Jiu-Jitsu na ${site.name}, ${site.city}–${site.state}. Agende sua aula experimental.`,
+  description: `Jiu-Jitsu na ${site.name}, ${site.city}–${site.state}. Aulas para crianças, adultos e mulheres. Agende sua aula experimental.`,
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    siteName: site.name,
+  },
 };
 
 export default function RootLayout({

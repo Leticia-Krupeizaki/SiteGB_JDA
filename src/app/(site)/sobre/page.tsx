@@ -9,6 +9,7 @@ import { benefits } from '@/data/benefits';
 export const metadata: Metadata = {
   title: 'A Academia',
   description: 'Conheça a Gracie Barra Jardim das Américas, unidade de Jiu-Jitsu em Curitiba–PR.',
+  alternates: { canonical: '/sobre' },
 };
 
 export default function SobrePage() {

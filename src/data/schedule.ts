@@ -66,3 +66,12 @@ const labels: Record<ClassCode, string> = { GBK: 'GBK', GB1: 'GB1', GB2: 'GB2', 
 export function classLabel(codes: ClassCode[]): string {
   return codes.map((code) => labels[code]).join(' + ');
 }
+
+/** Cores auxiliares por turma (Contexto.md). A marca segue vermelho, azul, preto e cinza. */
+export const classColors: Record<ClassCode, { bg: string; border: string }> = {
+  GBK: { bg: 'bg-green-700', border: 'border-green-700' },
+  GB1: { bg: 'bg-blue-600', border: 'border-blue-600' },
+  GB2: { bg: 'bg-violet-600', border: 'border-violet-600' },
+  GBF: { bg: 'bg-pink-600', border: 'border-pink-600' },
+  NOGI: { bg: 'bg-gray-600', border: 'border-gray-600' },
+};

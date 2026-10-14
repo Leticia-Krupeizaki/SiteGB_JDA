@@ -2,20 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { classLabel, schedule, weekdays, type Weekday } from '@/data/schedule';
+import { defaultDay } from '@/lib/schedule';
 
-/**
- * Mostra as aulas do dia atual. No fim de semana (sem aulas na grade),
- * mostra a segunda-feira. Renderiza segunda no servidor e ajusta no navegador.
- */
-function pickDay(date: Date): { day: Weekday; isToday: boolean } {
-  const match = weekdays.find((w) => w.jsDay === date.getDay());
-  return match ? { day: match.id, isToday: true } : { day: 'seg', isToday: false };
-}
-
+/** Aulas do dia. Renderiza segunda no servidor e ajusta ao dia atual no navegador. */
 export function TodayOnMat() {
   const [state, setState] = useState<{ day: Weekday; isToday: boolean }>({ day: 'seg', isToday: false });
 
-  useEffect(() => setState(pickDay(new Date())), []);
+  useEffect(() => setState(defaultDay(new Date())), []);
 
   const info = weekdays.find((w) => w.id === state.day)!;
 
