@@ -14,8 +14,14 @@ import { primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, whatsappTrialUrl } from '@/config/site';
 import { benefits } from '@/data/benefits';
 import { externalLinks } from '@/data/external-links';
+import { academyTimeZone, defaultDay } from '@/lib/schedule';
+
+/** Regera a página a cada hora para o "Hoje no tatame" acompanhar o dia. */
+export const revalidate = 3600;
 
 export default function HomePage() {
+  const today = defaultDay(new Date(), academyTimeZone);
+
   return (
     <>
       <Hero />
@@ -73,7 +79,7 @@ export default function HomePage() {
             <ProgramList />
           </div>
           <div className="space-y-6 lg:pt-28">
-            <TodayOnMat />
+            <TodayOnMat initial={today} />
             <ButtonLink href="/horarios" variant="outline" className="w-full">
               Ver a grade completa
             </ButtonLink>

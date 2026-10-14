@@ -2,13 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { classLabel, schedule, weekdays, type Weekday } from '@/data/schedule';
-import { defaultDay } from '@/lib/schedule';
+import { academyTimeZone, defaultDay } from '@/lib/schedule';
 
-/** Aulas do dia. Renderiza segunda no servidor e ajusta ao dia atual no navegador. */
-export function TodayOnMat() {
-  const [state, setState] = useState<{ day: Weekday; isToday: boolean }>({ day: 'seg', isToday: false });
+type DayState = { day: Weekday; isToday: boolean };
 
-  useEffect(() => setState(defaultDay(new Date())), []);
+/**
+ * Aulas do dia. O servidor já calcula o dia no fuso da academia; o navegador
+ * só corrige se a página em cache tiver virado o dia.
+ */
+export function TodayOnMat({ initial }: { initial: DayState }) {
+  const [state, setState] = useState<DayState>(initial);
+
+  useEffect(() => setState(defaultDay(new Date(), academyTimeZone)), []);
 
   const info = weekdays.find((w) => w.id === state.day)!;
 

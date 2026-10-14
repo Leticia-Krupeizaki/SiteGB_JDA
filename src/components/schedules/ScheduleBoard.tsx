@@ -1,20 +1,31 @@
 'use client';
 
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore, type KeyboardEvent } from 'react';
 import { classColors, schedule, weekdays, type Weekday } from '@/data/schedule';
-import { defaultDay, filterBlocks, filterGroups, type FilterGroup } from '@/lib/schedule';
+import { academyTimeZone, defaultDay, filterBlocks, filterGroups, type FilterGroup } from '@/lib/schedule';
 import { ScheduleClassCard } from './ScheduleClassCard';
+
+/** Mesmo ponto de quebra do `lg` do Tailwind, onde as abas somem. */
+const wideQuery = '(min-width: 64rem)';
+
+function subscribeWide(onChange: () => void) {
+  const media = window.matchMedia(wideQuery);
+  media.addEventListener('change', onChange);
+  return () => media.removeEventListener('change', onChange);
+}
 
 /**
  * Grade semanal. No celular, abas por dia (abre no dia atual). A partir de
- * telas largas, a semana inteira em colunas. Os filtros valem para as duas.
+ * telas largas, a semana inteira em colunas, sem papéis de aba. Os filtros valem para as duas.
  */
-export function ScheduleBoard() {
-  const [day, setDay] = useState<Weekday>('seg');
+export function ScheduleBoard({ initialDay }: { initialDay: Weekday }) {
+  const [day, setDay] = useState<Weekday>(initialDay);
   const [active, setActive] = useState<FilterGroup[]>([]);
   const tabRefs = useRef<Record<Weekday, HTMLButtonElement | null>>({ seg: null, ter: null, qua: null, qui: null, sex: null });
+  const isWide = useSyncExternalStore(subscribeWide, () => window.matchMedia(wideQuery).matches, () => false);
 
-  useEffect(() => setDay(defaultDay(new Date()).day), []);
+  // Corrige só se a página em cache tiver virado o dia.
+  useEffect(() => setDay(defaultDay(new Date(), academyTimeZone).day), []);
 
   const toggle = (id: FilterGroup) =>
     setActive((current) => (current.includes(id) ? current.filter((g) => g !== id) : [...current, id]));
@@ -93,8 +104,7 @@ export function ScheduleBoard() {
             <section
               key={w.id}
               id={`painel-${w.id}`}
-              role="tabpanel"
-              aria-labelledby={`tab-${w.id}`}
+              {...(isWide ? {} : { role: 'tabpanel', 'aria-labelledby': `tab-${w.id}` })}
               className={`${w.id === day ? 'block' : 'hidden'} lg:block`}
             >
               <h2 className="font-display text-2xl font-bold uppercase lg:border-b-2 lg:border-gb-ink lg:pb-2">{w.label}</h2>

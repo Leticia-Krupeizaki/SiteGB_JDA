@@ -51,6 +51,13 @@ describe('dia padrão', () => {
     expect(defaultDay(new Date(2026, 9, 17))).toEqual({ day: 'seg', isToday: false }); // sábado
     expect(defaultDay(new Date(2026, 9, 18))).toEqual({ day: 'seg', isToday: false }); // domingo
   });
+
+  it('usa o fuso da academia quando informado', () => {
+    // 17/10 02:00 UTC ainda é sexta 23:00 em São Paulo
+    const late = new Date(Date.UTC(2026, 9, 17, 2, 0));
+    expect(defaultDay(late, 'America/Sao_Paulo')).toEqual({ day: 'sex', isToday: true });
+    expect(defaultDay(late, 'UTC')).toEqual({ day: 'seg', isToday: false });
+  });
 });
 
 describe('contato', () => {

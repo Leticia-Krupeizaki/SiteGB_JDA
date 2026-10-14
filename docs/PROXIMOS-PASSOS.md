@@ -222,7 +222,7 @@ Objetivo: só administradores autenticados aprovam, rejeitam ou removem (spec §
 - [ ] Teste: foto `PENDING` nunca aparece em API pública, HTML, cache ou storage público
 - [ ] Acessibilidade: rodar axe (`@axe-core/playwright`) nas páginas principais
 - [ ] Lighthouse / Core Web Vitals (medir antes de afirmar resultados)
-- [ ] CI no GitHub Actions: `npm ci`, `lint`, `tsc --noEmit`, `test`, `build`
+- [x] CI no GitHub Actions: `npm ci`, `lint`, `tsc --noEmit`, `test`, `build` (`.github/workflows/ci.yml`)
 - [ ] Deploy de homologação e depois produção (com autorização do cliente)
 - [ ] Monitoramento de erros (ex.: Sentry) sem vazar dados pessoais
 - [ ] Backups do banco e procedimento de restauração documentado
@@ -256,8 +256,8 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 
 ## 8. Ajustes técnicos conhecidos
 
-- [ ] **Abas da grade em telas largas:** em `ScheduleBoard.tsx` os painéis mantêm `role="tabpanel"` mesmo quando as abas ficam ocultas (≥ `lg`). Remover os papéis de aba nessa largura ou renderizar a semana como lista simples.
-- [ ] **Hidratação do "dia atual":** `TodayOnMat` e `ScheduleBoard` renderizam segunda-feira no servidor e trocam para o dia atual no navegador (pequena troca visual). Alternativa: calcular no servidor com fuso `America/Sao_Paulo` e revalidar diariamente.
+- [x] **Abas da grade em telas largas:** `ScheduleBoard.tsx` só aplica `role="tabpanel"` abaixo de `lg` (via `matchMedia`); em telas largas a semana é uma lista de seções.
+- [x] **Hidratação do "dia atual":** Home e Horários calculam o dia no servidor com fuso `America/Sao_Paulo` (`defaultDay(date, academyTimeZone)`) e revalidam a cada hora; o navegador só corrige se o cache tiver virado o dia.
 - [ ] **Aviso de endereço repetido:** `ContactCTA` mostra "A confirmar · endereço completo e mapa" em todas as páginas; remover quando o endereço chegar.
 - [ ] **`next/image`:** ainda não há imagens reais; ao adicionar, configurar `images.remotePatterns` para o domínio do storage.
 - [ ] **Teste de navegador:** não há Playwright no `package.json` ainda (Etapa 6).

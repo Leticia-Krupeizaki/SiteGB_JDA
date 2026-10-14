@@ -21,8 +21,21 @@ export function filterBlocks(blocks: ScheduleBlock[], active: FilterGroup[]): Sc
   return blocks.filter((block) => block.classes.some((code) => codes.has(code)));
 }
 
+/** Fuso da academia. Usado para calcular o dia no servidor, que pode rodar em UTC. */
+export const academyTimeZone = 'America/Sao_Paulo';
+
+const jsDayByName: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+/** Dia da semana (0 = domingo) no fuso informado; sem fuso, usa o horário local. */
+function jsDayIn(date: Date, timeZone?: string): number {
+  if (!timeZone) return date.getDay();
+  const name = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'short' }).format(date);
+  return jsDayByName[name];
+}
+
 /** Dia corrente quando há aulas; no fim de semana, segunda-feira. */
-export function defaultDay(date: Date): { day: Weekday; isToday: boolean } {
-  const match = weekdays.find((w) => w.jsDay === date.getDay());
+export function defaultDay(date: Date, timeZone?: string): { day: Weekday; isToday: boolean } {
+  const jsDay = jsDayIn(date, timeZone);
+  const match = weekdays.find((w) => w.jsDay === jsDay);
   return match ? { day: match.id, isToday: true } : { day: 'seg', isToday: false };
 }

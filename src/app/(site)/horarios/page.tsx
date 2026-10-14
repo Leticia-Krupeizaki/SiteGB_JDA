@@ -5,6 +5,10 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ScheduleBoard } from '@/components/schedules/ScheduleBoard';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { academyTimeZone, defaultDay } from '@/lib/schedule';
+
+/** Regera a página a cada hora para a aba inicial acompanhar o dia. */
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Horários',
@@ -20,7 +24,7 @@ export default function HorariosPage() {
 
       <section className="bg-gb-line/60 py-12 sm:py-16">
         <Container>
-          <ScheduleBoard />
+          <ScheduleBoard initialDay={defaultDay(new Date(), academyTimeZone).day} />
         </Container>
       </section>
 
