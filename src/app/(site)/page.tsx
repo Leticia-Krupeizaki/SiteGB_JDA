@@ -111,7 +111,7 @@ export default function HomePage() {
               description="Treinos, graduações, campeonatos e eventos registrados pelos próprios alunos no Mural da Comunidade. Cada foto é revisada pela equipe antes de aparecer."
             />
             <div className="flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/mural">Enviar minha foto</ButtonLink>
+              <ButtonLink href="/mural#enviar">Enviar minha foto</ButtonLink>
               <ButtonLink href="/mural" variant="outline">
                 Ver o mural
               </ButtonLink>
