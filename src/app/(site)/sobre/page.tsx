@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { BenefitCard } from '@/components/home/BenefitCard';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Container } from '@/components/ui/Container';
@@ -15,33 +14,32 @@ export const metadata: Metadata = {
 export default function SobrePage() {
   return (
     <>
-      <PageHeader eyebrow="A academia" title="Gracie Barra Jardim das Américas" description="Jiu-Jitsu em Curitiba–PR." />
+      <PageHeader title="A academia" description="Gracie Barra Jardim das Américas, Curitiba–PR." />
 
       <section className="py-16 sm:py-20">
         <Container className="grid gap-12 lg:grid-cols-2">
-          <div>
+          <div className="space-y-6">
             <SectionHeading title="Nossa história" />
-            <div className="mt-6">
-              <PlaceholderNotice>A história da unidade será publicada a partir das informações enviadas pelo cliente.</PlaceholderNotice>
-            </div>
+            <PlaceholderNotice>a história da unidade, a partir das informações enviadas pelo cliente.</PlaceholderNotice>
           </div>
-          <div>
+          <div className="space-y-6">
             <SectionHeading title="Estrutura" />
-            <div className="mt-6">
-              <PlaceholderNotice>Fotos e descrição do espaço físico serão adicionadas com material oficial.</PlaceholderNotice>
-            </div>
+            <PlaceholderNotice>fotos e descrição do espaço, com material oficial.</PlaceholderNotice>
           </div>
         </Container>
       </section>
 
-      <section className="bg-neutral-100 py-16 sm:py-20">
+      <section className="bg-gb-line/60 py-16 sm:py-20">
         <Container>
-          <SectionHeading eyebrow="Valores" title="O que cultivamos no tatame" />
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {benefits.map((benefit, index) => (
-              <BenefitCard key={benefit.title} index={index + 1} {...benefit} />
+          <SectionHeading title="O que se treina além da técnica" />
+          <dl className="mt-8 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
+            {benefits.map((benefit) => (
+              <div key={benefit.title} className="border-t border-gb-ink/20 py-4">
+                <dt className="font-display text-2xl font-bold uppercase text-gb-navy">{benefit.title}</dt>
+                <dd className="mt-1 text-gb-mute">{benefit.description}</dd>
+              </div>
             ))}
-          </div>
+          </dl>
         </Container>
       </section>
 

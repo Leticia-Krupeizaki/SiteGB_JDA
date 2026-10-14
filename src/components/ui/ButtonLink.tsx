@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-type Variant = 'primary' | 'secondary' | 'inverted' | 'light';
+type Variant = 'primary' | 'outline' | 'outline-light' | 'light';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand-red text-white hover:bg-brand-red-dark',
-  secondary: 'border-2 border-neutral-900 text-neutral-900 hover:bg-neutral-900 hover:text-white',
-  inverted: 'border-2 border-white text-white hover:bg-white hover:text-neutral-900',
-  light: 'bg-white text-brand-red hover:bg-neutral-100',
+  primary: 'bg-gb-red text-gb-white hover:bg-gb-red-dark',
+  outline: 'border-2 border-gb-ink text-gb-ink hover:bg-gb-ink hover:text-gb-white',
+  'outline-light': 'border-2 border-gb-white text-gb-white hover:bg-gb-white hover:text-gb-navy',
+  light: 'bg-gb-white text-gb-red hover:bg-gb-line',
 };
 
 type Props = {
@@ -20,15 +20,11 @@ type Props = {
 };
 
 export function ButtonLink({ href, children, variant = 'primary', external = false, className = '' }: Props) {
-  const classes = `focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-semibold uppercase tracking-wide transition-colors ${variants[variant]} ${className}`;
+  const classes = `focus-ring inline-flex min-h-12 items-center justify-center gap-2 px-6 py-3 font-display text-lg font-semibold uppercase tracking-wide transition-colors ${variants[variant]} ${className}`;
 
   if (external || href.startsWith('tel:')) {
     return (
-      <a
-        href={href}
-        className={classes}
-        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      >
+      <a href={href} className={classes} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
         {children}
         {external && <span className="sr-only">(abre em nova aba)</span>}
       </a>
