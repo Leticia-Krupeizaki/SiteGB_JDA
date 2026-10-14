@@ -5,7 +5,8 @@ Site institucional da unidade Gracie Barra Jardim das Américas (Curitiba–PR):
 ## Stack
 
 - [Next.js](https://nextjs.org/) (App Router) + TypeScript
-- Tailwind CSS
+- Tailwind CSS v4
+- Zod (validação) e Vitest (testes)
 - Fase B (mural funcional): PostgreSQL + Prisma, storage S3 compatível privado, autenticação administrativa
 
 ## Requisitos
@@ -25,22 +26,16 @@ Outros comandos:
 
 ```bash
 npm run lint
+npx tsc --noEmit
+npm test
 npm run build && npm start
 ```
 
-## Estrutura
+## Estrutura e próximos passos
 
-```text
-src/
-  app/            # rotas (App Router)
-  config/
-    site.ts       # nome, telefone, WhatsApp e dados da unidade
-    navigation.ts # menu principal e CTA
-  data/
-    external-links.ts # plataformas e federações
-```
+O mapa completo dos arquivos, o que já foi feito e tudo o que falta (backend do mural, painel administrativo, deploy e pendências do cliente) está em [`docs/PROXIMOS-PASSOS.md`](docs/PROXIMOS-PASSOS.md).
 
-Dados da unidade, telefone e links externos ficam centralizados em `src/config` e `src/data` para serem alterados sem mexer no layout.
+Dados da unidade, grade de horários, turmas e links externos ficam em `src/config` e `src/data`, separados do layout.
 
 ## Conteúdo provisório
 
@@ -48,6 +43,6 @@ Endereço, redes sociais, logotipo, professores, história da unidade e fotos ai
 
 ## Contribuição
 
-- Trabalho em branches com Pull Request para a `main`.
+- Trabalho direto na `main`.
 - Commits no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/) (`feat:`, `fix:`, `docs:`...).
 - Nunca versionar `.env`, chaves ou imagens privadas.
