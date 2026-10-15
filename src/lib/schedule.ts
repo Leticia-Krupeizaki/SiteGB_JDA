@@ -27,9 +27,10 @@ export const academyTimeZone = 'America/Sao_Paulo';
 const jsDayByName: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
 
 /** Dia da semana (0 = domingo) no fuso informado; sem fuso, usa o horário local. */
-function jsDayIn(date: Date, timeZone?: string): number {
-  if (!timeZone) return date.getDay();
-  const name = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'short' }).format(date);
+// Sem a forma abreviada `{ timeZone }`: o minificador do Next 15.5 a quebra ao embutir esta função.
+function jsDayIn(date: Date, zone?: string): number {
+  if (!zone) return date.getDay();
+  const name = new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short' }).format(date);
   return jsDayByName[name];
 }
 
