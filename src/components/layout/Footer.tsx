@@ -62,7 +62,7 @@ export function Footer() {
               </li>
               <li>
                 <a href={whatsappTrialUrl} target="_blank" rel="noopener noreferrer" className="focus-ring hover:text-gb-white">
-                  WhatsApp {contact.displayPhone}
+                  WhatsApp {contact.whatsappDisplay}
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>
               </li>

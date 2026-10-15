@@ -63,7 +63,8 @@ describe('dia padrão', () => {
 describe('contato', () => {
   it('usa o número confirmado e codifica a mensagem', () => {
     expect(contact.displayPhone).toBe('(41) 3205-8109');
-    expect(whatsappTrialUrl).toBe(`https://wa.me/554132058109?text=${encodeURIComponent(contact.trialMessage)}`);
-    expect(whatsappUrl()).toBe('https://wa.me/554132058109');
+    expect(contact.whatsappDisplay).toBe('(41) 99683-1171');
+    expect(whatsappTrialUrl).toBe(`https://wa.me/5541996831171?text=${encodeURIComponent(contact.trialMessage)}`);
+    expect(whatsappUrl()).toBe('https://wa.me/5541996831171');
   });
 });

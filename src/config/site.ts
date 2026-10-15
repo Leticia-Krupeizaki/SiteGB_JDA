@@ -22,9 +22,12 @@ export const site = {
 export const instagramHandle = '@gbjardimdasamericas';
 
 export const contact = {
+  /** Fixo, para ligações. */
   displayPhone: '(41) 3205-8109',
   phoneE164: '+554132058109',
-  whatsappDigits: '554132058109',
+  /** Celular do WhatsApp (o mesmo do Instagram), confirmado pelo cliente em 15/10/2026. */
+  whatsappDisplay: '(41) 99683-1171',
+  whatsappDigits: '5541996831171',
   trialMessage:
     'Olá! Gostaria de agendar uma aula experimental na Gracie Barra Jardim das Américas. Poderiam me passar mais informações?',
 } as const;
