@@ -1,12 +1,9 @@
 import type { Metadata } from 'next';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { MuralActions } from '@/components/mural/MuralActions';
 import { MuralGallery } from '@/components/mural/MuralGallery';
-import { PhotoUploadForm } from '@/components/mural/PhotoUploadForm';
-import { RemovalRequestForm } from '@/components/mural/RemovalRequestForm';
 import { Container } from '@/components/ui/Container';
-import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { whatsappUrl } from '@/config/site';
 import { muralLimits } from '@/data/mural';
 import { listPublicPosts } from '@/lib/mural/posts';
 
@@ -24,8 +21,6 @@ const steps = [
   { title: 'A equipe revisa', text: 'Toda foto é analisada antes de qualquer publicação. Fotos com menores de idade exigem autorização dos responsáveis.' },
   { title: 'A foto aparece', text: 'Só fotos aprovadas entram no mural. Fotos recusadas não são publicadas.' },
 ];
-
-const removalUrl = whatsappUrl('Olá! Gostaria de pedir a retirada de uma foto do mural da Gracie Barra Jardim das Américas.');
 
 export default async function MuralPage() {
   const firstPage = await listPublicPosts({ limit: muralLimits.pageSize });
@@ -58,27 +53,13 @@ export default async function MuralPage() {
         </Container>
       </section>
 
-      <section id="enviar" className="scroll-mt-24 border-t border-gb-line py-16 sm:py-20">
-        <Container className="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
-          <div className="space-y-6">
-            <SectionHeading title="Compartilhar minha foto" description="Envie sem cadastro. A foto só aparece no mural depois de aprovada pela equipe." />
-            <div className="space-y-3 text-sm text-gb-mute">
-              <h3 className="font-display text-xl font-bold uppercase text-gb-ink">Privacidade</h3>
-              <p>Seu contato é usado só pela equipe e nunca aparece no site. Nome e legenda só são exibidos com a sua autorização.</p>
-              <h3 className="pt-3 font-display text-xl font-bold uppercase text-gb-ink">Retirar uma foto</h3>
-              <p>
-                Aparece em uma foto e quer que ela saia do mural? Descreva qual é, e a equipe retorna. Se preferir,{' '}
-                <a href={removalUrl} target="_blank" rel="noopener noreferrer" className="focus-ring font-semibold text-gb-navy underline">
-                  peça pelo WhatsApp
-                  <span className="sr-only"> (abre em nova aba)</span>
-                </a>
-                .
-              </p>
-              <RemovalRequestForm />
-              <PlaceholderNotice>texto final da política de privacidade e do termo de autorização de imagem, a ser aprovado pelo cliente.</PlaceholderNotice>
-            </div>
-          </div>
-          <PhotoUploadForm />
+      {/* `enviar` e `retirar` também são âncoras: o botão da Home leva a /mural#enviar. */}
+      <section id="participar" className="scroll-mt-24 border-t border-gb-line py-16 sm:py-20">
+        <span id="enviar" className="block scroll-mt-24" aria-hidden />
+        <span id="retirar" className="block scroll-mt-24" aria-hidden />
+        <Container className="space-y-8">
+          <SectionHeading title="Participe do mural" description="Envie sua foto sem cadastro, ou peça a retirada de uma foto em que você aparece." />
+          <MuralActions />
         </Container>
       </section>
     </>

@@ -173,6 +173,8 @@ Objetivo: o envio público passa a ser real, mas **nenhuma foto fica pública se
 - [x] Removidos `DemoNotice`, `DemoPhotoTile` e `demoMuralPosts`; galeria vazia mostra convite para enviar
 - [x] Testes atualizados (`tests/mural.test.ts`) e novos testes de imagem e payload público (`tests/mural-server.test.ts`)
 - [x] Prévia da Home (`MuralPreview`) mostra as 2 últimas aprovadas; sem fotos, mantém os quadros
+- [x] Seção "Participe do mural" com dois botões, **Enviar uma foto** e **Pedir remoção de foto** (`MuralActions.tsx`); `/mural#enviar` e `/mural#retirar` abrem direto
+- [x] No celular (< 768 px), os dois formulários são passo a passo (`Wizard.tsx`): envio em 4 etapas (foto, sobre a foto, seus dados, autorizações) e remoção em 2 (qual foto, contato). No computador, formulário inteiro
 
 ### 4.8 Variáveis de ambiente
 

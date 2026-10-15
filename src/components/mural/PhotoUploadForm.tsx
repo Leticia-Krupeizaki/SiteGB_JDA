@@ -4,11 +4,20 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { muralCategories, muralLimits, muralPolicyVersions } from '@/data/mural';
 import type { ApiErrorBody } from '@/lib/api/errors';
 import { fieldErrorsFrom, muralFormValues, muralSubmissionSchema, validatePhotoFile } from '@/lib/validation/mural';
+import { WizardNav, WizardProgress, WizardStep, useWizard, type WizardStepDef } from './Wizard';
 
 type Errors = Partial<Record<string, string>>;
 
 const labelClass = 'block font-display text-lg font-semibold uppercase tracking-wide';
 const inputClass = 'focus-ring mt-2 block min-h-12 w-full border-2 border-gb-line bg-gb-white px-3 text-base aria-[invalid=true]:border-gb-red';
+
+/** Etapas do celular. No computador, as mesmas seções aparecem em sequência. */
+const steps: WizardStepDef[] = [
+  { title: 'A foto', fields: ['photo'] },
+  { title: 'Sobre a foto', fields: ['category', 'caption', 'showNamePublicly'] },
+  { title: 'Seus dados', fields: ['senderName', 'contactType', 'contactValue'] },
+  { title: 'Autorizações', fields: ['acceptPrivacy', 'acceptPublication', 'declareImageRights'] },
+];
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
@@ -22,8 +31,10 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 /**
  * Formulário do mural. Valida no navegador para dar retorno rápido e envia
  * para POST /api/mural, que repete toda a validação. A foto entra como pendente.
+ * No celular vira passo a passo (ver Wizard.tsx).
  */
 export function PhotoUploadForm() {
+  const wizard = useWizard(steps);
   const [errors, setErrors] = useState<Errors>({});
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -45,9 +56,23 @@ export function PhotoUploadForm() {
     if (done) doneRef.current?.focus();
   }, [done]);
 
+  /** O aviso de um campo some assim que ele é alterado. */
+  const clearError = (name: string) => {
+    const key = name === 'contactType' ? 'contactValue' : name;
+    if (!errors[key] && !errors[name]) return;
+    setErrors((current) => {
+      const next = { ...current };
+      delete next[key];
+      delete next[name];
+      return next;
+    });
+  };
+
+  /** No celular, volta para a etapa do primeiro erro; no computador, foca o resumo de erros. */
   const showErrors = (next: Errors) => {
     setErrors(next);
-    requestAnimationFrame(() => summaryRef.current?.focus());
+    if (wizard.isMobile) wizard.goTo(wizard.firstStepWithError(next));
+    else requestAnimationFrame(() => summaryRef.current?.focus());
   };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -57,10 +82,19 @@ export function PhotoUploadForm() {
     const data = new FormData(event.currentTarget);
     const result = muralSubmissionSchema.safeParse(muralFormValues(data));
 
-    const next: Errors = result.success ? {} : fieldErrorsFrom(result.error);
+    const all: Errors = result.success ? {} : fieldErrorsFrom(result.error);
     const fileError = validatePhotoFile(file);
-    if (fileError) next.photo = fileError;
-    if (Object.keys(next).length > 0) return showErrors(next);
+    if (fileError) all.photo = fileError;
+
+    // Celular: o botão principal avança, validando só a etapa atual.
+    if (wizard.shouldAdvance) {
+      const stepErrors = wizard.errorsIn(all, wizard.current);
+      setErrors(stepErrors);
+      if (Object.keys(stepErrors).length === 0) wizard.goTo(wizard.current + 1);
+      return;
+    }
+
+    if (Object.keys(all).length > 0) return showErrors(all);
 
     // Garante o arquivo escolhido, mesmo se o input tiver sido limpo.
     data.set('photo', file!);
@@ -90,6 +124,7 @@ export function PhotoUploadForm() {
             setDone(false);
             setFile(null);
             setCaption('');
+            wizard.reset();
           }}
           className="focus-ring mt-6 min-h-12 border-2 border-gb-ink px-6 font-display text-lg font-semibold uppercase"
         >
@@ -103,9 +138,11 @@ export function PhotoUploadForm() {
   const describedBy = (name: string) => (errors[name] ? `${name}-erro` : undefined);
 
   return (
-    <form noValidate onSubmit={onSubmit} className="space-y-6">
+    <form noValidate onSubmit={onSubmit} onChange={(event) => clearError((event.target as { name?: string }).name ?? '')} className="space-y-6">
+      <WizardProgress wizard={wizard} />
+
       {errorList.length > 0 && (
-        <div ref={summaryRef} tabIndex={-1} role="alert" className="border-2 border-gb-red bg-gb-white p-4 focus:outline-none">
+        <div ref={summaryRef} tabIndex={-1} role="alert" className="border-2 border-gb-red bg-gb-white p-4 focus:outline-none max-md:hidden">
           <p className="font-semibold text-gb-red">Corrija {errorList.length === 1 ? 'o campo abaixo' : `os ${errorList.length} campos abaixo`}:</p>
           <ul className="mt-2 list-disc pl-5 text-sm">
             {errorList.map((message) => (
@@ -115,105 +152,111 @@ export function PhotoUploadForm() {
         </div>
       )}
 
-      <div>
-        <label htmlFor="senderName" className={labelClass}>
-          Seu nome
-        </label>
-        <p className="text-sm text-gb-mute">Só aparece no mural se você autorizar abaixo.</p>
-        <input id="senderName" name="senderName" autoComplete="name" className={inputClass} aria-invalid={!!errors.senderName} aria-describedby={describedBy('senderName')} />
-        <FieldError id="senderName-erro" message={errors.senderName} />
-      </div>
-
-      <fieldset>
-        <legend className={labelClass}>Contato</legend>
-        <p className="text-sm text-gb-mute">Usado só pela equipe, caso seja preciso falar com você sobre a foto.</p>
-        <div className="mt-2 flex gap-6">
-          {[
-            ['WHATSAPP', 'WhatsApp'],
-            ['EMAIL', 'E-mail'],
-          ].map(([value, label]) => (
-            <label key={value} className="flex min-h-11 items-center gap-2">
-              <input type="radio" name="contactType" value={value} defaultChecked={value === 'WHATSAPP'} className="h-5 w-5 accent-gb-navy" />
-              {label}
-            </label>
-          ))}
+      <WizardStep wizard={wizard} index={0}>
+        <div>
+          <label htmlFor="photo" className={labelClass}>
+            Foto
+          </label>
+          <p className="text-sm text-gb-mute">JPG, PNG ou WebP, até 10 MB. Uma foto por envio.</p>
+          <input
+            id="photo"
+            name="photo"
+            type="file"
+            accept={muralLimits.acceptedTypes.join(',')}
+            onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            className="focus-ring mt-2 block w-full text-sm file:mr-4 file:min-h-11 file:border-0 file:bg-gb-ink file:px-4 file:font-semibold file:text-gb-white"
+            aria-invalid={!!errors.photo}
+            aria-describedby={describedBy('photo')}
+          />
+          <FieldError id="photo-erro" message={errors.photo} />
+          {preview && (
+            // eslint-disable-next-line @next/next/no-img-element -- prévia local do arquivo escolhido
+            <img src={preview} alt="Prévia da foto escolhida" className="mt-3 max-h-64 w-auto max-w-full border-2 border-gb-line object-contain" />
+          )}
         </div>
-        <label htmlFor="contactValue" className="sr-only">
-          WhatsApp ou e-mail
-        </label>
-        <input id="contactValue" name="contactValue" className={inputClass} aria-invalid={!!errors.contactValue} aria-describedby={describedBy('contactValue')} />
-        <FieldError id="contactValue-erro" message={errors.contactValue || errors.contactType} />
-      </fieldset>
+      </WizardStep>
 
-      <div>
-        <label htmlFor="photo" className={labelClass}>
-          Foto
-        </label>
-        <p className="text-sm text-gb-mute">JPG, PNG ou WebP, até 10 MB. Uma foto por envio.</p>
-        <input
-          id="photo"
-          name="photo"
-          type="file"
-          accept={muralLimits.acceptedTypes.join(',')}
-          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-          className="focus-ring mt-2 block w-full text-sm file:mr-4 file:min-h-11 file:border-0 file:bg-gb-ink file:px-4 file:font-semibold file:text-gb-white"
-          aria-invalid={!!errors.photo}
-          aria-describedby={describedBy('photo')}
-        />
-        <FieldError id="photo-erro" message={errors.photo} />
-        {preview && (
-          // eslint-disable-next-line @next/next/no-img-element -- prévia local do arquivo escolhido
-          <img src={preview} alt="Prévia da foto escolhida" className="mt-3 max-h-64 w-auto max-w-full border-2 border-gb-line object-contain" />
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="category" className={labelClass}>
-          Categoria
-        </label>
-        <select id="category" name="category" defaultValue="" className={inputClass} aria-invalid={!!errors.category} aria-describedby={describedBy('category')}>
-          <option value="" disabled>
-            Escolha uma categoria
-          </option>
-          {muralCategories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
+      <WizardStep wizard={wizard} index={1}>
+        <div>
+          <label htmlFor="category" className={labelClass}>
+            Categoria
+          </label>
+          <select id="category" name="category" defaultValue="" className={inputClass} aria-invalid={!!errors.category} aria-describedby={describedBy('category')}>
+            <option value="" disabled>
+              Escolha uma categoria
             </option>
-          ))}
-        </select>
-        <FieldError id="category-erro" message={errors.category} />
-      </div>
+            {muralCategories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <FieldError id="category-erro" message={errors.category} />
+        </div>
 
-      <div>
-        <label htmlFor="caption" className={labelClass}>
-          Legenda <span className="font-sans text-sm font-normal normal-case tracking-normal text-gb-mute">(opcional)</span>
-        </label>
-        <textarea
-          id="caption"
-          name="caption"
-          rows={3}
-          maxLength={muralLimits.captionMaxLength}
-          value={caption}
-          onChange={(event) => setCaption(event.target.value)}
-          className={`${inputClass} py-2`}
-          aria-invalid={!!errors.caption}
-          aria-describedby={`caption-contador ${describedBy('caption') ?? ''}`.trim()}
-        />
-        <p id="caption-contador" className="mt-1 flex justify-between gap-4 text-sm text-gb-mute">
-          <span>Se preenchida, aparece junto da foto depois de aprovada.</span>
-          <span className="tabular-nums">
-            {caption.length}/{muralLimits.captionMaxLength}
+        <div>
+          <label htmlFor="caption" className={labelClass}>
+            Legenda <span className="font-sans text-sm font-normal normal-case tracking-normal text-gb-mute">(opcional)</span>
+          </label>
+          <textarea
+            id="caption"
+            name="caption"
+            rows={3}
+            maxLength={muralLimits.captionMaxLength}
+            value={caption}
+            onChange={(event) => setCaption(event.target.value)}
+            className={`${inputClass} py-2`}
+            aria-invalid={!!errors.caption}
+            aria-describedby={`caption-contador ${describedBy('caption') ?? ''}`.trim()}
+          />
+          <p id="caption-contador" className="mt-1 flex justify-between gap-4 text-sm text-gb-mute">
+            <span>Se preenchida, aparece junto da foto depois de aprovada.</span>
+            <span className="tabular-nums">
+              {caption.length}/{muralLimits.captionMaxLength}
+            </span>
+          </p>
+          <FieldError id="caption-erro" message={errors.caption} />
+        </div>
+
+        <label className="flex gap-3">
+          <input type="checkbox" name="showNamePublicly" className="mt-1 h-5 w-5 shrink-0 accent-gb-navy" />
+          <span className="text-sm leading-relaxed">
+            Pode mostrar meu nome junto da foto no mural. <span className="text-gb-mute">(opcional)</span>
           </span>
-        </p>
-        <FieldError id="caption-erro" message={errors.caption} />
-      </div>
+        </label>
+      </WizardStep>
 
-      <label className="flex gap-3">
-        <input type="checkbox" name="showNamePublicly" className="mt-1 h-5 w-5 shrink-0 accent-gb-navy" />
-        <span className="text-sm leading-relaxed">
-          Pode mostrar meu nome junto da foto no mural. <span className="text-gb-mute">(opcional)</span>
-        </span>
-      </label>
+      <WizardStep wizard={wizard} index={2}>
+        <div>
+          <label htmlFor="senderName" className={labelClass}>
+            Seu nome
+          </label>
+          <p className="text-sm text-gb-mute">Só aparece no mural se você marcar &quot;Pode mostrar meu nome junto da foto&quot;.</p>
+          <input id="senderName" name="senderName" autoComplete="name" className={inputClass} aria-invalid={!!errors.senderName} aria-describedby={describedBy('senderName')} />
+          <FieldError id="senderName-erro" message={errors.senderName} />
+        </div>
+
+        <fieldset>
+          <legend className={labelClass}>Contato</legend>
+          <p className="text-sm text-gb-mute">Usado só pela equipe, caso seja preciso falar com você sobre a foto.</p>
+          <div className="mt-2 flex gap-6">
+            {[
+              ['WHATSAPP', 'WhatsApp'],
+              ['EMAIL', 'E-mail'],
+            ].map(([value, label]) => (
+              <label key={value} className="flex min-h-11 items-center gap-2">
+                <input type="radio" name="contactType" value={value} defaultChecked={value === 'WHATSAPP'} className="h-5 w-5 accent-gb-navy" />
+                {label}
+              </label>
+            ))}
+          </div>
+          <label htmlFor="contactValue" className="sr-only">
+            WhatsApp ou e-mail
+          </label>
+          <input id="contactValue" name="contactValue" className={inputClass} aria-invalid={!!errors.contactValue} aria-describedby={describedBy('contactValue')} />
+          <FieldError id="contactValue-erro" message={errors.contactValue || errors.contactType} />
+        </fieldset>
+      </WizardStep>
 
       {/* Honeypot contra robôs: invisível para pessoas. */}
       <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
@@ -221,22 +264,24 @@ export function PhotoUploadForm() {
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <fieldset className="space-y-3 border-t-2 border-gb-ink pt-5">
-        <legend className="sr-only">Autorizações</legend>
-        {[
-          ['acceptPrivacy', `Li e aceito a política de privacidade (versão ${muralPolicyVersions.privacy}).`],
-          ['acceptPublication', `Autorizo o uso e a publicação desta foto no mural da academia (termo versão ${muralPolicyVersions.publicationConsent}).`],
-          ['declareImageRights', 'Declaro que tenho direito de enviar esta imagem e autorização das pessoas que aparecem nela. Fotos com menores de idade só são publicadas após autorização dos responsáveis.'],
-        ].map(([name, text]) => (
-          <div key={name}>
-            <label className="flex gap-3">
-              <input type="checkbox" name={name} className="mt-1 h-5 w-5 shrink-0 accent-gb-navy" aria-invalid={!!errors[name]} aria-describedby={describedBy(name)} />
-              <span className="text-sm leading-relaxed">{text}</span>
-            </label>
-            <FieldError id={`${name}-erro`} message={errors[name]} />
-          </div>
-        ))}
-      </fieldset>
+      <WizardStep wizard={wizard} index={3}>
+        <fieldset className="space-y-3 md:border-t-2 md:border-gb-ink md:pt-5">
+          <legend className="sr-only">Autorizações</legend>
+          {[
+            ['acceptPrivacy', `Li e aceito a política de privacidade (versão ${muralPolicyVersions.privacy}).`],
+            ['acceptPublication', `Autorizo o uso e a publicação desta foto no mural da academia (termo versão ${muralPolicyVersions.publicationConsent}).`],
+            ['declareImageRights', 'Declaro que tenho direito de enviar esta imagem e autorização das pessoas que aparecem nela. Fotos com menores de idade só são publicadas após autorização dos responsáveis.'],
+          ].map(([name, text]) => (
+            <div key={name}>
+              <label className="flex gap-3">
+                <input type="checkbox" name={name} className="mt-1 h-5 w-5 shrink-0 accent-gb-navy" aria-invalid={!!errors[name]} aria-describedby={describedBy(name)} />
+                <span className="text-sm leading-relaxed">{text}</span>
+              </label>
+              <FieldError id={`${name}-erro`} message={errors[name]} />
+            </div>
+          ))}
+        </fieldset>
+      </WizardStep>
 
       {formError && (
         <p role="alert" className="border-2 border-gb-red bg-gb-white p-4 font-semibold text-gb-red">
@@ -244,14 +289,7 @@ export function PhotoUploadForm() {
         </p>
       )}
 
-      <button
-        type="submit"
-        disabled={sending}
-        aria-busy={sending}
-        className="focus-ring min-h-12 w-full bg-gb-red px-6 font-display text-xl font-semibold uppercase text-gb-white hover:bg-gb-red-dark disabled:opacity-70 sm:w-auto"
-      >
-        {sending ? 'Enviando…' : 'Enviar foto para análise'}
-      </button>
+      <WizardNav wizard={wizard} submitLabel="Enviar foto para análise" sending={sending} />
     </form>
   );
 }
