@@ -15,6 +15,9 @@ function isActive(pathname: string, href: string) {
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  /** Onde o painel do menu começa: logo abaixo do cabeçalho, que pode não estar no topo (faixa "Entrar" acima). */
+  const [panelTop, setPanelTop] = useState(64);
+  const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +48,7 @@ export function Header() {
 
   return (
     // Sem backdrop-filter: ele criaria um bloco de contenção e quebraria o painel `fixed` do menu mobile.
-    <header className="sticky top-0 z-40 border-b border-gb-line bg-gb-white">
+    <header ref={headerRef} className="sticky top-0 z-40 border-b border-gb-line bg-gb-white">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[4.5rem] lg:px-8">
         <Logo />
 
@@ -86,7 +89,10 @@ export function Header() {
             className="focus-ring inline-flex h-11 w-11 items-center justify-center text-gb-ink lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            onClick={() => setOpen((value) => !value)}
+            onClick={() => {
+              if (!open && headerRef.current) setPanelTop(Math.round(headerRef.current.getBoundingClientRect().bottom));
+              setOpen((value) => !value);
+            }}
           >
             {open ? <CloseIcon /> : <MenuIcon />}
             <span className="sr-only">{open ? 'Fechar menu' : 'Abrir menu'}</span>
@@ -98,7 +104,8 @@ export function Header() {
         <div
           id="mobile-menu"
           ref={panelRef}
-          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-gb-white lg:hidden"
+          style={{ top: panelTop }}
+          className="fixed inset-x-0 bottom-0 z-40 overflow-y-auto bg-gb-white lg:hidden"
         >
           <nav aria-label="Principal (celular)" className="px-4 py-6">
             <ul className="divide-y divide-gb-line border-y border-gb-line">
