@@ -197,7 +197,7 @@ Objetivo: só administradores autenticados aprovam, rejeitam ou removem (spec §
 
 - [x] Autenticação com **sessões no banco** (`AdminSession`), em vez do Auth.js: com login por e-mail e senha o Auth.js só oferece JWT, que não pode ser revogado. Senha com `scrypt` nativo do Node; cookie `HttpOnly`, `SameSite=Lax`, `Secure` + prefixo `__Host-` em produção; validade de 12 h; limite de 5 falhas por conta e 20 por IP a cada 15 min (só falhas contam). Código em `src/lib/auth/`.
 - [x] Contas por script: `npm run admin -- criar|listar|nova-senha|desativar|reativar` (`scripts/admin.ts`)
-- [x] `src/app/admin/login` e `src/app/admin/(painel)/mural` + `/retiradas` (fora do grupo `(site)`). A pedido do cliente (15/10/2026), há um botão **Entrar** na faixa acima do cabeçalho (`TopBar.tsx`); a proteção é o login, não esconder o endereço
+- [x] `src/app/admin/login` e `src/app/admin/(painel)/mural` + `/retiradas` (fora do grupo `(site)`). A pedido do cliente (15/10/2026), há um botão **Entrar** no cabeçalho, à esquerda de "Agende sua aula experimental" (`Header.tsx`; só o cadeado entre 1024 e 1279 px, por espaço); a proteção é o login, não esconder o endereço
 - [x] `src/middleware.ts` barra `/admin` e `/api/admin` sem cookie; cada página (`requireAdminPage`) e handler (`requireAdminApi`) valida sessão e papel no banco
 - [x] `robots: { index: false }` no layout admin e `X-Robots-Tag: noindex` pelo middleware
 - [x] APIs (spec §11):

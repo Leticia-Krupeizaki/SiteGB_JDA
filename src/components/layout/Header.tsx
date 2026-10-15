@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { mainNavigation, primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, whatsappTrialUrl } from '@/config/site';
-import { CloseIcon, MenuIcon, PhoneIcon } from '@/components/ui/icons';
+import { CloseIcon, LockIcon, MenuIcon, PhoneIcon } from '@/components/ui/icons';
 import { Logo } from './Logo';
 
 function isActive(pathname: string, href: string) {
@@ -49,11 +49,11 @@ export function Header() {
   return (
     // Sem backdrop-filter: ele criaria um bloco de contenção e quebraria o painel `fixed` do menu mobile.
     <header ref={headerRef} className="sticky top-0 z-40 border-b border-gb-line bg-gb-white">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[4.5rem] lg:px-8">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[4.5rem] lg:gap-3 lg:px-8 xl:gap-4">
         <Logo />
 
         <nav aria-label="Principal" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+          <ul className="flex items-center gap-0.5 xl:gap-2">
             {mainNavigation.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -61,7 +61,7 @@ export function Header() {
                   <Link
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
-                    className={`focus-ring border-b-2 px-1.5 py-2 font-display text-base font-semibold uppercase tracking-wide whitespace-nowrap transition-colors xl:px-2.5 xl:text-lg ${
+                    className={`focus-ring border-b-2 px-1.5 py-2 font-display text-base font-semibold uppercase tracking-wide whitespace-nowrap transition-colors ${
                       active ? 'border-gb-red text-gb-ink' : 'border-transparent text-gb-ink hover:border-gb-line'
                     }`}
                   >
@@ -74,11 +74,23 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Acesso da equipe ao painel. A proteção é o login, não esconder o endereço. */}
+          <Link
+            href="/admin/login"
+            rel="nofollow"
+            title="Entrar na área administrativa"
+            className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 border-2 border-gb-ink px-3 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap text-gb-ink transition-colors hover:bg-gb-ink hover:text-gb-white lg:text-base"
+          >
+            <LockIcon className="h-4 w-4" />
+            {/* Entre 1024 e 1279 px não há espaço para o texto: fica só o cadeado (com título e texto para leitor de tela). */}
+            <span className="lg:max-xl:sr-only">Entrar</span>
+            <span className="sr-only"> na área administrativa</span>
+          </Link>
           <a
             href={whatsappTrialUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="focus-ring hidden min-h-11 items-center bg-gb-red px-4 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap text-gb-white transition-colors hover:bg-gb-red-dark sm:inline-flex lg:px-3 lg:text-base xl:px-4 xl:text-lg"
+            className="focus-ring hidden min-h-11 items-center bg-gb-red px-4 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap text-gb-white transition-colors hover:bg-gb-red-dark sm:inline-flex lg:px-3 lg:text-base"
           >
             {primaryCta.label}
             <span className="sr-only">(abre o WhatsApp em nova aba)</span>
