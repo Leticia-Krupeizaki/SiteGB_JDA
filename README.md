@@ -35,10 +35,20 @@ npm run lint
 npx tsc --noEmit
 npm test
 npm run build && npm start
-npm run mural:moderar -- listar          # moderação provisória até o painel (Etapa 5)
-npm run mural:moderar -- aprovar <id>
-npm run mural:moderar -- remover <id> "motivo"
 ```
+
+## Painel administrativo
+
+A moderação do mural fica em `/admin` (sem link no site público). As contas são criadas por linha de comando; a senha é gerada e mostrada uma única vez:
+
+```bash
+npm run admin -- criar equipe@exemplo.com ADMIN Nome da Pessoa   # ou MODERATOR
+npm run admin -- listar
+npm run admin -- nova-senha equipe@exemplo.com    # encerra as sessões abertas
+npm run admin -- desativar equipe@exemplo.com     # encerra as sessões abertas
+```
+
+Em produção, rode o mesmo script apontando para o banco de produção (variáveis no ambiente).
 
 Em produção, aplique as migrações com `npm run db:deploy` e configure as variáveis de `.env.example` na hospedagem.
 

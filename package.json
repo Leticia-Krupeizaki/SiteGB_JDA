@@ -12,7 +12,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "storage:init": "tsx --env-file=.env.local scripts/storage-init.ts",
-    "mural:moderar": "tsx --env-file=.env.local scripts/mural-moderar.ts"
+    "admin": "tsx --env-file=.env.local scripts/admin.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1152.0",

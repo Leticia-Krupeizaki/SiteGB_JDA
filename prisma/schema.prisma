@@ -62,14 +62,33 @@ enum RemovalRequestStatus {
 model Admin {
   id           String    @id @default(uuid()) @db.Uuid
   email        String    @unique
+  name         String?
   passwordHash String?
   providerId   String?   @unique
   role         AdminRole @default(MODERATOR)
+  /// Conta desativada não entra e perde as sessões.
+  disabledAt   DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
+  sessions         AdminSession[]
   moderatedPosts   MuralPost[]
   moderationEvents MuralModerationEvent[]
+  resolvedRemovals MuralRemovalRequest[]
+}
+
+/// Sessão do painel. O cookie leva um token aleatório; aqui só fica o hash dele.
+model AdminSession {
+  id         String    @id @default(uuid()) @db.Uuid
+  tokenHash  String    @unique
+  adminId    String    @db.Uuid
+  admin      Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime  @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+
+  @@index([adminId])
 }
 
 model MuralPost {
@@ -142,6 +161,8 @@ model MuralRemovalRequest {
   status           RemovalRequestStatus @default(OPEN)
   createdAt        DateTime             @default(now())
   resolvedAt       DateTime?
+  resolvedById     String?              @db.Uuid
+  resolvedBy       Admin?               @relation(fields: [resolvedById], references: [id])
   resolutionNote   String?
 
   @@index([status, createdAt])

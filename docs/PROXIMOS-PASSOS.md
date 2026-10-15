@@ -1,6 +1,6 @@
 # Próximos passos — Site Gracie Barra Jardim das Américas
 
-> Estado em 14/10/2026: Etapa 4 implementada e testada localmente (banco e storage em Docker).
+> Estado em 14/10/2026: Etapas 4 e 5 implementadas e testadas localmente (banco e storage em Docker).
 > Documento para continuar o desenvolvimento localmente (VS Code).
 > A especificação completa é a fonte dos requisitos; as seções citadas abaixo (ex.: "spec §9") se referem a ela.
 
@@ -15,7 +15,7 @@
 | 2 | Grade de horários, filtros, SEO básico | ✅ Concluída |
 | 3 | Mural público em **modo demonstração** | ✅ Concluída |
 | 4 | Backend do mural (banco, storage, upload seguro, APIs) | ✅ Concluída localmente · falta infraestrutura de produção (4.1) |
-| 5 | Painel administrativo de moderação | ⬜ A fazer |
+| 5 | Painel administrativo de moderação | ✅ Concluída localmente · faltam as contas reais da equipe |
 | 6 | Qualidade, acessibilidade, deploy e homologação | ⬜ A fazer |
 
 As etapas 0 a 3 formam o **protótipo apresentável (Fase A)**. As etapas 4 a 6 são a **Fase B** (mural funcional e produção).
@@ -121,7 +121,7 @@ Objetivo: o envio público passa a ser real, mas **nenhuma foto fica pública se
 
 - **Prisma 7** (`prisma.config.ts`, cliente gerado em `src/generated/prisma`, adapter `pg`). Fixado em 7.x; o 8 ainda é RC.
 - **Ambiente local** em `docker-compose.yml`: PostgreSQL 17 e SeaweedFS (S3). A imagem do MinIO saiu do Docker Hub, por isso SeaweedFS.
-- **Moderação provisória** por CLI (`npm run mural:moderar`) usando `src/lib/mural/moderation.ts`, que o painel da Etapa 5 deve reaproveitar.
+- **Regras de moderação** em `src/lib/mural/moderation.ts`, usadas pelo painel da Etapa 5. (Houve um moderador provisório por CLI, removido quando o painel ficou pronto.)
 - **Teste ponta a ponta manual** feito contra o servidor local: envio, recusa de arquivo falso, PENDING invisível na API e no HTML, aprovação, remoção, pedido de retirada e rate limit.
 
 ### 4.3 Banco de dados (Prisma)
@@ -191,23 +191,31 @@ Ver `.env.example` (valores locais já batem com o `docker-compose.yml`). Novas:
 
 Objetivo: só administradores autenticados aprovam, rejeitam ou removem (spec §9.6).
 
-- [ ] Autenticação com biblioteca consolidada (sugestão: Auth.js / NextAuth v5) — cookies `HttpOnly`, `Secure`, `SameSite`; sessões revogáveis; limite de tentativas de login
-- [ ] `src/app/admin/login/page.tsx` e `src/app/admin/mural/page.tsx` (fora do grupo `(site)`, sem link no menu público)
-- [ ] `middleware.ts` protegendo `/admin` e `/api/admin`, **e** checagem de papel dentro de cada handler (não confiar só na UI)
-- [ ] `metadata.robots = { index: false }` nas páginas admin (o `robots.ts` já bloqueia `/admin`)
-- [ ] APIs (spec §11):
-  - [ ] `GET /api/admin/mural` — todos os status, filtros por categoria, período e status
-  - [ ] `GET /api/admin/mural/:id` — detalhe privado, imagem por **URL assinada temporária**
-  - [ ] `PATCH /api/admin/mural/:id/approve` — exige autorizações; bloqueia se `AWAITING_GUARDIAN_AUTHORIZATION`; gera derivado WebP/AVIF; grava `approvedAt`, `moderatedBy`
-  - [ ] `PATCH /api/admin/mural/:id/reject` — motivo obrigatório
-  - [ ] `DELETE /api/admin/mural/:id` — remove do mural, apaga derivado público, inicia política de exclusão
-  - [ ] `GET /api/admin/mural/:id/audit` — histórico
-- [ ] Transições de status **atômicas** (transação com `where: { id, status: atual }`) para evitar aprovações concorrentes
-- [ ] Todo evento grava `MuralModerationEvent`
-- [ ] Proteção CSRF nas mutações (Auth.js cobre parte; conferir)
-- [ ] UI: abas Pendentes / Aguardando autorização / Aprovadas / Rejeitadas / Removidas; `StatusBadge`; `ConfirmDialog` para remover; `Toast` de sucesso e erro; observação interna
-- [ ] Fila de pedidos de retirada (`MuralRemovalRequest`)
-- [ ] `401` para não autenticado, `403` para sem permissão; IDs não enumeráveis em rotas públicas
+> Concluída localmente em 14/10/2026. Teste ponta a ponta das APIs (30 verificações) e capturas de tela em 1440px e 390px.
+
+- [x] Autenticação com **sessões no banco** (`AdminSession`), em vez do Auth.js: com login por e-mail e senha o Auth.js só oferece JWT, que não pode ser revogado. Senha com `scrypt` nativo do Node; cookie `HttpOnly`, `SameSite=Lax`, `Secure` + prefixo `__Host-` em produção; validade de 12 h; limite de 5 falhas por conta e 20 por IP a cada 15 min (só falhas contam). Código em `src/lib/auth/`.
+- [x] Contas por script: `npm run admin -- criar|listar|nova-senha|desativar|reativar` (`scripts/admin.ts`)
+- [x] `src/app/admin/login` e `src/app/admin/(painel)/mural` + `/retiradas` (fora do grupo `(site)`, sem link no menu público)
+- [x] `src/middleware.ts` barra `/admin` e `/api/admin` sem cookie; cada página (`requireAdminPage`) e handler (`requireAdminApi`) valida sessão e papel no banco
+- [x] `robots: { index: false }` no layout admin e `X-Robots-Tag: noindex` pelo middleware
+- [x] APIs (spec §11):
+  - [x] `GET /api/admin/mural` — filtros por status, categoria e período (datas em horário de Brasília), contagem por status, cursor
+  - [x] `GET /api/admin/mural/:id` — detalhe privado, imagem por URL assinada de 5 min
+  - [x] `PATCH /api/admin/mural/:id/approve` — exige revisão de direitos e autorização de responsáveis resolvida; gera derivado WebP; grava `approvedAt`, `moderatedBy`
+  - [x] `PATCH /api/admin/mural/:id/awaiting-guardian` — segura foto com menores até a autorização
+  - [x] `PATCH /api/admin/mural/:id/reject` — motivo obrigatório
+  - [x] `DELETE /api/admin/mural/:id` — motivo obrigatório; apaga derivado público
+  - [x] `GET /api/admin/mural/:id/audit` (histórico) e `POST` (observação interna)
+  - [x] `GET /api/admin/removal-requests` e `PATCH /api/admin/removal-requests/:id` (resolver/descartar, opcionalmente removendo a foto)
+  - [x] `POST /api/admin/login` e `POST /api/admin/logout` (logout revoga a sessão no banco)
+- [x] Transições atômicas (`updateMany where { id, status }` em transação); concorrência devolve 409
+- [x] Todo evento grava `MuralModerationEvent` com o admin
+- [x] CSRF: toda mutação exige `Origin` do próprio site (403 caso contrário), além do `SameSite=Lax`
+- [x] UI: abas por status com contagem, filtros, `StatusBadge`, `ConfirmDialog` (rejeitar/remover), `Toast`, observação interna, histórico
+- [x] Fila de pedidos de retirada
+- [x] `401` sem sessão, `403` sem papel ou origem inválida, `404` para ID que não é UUID
+- [ ] Gerenciar contas pelo painel (hoje só por script; o papel `ADMIN` já existe para isso)
+- [ ] Criar as contas reais da equipe (o cliente precisa informar quem modera)
 
 ---
 
@@ -282,13 +290,13 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 - [x] Arquivo inválido rejeitado **pelo servidor**
 - [x] Envio válido entra como `PENDING`, sem URL pública
 - [x] Foto pendente não aparece em API, HTML ou storage público (conferido localmente; falta teste automatizado na Etapa 6)
-- [ ] Só admin autenticado modera (hoje: CLI local, sem painel; Etapa 5)
+- [x] Só admin autenticado modera
 - [x] Aprovação exige autorizações (`approvePost`)
 - [x] Foto aprovada aparece no filtro certo
 - [x] Rejeição não publica
 - [x] Remoção retira da galeria e apaga o derivado público
 - [x] Contatos fora de payloads públicos
-- [ ] Ações administrativas auditadas (eventos já gravados; falta vincular ao admin autenticado na Etapa 5)
+- [x] Ações administrativas auditadas (com o admin autenticado)
 - [x] Existe canal de pedido de retirada (formulário + WhatsApp)
 
 ### Operação
