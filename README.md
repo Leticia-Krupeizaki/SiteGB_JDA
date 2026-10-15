@@ -48,9 +48,11 @@ npm run admin -- nova-senha equipe@exemplo.com    # encerra as sessões abertas
 npm run admin -- desativar equipe@exemplo.com     # encerra as sessões abertas
 ```
 
-Em produção, rode o mesmo script apontando para o banco de produção (variáveis no ambiente).
+Em produção (Coolify), o mesmo script roda no terminal do container: `node scripts/admin.mjs criar ...`.
 
-Em produção, aplique as migrações com `npm run db:deploy` e configure as variáveis de `.env.example` na hospedagem.
+## Deploy
+
+Produção roda no **Coolify** com Docker Compose (site + PostgreSQL + storage SeaweedFS). Passo a passo em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md). As migrações são aplicadas sozinhas quando o container inicia.
 
 ## Estrutura e próximos passos
 

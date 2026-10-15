@@ -15,19 +15,34 @@ function env(name: string): string {
   return value;
 }
 
-let client: S3Client | undefined;
-
-function s3(): S3Client {
-  client ??= new S3Client({
-    endpoint: env('S3_ENDPOINT'),
+function createClient(endpoint: string): S3Client {
+  return new S3Client({
+    endpoint,
     region: env('S3_REGION'),
     forcePathStyle: true,
     credentials: { accessKeyId: env('S3_ACCESS_KEY_ID'), secretAccessKey: env('S3_SECRET_ACCESS_KEY') },
-    // R2 e servidores S3 locais não aceitam todos os checksums novos do SDK.
+    // R2 e servidores S3 auto-hospedados não aceitam todos os checksums novos do SDK.
     requestChecksumCalculation: 'WHEN_REQUIRED',
     responseChecksumValidation: 'WHEN_REQUIRED',
   });
+}
+
+let client: S3Client | undefined;
+let signingClient: S3Client | undefined;
+
+function s3(): S3Client {
+  client ??= createClient(env('S3_ENDPOINT'));
   return client;
+}
+
+/**
+ * URLs assinadas são abertas pelo navegador, então precisam do endereço público
+ * do storage. No Docker, o app fala com o storage pela rede interna (S3_ENDPOINT)
+ * e assina com o domínio público (S3_SIGNING_ENDPOINT).
+ */
+function s3ForSigning(): S3Client {
+  signingClient ??= process.env.S3_SIGNING_ENDPOINT ? createClient(process.env.S3_SIGNING_ENDPOINT) : s3();
+  return signingClient;
 }
 
 export function bucketName(kind: BucketKind): string {
@@ -58,7 +73,7 @@ export async function deleteObject(kind: BucketKind, key: string): Promise<void>
 
 /** URL temporária para o painel ver uma foto privada. */
 export async function getSignedUrl(key: string, expiresInSeconds = 300): Promise<string> {
-  return presign(s3(), new GetObjectCommand({ Bucket: bucketName('private'), Key: key }), { expiresIn: expiresInSeconds });
+  return presign(s3ForSigning(), new GetObjectCommand({ Bucket: bucketName('private'), Key: key }), { expiresIn: expiresInSeconds });
 }
 
 /** URL pública de um derivado aprovado. */

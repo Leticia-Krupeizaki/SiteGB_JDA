@@ -43,3 +43,4 @@ next-env.d.ts
 
 # prisma (cliente gerado por `prisma generate`)
 /src/generated/
+/dist-scripts/

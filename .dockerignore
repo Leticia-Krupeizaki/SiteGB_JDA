@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.github
+.env*
+!.env.example
+src/generated
+coverage
+*.tsbuildinfo
+next-env.d.ts
+docs
+tests

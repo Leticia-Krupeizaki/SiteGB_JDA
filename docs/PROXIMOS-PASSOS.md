@@ -110,9 +110,9 @@ Objetivo: o envio público passa a ser real, mas **nenhuma foto fica pública se
 
 ### 4.1 Decisões que precisam vir antes (cliente)
 
-- [ ] Hospedagem (sugestão: Vercel)
-- [ ] Banco PostgreSQL (sugestão: Neon ou Supabase)
-- [ ] Storage S3 compatível com bucket privado (sugestão: Cloudflare R2 ou AWS S3)
+- [x] Hospedagem: **Coolify** (já em uso pelo cliente), recurso Docker Compose — ver `docs/DEPLOY-COOLIFY.md`
+- [x] Banco PostgreSQL: serviço `db` dentro do mesmo compose
+- [x] Storage S3: **SeaweedFS** como serviço `storage` no mesmo compose
 - [ ] Domínio final (para `NEXT_PUBLIC_SITE_URL`)
 - [ ] Texto final da política de privacidade e do termo de autorização de imagem (versões em `src/data/mural.ts → muralPolicyVersions`)
 - [ ] Política de retenção e exclusão de fotos rejeitadas/removidas
@@ -180,9 +180,9 @@ Ver `.env.example` (valores locais já batem com o `docker-compose.yml`). Novas:
 
 ### 4.9 Pendências da Etapa 4 para produção
 
-- [ ] Criar banco e buckets no provedor escolhido (4.1) e rodar `npm run db:deploy`
-- [ ] Bucket público com leitura anônima e, de preferência, domínio próprio/CDN em `S3_PUBLIC_BASE_URL`
-- [ ] Confirmar que a hospedagem preenche `x-forwarded-for` com o IP real (Vercel preenche); senão o rate limit agrupa todos
+- [x] Banco e buckets: criados sozinhos no deploy (migrações e buckets na inicialização do container)
+- [x] Bucket público com leitura anônima só de objetos (listagem bloqueada), servido pelo domínio de fotos
+- [ ] Confirmar em produção que o proxy do Coolify preenche `x-forwarded-for` com o IP real
 - [ ] Política de retenção: hoje o original privado de fotos rejeitadas/removidas é mantido
 
 ---
@@ -227,10 +227,11 @@ Objetivo: só administradores autenticados aprovam, rejeitam ou removem (spec §
 - [ ] Acessibilidade: rodar axe (`@axe-core/playwright`) nas páginas principais
 - [ ] Lighthouse / Core Web Vitals (medir antes de afirmar resultados)
 - [x] CI no GitHub Actions: `npm ci`, `lint`, `tsc --noEmit`, `test`, `build` (`.github/workflows/ci.yml`)
-- [ ] Deploy de homologação e depois produção (com autorização do cliente)
+- [x] Imagem Docker de produção (`Dockerfile`, Next standalone, usuário sem root, healthcheck) e `docker-compose.coolify.yml`, testados localmente de ponta a ponta
+- [ ] Deploy de homologação no Coolify e depois produção (com autorização do cliente) — passo a passo em `docs/DEPLOY-COOLIFY.md`
 - [ ] Monitoramento de erros (ex.: Sentry) sem vazar dados pessoais
-- [ ] Backups do banco e procedimento de restauração documentado
-- [ ] README final com deploy, migrações e variáveis
+- [ ] Backups do banco e das fotos configurados no Coolify, com restauração testada (orientação na seção 8 do guia de deploy)
+- [x] README com deploy, migrações e variáveis
 
 ---
 

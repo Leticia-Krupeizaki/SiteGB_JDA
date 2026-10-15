@@ -1,0 +1,69 @@
+# Deploy no Coolify (build pack "Docker Compose"). Guia: docs/DEPLOY-COOLIFY.md
+#
+# As variáveis SERVICE_* são geradas pelo Coolify (domínios, usuários e senhas)
+# e ficam salvas entre deploys. Nada de segredo neste arquivo.
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: ${SERVICE_URL_APP}
+    environment:
+      - SERVICE_URL_APP_3000
+      - NEXT_PUBLIC_SITE_URL=${SERVICE_URL_APP}
+      - DATABASE_URL=postgresql://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@db:5432/sitegb
+      # App fala com o storage pela rede interna; o navegador usa o domínio público.
+      - S3_ENDPOINT=http://storage:8333
+      - S3_SIGNING_ENDPOINT=${SERVICE_URL_STORAGE}
+      - S3_PUBLIC_BASE_URL=${SERVICE_URL_STORAGE}/sitegb-public
+      - S3_REGION=us-east-1
+      - S3_BUCKET_PRIVATE=sitegb-private
+      - S3_BUCKET_PUBLIC=sitegb-public
+      - S3_ACCESS_KEY_ID=${SERVICE_USER_S3}
+      - S3_SECRET_ACCESS_KEY=${SERVICE_PASSWORD_64_S3}
+      - AUTH_SECRET=${SERVICE_PASSWORD_64_AUTHSECRET}
+    depends_on:
+      db:
+        condition: service_healthy
+      storage:
+        condition: service_started
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    restart: unless-stopped
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER=${SERVICE_USER_POSTGRES}
+      - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
+      - POSTGRES_DB=sitegb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', '${SERVICE_USER_POSTGRES}', '-d', 'sitegb']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  storage:
+    build:
+      context: ./docker/seaweedfs
+    environment:
+      # Domínio público do storage (as fotos aprovadas são servidas daqui).
+      - SERVICE_URL_STORAGE_8333
+      - S3_ACCESS_KEY_ID=${SERVICE_USER_S3}
+      - S3_SECRET_ACCESS_KEY=${SERVICE_PASSWORD_64_S3}
+      - S3_BUCKET_PUBLIC=sitegb-public
+    volumes:
+      - storage-data:/data
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  storage-data:

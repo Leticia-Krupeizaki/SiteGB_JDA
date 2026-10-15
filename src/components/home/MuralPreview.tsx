@@ -28,7 +28,7 @@ export function MuralPreview() {
         const post = posts[i];
         return post ? (
           <div key={post.id} className={`relative aspect-square overflow-hidden bg-gb-line ${offset}`}>
-            <Image src={post.imageUrl} alt={muralAlt(post)} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover" />
+            <Image src={post.imageUrl} alt={muralAlt(post)} fill unoptimized className="object-cover" />
           </div>
         ) : (
           <PhotoPlaceholder key={i} label="Foto do mural" className={`aspect-square ${offset}`} />

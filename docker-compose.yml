@@ -17,7 +17,8 @@ services:
   # bucket público só para derivados de fotos aprovadas.
   storage:
     image: chrislusf/seaweedfs:latest
-    command: server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    # Volumes de 1 GB: com o padrão (30 GB) o segundo bucket pode ficar sem volume livre.
+    command: server -dir=/data -master.volumeSizeLimitMB=1024 -volume.max=100 -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
     ports:
       - '8333:8333'
     volumes:
