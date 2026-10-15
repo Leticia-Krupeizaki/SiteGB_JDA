@@ -58,7 +58,7 @@ export function Header() {
                   <Link
                     href={item.href}
                     aria-current={active ? 'page' : undefined}
-                    className={`focus-ring border-b-2 px-2.5 py-2 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap transition-colors ${
+                    className={`focus-ring border-b-2 px-1.5 py-2 font-display text-base font-semibold uppercase tracking-wide whitespace-nowrap transition-colors xl:px-2.5 xl:text-lg ${
                       active ? 'border-gb-red text-gb-ink' : 'border-transparent text-gb-ink hover:border-gb-line'
                     }`}
                   >
@@ -72,17 +72,10 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <a
-            href={phoneUrl}
-            className="focus-ring hidden items-center gap-2 px-2 py-2 text-sm font-semibold whitespace-nowrap text-gb-navy hover:text-gb-red 2xl:inline-flex"
-          >
-            <PhoneIcon className="h-4 w-4" />
-            {contact.displayPhone}
-          </a>
-          <a
             href={whatsappTrialUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="focus-ring hidden min-h-11 items-center bg-gb-red px-4 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap text-gb-white transition-colors hover:bg-gb-red-dark sm:inline-flex"
+            className="focus-ring hidden min-h-11 items-center bg-gb-red px-4 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap text-gb-white transition-colors hover:bg-gb-red-dark sm:inline-flex lg:px-3 lg:text-base xl:px-4 xl:text-lg"
           >
             {primaryCta.label}
             <span className="sr-only">(abre o WhatsApp em nova aba)</span>

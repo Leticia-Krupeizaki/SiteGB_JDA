@@ -8,7 +8,7 @@ export function Logo({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
   const main = tone === 'dark' ? 'text-gb-ink' : 'text-gb-white';
 
   return (
-    <Link href="/" className="focus-ring flex flex-col leading-none" aria-label="Gracie Barra Jardim das Américas, página inicial">
+    <Link href="/" className="focus-ring flex shrink-0 flex-col leading-none whitespace-nowrap" aria-label="Gracie Barra Jardim das Américas, página inicial">
       <span className={`font-display text-2xl font-extrabold uppercase tracking-wide ${main}`}>
         Gracie <span className={tone === 'dark' ? 'text-gb-red' : 'text-gb-white'}>Barra</span>
       </span>
