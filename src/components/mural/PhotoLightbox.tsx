@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { CloseIcon } from '@/components/ui/icons';
 import { categoryLabel } from '@/data/mural';
 import type { PublicMuralPost } from '@/types/mural';
-import { DemoPhotoTile } from './DemoPhotoTile';
+import { MuralPhoto } from './MuralPhoto';
 
 type Props = {
   post: PublicMuralPost | null;
@@ -45,16 +45,18 @@ export function PhotoLightbox({ post, index, total, onClose, onNavigate }: Props
       {post && (
         <figure className="bg-gb-white">
           <div className="flex max-h-[70vh] justify-center overflow-hidden bg-gb-ink">
-            <div className="w-full" style={{ maxWidth: `calc(70vh * ${post.aspectRatio})` }}>
-              <DemoPhotoTile post={post} index={index} large />
+            <div className="w-full" style={{ maxWidth: `calc(70vh * ${post.width / post.height})` }}>
+              <MuralPhoto post={post} sizes="(min-width: 56rem) 56rem, 100vw" />
             </div>
           </div>
           <figcaption className="flex flex-wrap items-center justify-between gap-3 p-4">
-            <span>
+            <span className="min-w-0">
               <span className="font-display text-xl font-bold uppercase">{categoryLabel[post.category]}</span>
               <span className="ml-3 text-sm text-gb-mute tabular-nums">
                 {index + 1} de {total}
               </span>
+              {post.caption && <span className="mt-1 block">{post.caption}</span>}
+              {post.studentName && <span className="mt-1 block text-sm text-gb-mute">Enviada por {post.studentName}</span>}
             </span>
             <span className="flex gap-2">
               <button type="button" onClick={() => onNavigate(-1)} className="focus-ring min-h-11 border-2 border-gb-ink px-4 font-display font-semibold uppercase">

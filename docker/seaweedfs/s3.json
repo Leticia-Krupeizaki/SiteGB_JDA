@@ -1,0 +1,13 @@
+{
+  "identities": [
+    {
+      "name": "app-local",
+      "credentials": [{ "accessKey": "sitegb-local", "secretKey": "sitegb-local-secret" }],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    },
+    {
+      "name": "anonymous",
+      "actions": ["Read:sitegb-public"]
+    }
+  ]
+}

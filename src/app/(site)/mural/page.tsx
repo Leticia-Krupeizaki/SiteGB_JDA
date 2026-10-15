@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
 import { PageHeader } from '@/components/layout/PageHeader';
-import { DemoNotice } from '@/components/mural/DemoNotice';
 import { MuralGallery } from '@/components/mural/MuralGallery';
 import { PhotoUploadForm } from '@/components/mural/PhotoUploadForm';
+import { RemovalRequestForm } from '@/components/mural/RemovalRequestForm';
 import { Container } from '@/components/ui/Container';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { whatsappUrl } from '@/config/site';
+import { muralLimits } from '@/data/mural';
+import { listPublicPosts } from '@/lib/mural/posts';
+
+/** Sempre do banco: uma foto removida some na hora, sem esperar cache. */
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Mural',
@@ -22,7 +27,9 @@ const steps = [
 
 const removalUrl = whatsappUrl('Olá! Gostaria de pedir a retirada de uma foto do mural da Gracie Barra Jardim das Américas.');
 
-export default function MuralPage() {
+export default async function MuralPage() {
+  const firstPage = await listPublicPosts({ limit: muralLimits.pageSize });
+
   return (
     <>
       <PageHeader
@@ -31,12 +38,8 @@ export default function MuralPage() {
       />
 
       <section className="bg-gb-line/60 py-12 sm:py-16">
-        <Container className="space-y-8">
-          <DemoNotice>
-            O mural ainda não está ligado a um servidor. Os quadros abaixo são exemplos de layout, não fotos de alunos, e o formulário apenas
-            testa os campos: nada é salvo nem publicado.
-          </DemoNotice>
-          <MuralGallery />
+        <Container>
+          <MuralGallery initial={firstPage} />
         </Container>
       </section>
 
@@ -62,14 +65,16 @@ export default function MuralPage() {
             <div className="space-y-3 text-sm text-gb-mute">
               <h3 className="font-display text-xl font-bold uppercase text-gb-ink">Privacidade</h3>
               <p>Seu contato é usado só pela equipe e nunca aparece no site. Nome e legenda só são exibidos com a sua autorização.</p>
+              <h3 className="pt-3 font-display text-xl font-bold uppercase text-gb-ink">Retirar uma foto</h3>
               <p>
-                Quer retirar uma foto publicada?{' '}
+                Aparece em uma foto e quer que ela saia do mural? Descreva qual é, e a equipe retorna. Se preferir,{' '}
                 <a href={removalUrl} target="_blank" rel="noopener noreferrer" className="focus-ring font-semibold text-gb-navy underline">
-                  Peça a retirada pelo WhatsApp
+                  peça pelo WhatsApp
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>
                 .
               </p>
+              <RemovalRequestForm />
               <PlaceholderNotice>texto final da política de privacidade e do termo de autorização de imagem, a ser aprovado pelo cliente.</PlaceholderNotice>
             </div>
           </div>

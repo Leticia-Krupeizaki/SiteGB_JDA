@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { demoMuralPosts, muralLimits } from '@/data/mural';
-import { muralSubmissionSchema, validatePhotoFile } from '@/lib/validation/mural';
+import { muralLimits } from '@/data/mural';
+import { muralFormValues, muralSubmissionSchema, publicListQuerySchema, removalRequestSchema, validatePhotoFile } from '@/lib/validation/mural';
 
 const valid = {
   senderName: 'Ana',
@@ -8,6 +8,7 @@ const valid = {
   contactValue: '(41) 99999-0000',
   category: 'TREINOS',
   caption: '',
+  showNamePublicly: false,
   acceptPrivacy: true,
   acceptPublication: true,
   declareImageRights: true,
@@ -53,13 +54,32 @@ describe('arquivo da foto', () => {
   });
 });
 
-describe('dados de demonstração', () => {
-  it('não trazem nome, legenda, imagem ou contato', () => {
-    for (const post of demoMuralPosts) {
-      expect(post.studentName).toBeUndefined();
-      expect(post.caption).toBeUndefined();
-      expect(post.imageUrl).toBeUndefined();
-      expect(Object.keys(post)).not.toContain('contactValue');
+describe('leitura do FormData', () => {
+  it('converte checkboxes e campos de texto para o formato do schema', () => {
+    const data = new FormData();
+    for (const [key, value] of Object.entries({ ...valid, acceptPrivacy: 'on', acceptPublication: 'on', declareImageRights: 'on', showNamePublicly: 'on' })) {
+      data.set(key, String(value));
     }
+    const values = muralFormValues(data);
+    expect(values.showNamePublicly).toBe(true);
+    expect(muralSubmissionSchema.safeParse(values).success).toBe(true);
+  });
+
+  it('checkbox ausente vira false', () => {
+    expect(muralFormValues(new FormData()).acceptPrivacy).toBe(false);
+  });
+});
+
+describe('consulta pública e pedido de retirada', () => {
+  it('limita a página e valida categoria e cursor', () => {
+    expect(publicListQuerySchema.parse({}).limit).toBe(muralLimits.pageSize);
+    expect(publicListQuerySchema.safeParse({ limit: '500' }).success).toBe(false);
+    expect(publicListQuerySchema.safeParse({ category: 'OUTRA' }).success).toBe(false);
+    expect(publicListQuerySchema.safeParse({ cursor: '1' }).success).toBe(false);
+  });
+
+  it('exige contato e motivo no pedido de retirada', () => {
+    expect(removalRequestSchema.safeParse({ requesterContact: 'ana@exemplo.com', reason: 'Foto do treino de terça, sou eu à esquerda.' }).success).toBe(true);
+    expect(removalRequestSchema.safeParse({ requesterContact: '', reason: 'curto' }).success).toBe(false);
   });
 });

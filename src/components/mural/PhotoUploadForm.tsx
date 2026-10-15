@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { muralCategories, muralLimits, muralPolicyVersions } from '@/data/mural';
-import { muralSubmissionSchema, validatePhotoFile } from '@/lib/validation/mural';
+import type { ApiErrorBody } from '@/lib/api/errors';
+import { fieldErrorsFrom, muralFormValues, muralSubmissionSchema, validatePhotoFile } from '@/lib/validation/mural';
 
 type Errors = Partial<Record<string, string>>;
 
@@ -19,14 +20,16 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 }
 
 /**
- * Formulário do mural. Nesta fase NÃO envia nada: valida os dados no navegador
- * e mostra como será a confirmação. O envio real chega com o backend (Etapa 4).
+ * Formulário do mural. Valida no navegador para dar retorno rápido e envia
+ * para POST /api/mural, que repete toda a validação. A foto entra como pendente.
  */
 export function PhotoUploadForm() {
   const [errors, setErrors] = useState<Errors>({});
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
+  const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const summaryRef = useRef<HTMLDivElement>(null);
   const doneRef = useRef<HTMLDivElement>(null);
@@ -42,48 +45,45 @@ export function PhotoUploadForm() {
     if (done) doneRef.current?.focus();
   }, [done]);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const result = muralSubmissionSchema.safeParse({
-      senderName: data.get('senderName') ?? '',
-      contactType: data.get('contactType') ?? undefined,
-      contactValue: data.get('contactValue') ?? '',
-      category: data.get('category') || undefined,
-      caption: data.get('caption') ?? '',
-      acceptPrivacy: data.get('acceptPrivacy') === 'on',
-      acceptPublication: data.get('acceptPublication') === 'on',
-      declareImageRights: data.get('declareImageRights') === 'on',
-      website: data.get('website') ?? '',
-    });
+  const showErrors = (next: Errors) => {
+    setErrors(next);
+    requestAnimationFrame(() => summaryRef.current?.focus());
+  };
 
-    const next: Errors = {};
-    if (!result.success) {
-      for (const issue of result.error.issues) {
-        const key = String(issue.path[0]);
-        next[key] ??= issue.message;
-      }
-    }
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (sending) return;
+    setFormError(null);
+    const data = new FormData(event.currentTarget);
+    const result = muralSubmissionSchema.safeParse(muralFormValues(data));
+
+    const next: Errors = result.success ? {} : fieldErrorsFrom(result.error);
     const fileError = validatePhotoFile(file);
     if (fileError) next.photo = fileError;
+    if (Object.keys(next).length > 0) return showErrors(next);
 
-    setErrors(next);
-    if (Object.keys(next).length > 0) {
-      requestAnimationFrame(() => summaryRef.current?.focus());
-      return;
+    // Garante o arquivo escolhido, mesmo se o input tiver sido limpo.
+    data.set('photo', file!);
+    setErrors({});
+    setSending(true);
+    try {
+      const response = await fetch('/api/mural', { method: 'POST', body: data });
+      if (response.ok) return setDone(true);
+      const body = (await response.json().catch(() => null)) as ApiErrorBody | null;
+      if (body?.fieldErrors && Object.keys(body.fieldErrors).length > 0) return showErrors(body.fieldErrors);
+      setFormError(body?.message ?? 'Não foi possível enviar agora. Tente novamente em alguns minutos.');
+    } catch {
+      setFormError('Sem conexão com o servidor. Verifique sua internet e tente de novo.');
+    } finally {
+      setSending(false);
     }
-    setDone(true);
   };
 
   if (done) {
     return (
       <div ref={doneRef} tabIndex={-1} role="status" className="border-l-4 border-gb-navy bg-gb-white p-6 focus:outline-none">
-        <p className="font-display text-sm font-semibold uppercase tracking-wide text-gb-mute">Demonstração · nada foi enviado</p>
-        <p className="mt-2 font-display text-3xl font-bold uppercase">Formulário válido</p>
-        <p className="mt-3 text-gb-mute">Na versão final, esta é a mensagem que o aluno vai ver:</p>
-        <blockquote className="mt-3 border-l-2 border-gb-red pl-4 text-lg">
-          Recebemos sua foto! Ela será analisada pela equipe antes de aparecer no mural.
-        </blockquote>
+        <p className="font-display text-3xl font-bold uppercase">Foto recebida!</p>
+        <p className="mt-3 text-lg">Recebemos sua foto! Ela será analisada pela equipe antes de aparecer no mural.</p>
         <button
           type="button"
           onClick={() => {
@@ -93,7 +93,7 @@ export function PhotoUploadForm() {
           }}
           className="focus-ring mt-6 min-h-12 border-2 border-gb-ink px-6 font-display text-lg font-semibold uppercase"
         >
-          Testar de novo
+          Enviar outra foto
         </button>
       </div>
     );
@@ -119,7 +119,7 @@ export function PhotoUploadForm() {
         <label htmlFor="senderName" className={labelClass}>
           Seu nome
         </label>
-        <p className="text-sm text-gb-mute">Não é publicado automaticamente.</p>
+        <p className="text-sm text-gb-mute">Só aparece no mural se você autorizar abaixo.</p>
         <input id="senderName" name="senderName" autoComplete="name" className={inputClass} aria-invalid={!!errors.senderName} aria-describedby={describedBy('senderName')} />
         <FieldError id="senderName-erro" message={errors.senderName} />
       </div>
@@ -199,11 +199,21 @@ export function PhotoUploadForm() {
           aria-invalid={!!errors.caption}
           aria-describedby={`caption-contador ${describedBy('caption') ?? ''}`.trim()}
         />
-        <p id="caption-contador" className="mt-1 text-right text-sm text-gb-mute tabular-nums">
-          {caption.length}/{muralLimits.captionMaxLength}
+        <p id="caption-contador" className="mt-1 flex justify-between gap-4 text-sm text-gb-mute">
+          <span>Se preenchida, aparece junto da foto depois de aprovada.</span>
+          <span className="tabular-nums">
+            {caption.length}/{muralLimits.captionMaxLength}
+          </span>
         </p>
         <FieldError id="caption-erro" message={errors.caption} />
       </div>
+
+      <label className="flex gap-3">
+        <input type="checkbox" name="showNamePublicly" className="mt-1 h-5 w-5 shrink-0 accent-gb-navy" />
+        <span className="text-sm leading-relaxed">
+          Pode mostrar meu nome junto da foto no mural. <span className="text-gb-mute">(opcional)</span>
+        </span>
+      </label>
 
       {/* Honeypot contra robôs: invisível para pessoas. */}
       <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
@@ -228,8 +238,19 @@ export function PhotoUploadForm() {
         ))}
       </fieldset>
 
-      <button type="submit" className="focus-ring min-h-12 w-full bg-gb-red px-6 font-display text-xl font-semibold uppercase text-gb-white hover:bg-gb-red-dark sm:w-auto">
-        Enviar foto para análise
+      {formError && (
+        <p role="alert" className="border-2 border-gb-red bg-gb-white p-4 font-semibold text-gb-red">
+          {formError}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={sending}
+        aria-busy={sending}
+        className="focus-ring min-h-12 w-full bg-gb-red px-6 font-display text-xl font-semibold uppercase text-gb-white hover:bg-gb-red-dark disabled:opacity-70 sm:w-auto"
+      >
+        {sending ? 'Enviando…' : 'Enviar foto para análise'}
       </button>
     </form>
   );

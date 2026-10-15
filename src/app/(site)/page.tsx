@@ -1,5 +1,6 @@
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { Hero } from '@/components/home/Hero';
+import { MuralPreview } from '@/components/home/MuralPreview';
 import { ProgramList } from '@/components/home/ProgramList';
 import { TodayOnMat } from '@/components/home/TodayOnMat';
 import { ValuesBand } from '@/components/home/ValuesBand';
@@ -123,10 +124,7 @@ export default function HomePage() {
               </ButtonLink>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3 lg:order-1">
-            <PhotoPlaceholder label="Foto do mural" className="aspect-square" />
-            <PhotoPlaceholder label="Foto do mural" className="aspect-square translate-y-8" />
-          </div>
+          <MuralPreview />
         </Container>
       </section>
 

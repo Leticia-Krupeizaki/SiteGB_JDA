@@ -1,6 +1,6 @@
 # Próximos passos — Site Gracie Barra Jardim das Américas
 
-> Estado em 14/10/2026, commit `9c337c6` na `main`.
+> Estado em 14/10/2026: Etapa 4 implementada e testada localmente (banco e storage em Docker).
 > Documento para continuar o desenvolvimento localmente (VS Code).
 > A especificação completa é a fonte dos requisitos; as seções citadas abaixo (ex.: "spec §9") se referem a ela.
 
@@ -14,7 +14,7 @@
 | 1 | Fundação visual, layout, Home e páginas base | ✅ Concluída |
 | 2 | Grade de horários, filtros, SEO básico | ✅ Concluída |
 | 3 | Mural público em **modo demonstração** | ✅ Concluída |
-| 4 | Backend do mural (banco, storage, upload seguro, APIs) | ⬜ A fazer |
+| 4 | Backend do mural (banco, storage, upload seguro, APIs) | ✅ Concluída localmente · falta infraestrutura de produção (4.1) |
 | 5 | Painel administrativo de moderação | ⬜ A fazer |
 | 6 | Qualidade, acessibilidade, deploy e homologação | ⬜ A fazer |
 
@@ -117,77 +117,73 @@ Objetivo: o envio público passa a ser real, mas **nenhuma foto fica pública se
 - [ ] Texto final da política de privacidade e do termo de autorização de imagem (versões em `src/data/mural.ts → muralPolicyVersions`)
 - [ ] Política de retenção e exclusão de fotos rejeitadas/removidas
 
-### 4.2 Dependências sugeridas
+### 4.2 O que foi implementado (resumo)
 
-```bash
-npm i prisma @prisma/client sharp file-type @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
-```
-
-Use **um ORM só** (Prisma está previsto no README). `sharp` reprocessa a imagem e remove EXIF; `file-type` checa magic bytes.
+- **Prisma 7** (`prisma.config.ts`, cliente gerado em `src/generated/prisma`, adapter `pg`). Fixado em 7.x; o 8 ainda é RC.
+- **Ambiente local** em `docker-compose.yml`: PostgreSQL 17 e SeaweedFS (S3). A imagem do MinIO saiu do Docker Hub, por isso SeaweedFS.
+- **Moderação provisória** por CLI (`npm run mural:moderar`) usando `src/lib/mural/moderation.ts`, que o painel da Etapa 5 deve reaproveitar.
+- **Teste ponta a ponta manual** feito contra o servidor local: envio, recusa de arquivo falso, PENDING invisível na API e no HTML, aprovação, remoção, pedido de retirada e rate limit.
 
 ### 4.3 Banco de dados (Prisma)
 
-- [ ] `prisma/schema.prisma` com:
+- [x] `prisma/schema.prisma` com:
   - `Admin` (id UUID, email único, passwordHash ou providerId, role, createdAt, updatedAt)
   - `MuralPost` (campos da spec §10: studentName, contactType, contactValue, caption, category, status, originalObjectKey, publicObjectKey, privacyPolicyVersion, privacyAcceptedAt, publicationConsentVersion, publicationConsentAt, guardianAuthorizationStatus, thirdPartyRightsReviewed, approvedAt, moderatedBy, rejectionReason, createdAt, updatedAt, removedAt, além de `showNamePublicly` e `showCaptionPublicly` se o cliente quiser controlar a exibição)
   - `MuralModerationEvent` (postId, adminId, action, previousStatus, nextStatus, reason, createdAt)
   - `MuralRemovalRequest` (postId?, requesterContact, reason, status, createdAt, resolvedAt, resolutionNote)
   - Enums: `MuralStatus`, `MuralCategory`, `ContactType` — **alinhar com `src/types/mural.ts`**
-  - Índices `(status, createdAt)` e `(category, status, createdAt)`
-- [ ] `src/lib/db/client.ts` com singleton do Prisma
-- [ ] Migração inicial versionada (`npx prisma migrate dev --name init`)
+  - Índices `(status, createdAt)` e `(category, status, createdAt)`, mais `(status, approvedAt)` para a galeria
+  - Extras: `width`/`height` (evita CLS), `GuardianAuthorizationStatus`, `ModerationAction`, `RateLimitHit`
+- [x] `src/lib/db/client.ts` com singleton do Prisma (criado só no primeiro uso; o build não precisa de banco)
+- [x] Migração inicial versionada (`prisma/migrations/…_init`)
 
 ### 4.4 Armazenamento de imagens
 
-- [ ] `src/lib/storage/` com funções `putPrivateObject`, `getSignedUrl` (URL temporária), `copyToPublic`/`putPublicDerivative`, `deleteObject`
-- [ ] Bucket **privado** para originais e pendentes; derivado público só gerado **após aprovação**
-- [ ] Nomes de objeto por UUID, nunca o nome original do arquivo
-- [ ] Credenciais só em variáveis de ambiente, nunca expostas ao navegador
+- [x] `src/lib/storage/` com `putObject`, `getObjectBytes`, `getSignedUrl` (URL temporária), `deleteObject`, `publicUrl`
+- [x] Bucket **privado** para originais e pendentes; derivado público só gerado **após aprovação** (`approvePost`)
+- [x] Nomes de objeto por UUID, nunca o nome original do arquivo
+- [x] Credenciais só em variáveis de ambiente, nunca expostas ao navegador (conferido: leitura anônima do bucket privado dá 403)
 
 ### 4.5 Upload seguro (`POST /api/mural`)
 
-- [ ] `src/app/api/mural/route.ts` recebendo `multipart/form-data`
-- [ ] Reaproveitar `muralSubmissionSchema` de `src/lib/validation/mural.ts`
-- [ ] Limite de tamanho de request e de arquivo (10 MB, `muralLimits.maxFileBytes`)
-- [ ] Checar magic bytes (JPG/PNG/WebP) com `file-type`, não confiar no `type` do navegador
-- [ ] Decodificar e reprocessar com `sharp` (`.rotate()` + reencode), removendo EXIF/GPS; rejeitar arquivos corrompidos
-- [ ] Limite de dimensão máxima processável
-- [ ] Honeypot (`website` vazio) já existe no schema; descartar silenciosamente se vier preenchido
-- [ ] Rate limiting: 5 envios/hora por origem como ponto de partida (`src/lib/rate-limit/`; em serverless usar Upstash Redis ou tabela no banco)
-- [ ] Gravar `PENDING`, versões e datas dos aceites
-- [ ] Responder `201 { id, status: 'PENDING' }`, **sem URL pública**
-- [ ] Erros padronizados `{ code, message, fieldErrors? }`; `400/422` validação, `429` rate limit
-- [ ] Logs sem conteúdo de arquivo, contatos ou credenciais
+- [x] `src/app/api/mural/route.ts` recebendo `multipart/form-data`
+- [x] Reaproveita `muralSubmissionSchema` e `muralFormValues` (mesmo código no navegador e na API)
+- [x] Limite de tamanho de request (`Content-Length`, 413) e de arquivo (10 MB)
+- [x] Magic bytes com `file-type`
+- [x] `sharp` com `.rotate()` + reencode WebP, sem EXIF/GPS; arquivos corrompidos recusados (`src/lib/mural/image.ts`)
+- [x] Limite de 40 megapixels processáveis; cópia privada com no máximo 4000 px de lado
+- [x] Honeypot preenchido responde 201 falso e descarta
+- [x] Rate limiting em tabela do banco, 5/hora por IP com HMAC (`src/lib/rate-limit/`)
+- [x] Grava `PENDING`, versões e datas dos aceites, e evento `SUBMITTED`
+- [x] Responde `201 { id, status: 'PENDING' }`, sem URL pública
+- [x] Erros `{ code, message, fieldErrors? }`: 400, 411, 413, 415, 422, 429, 500
+- [x] Logs só com tipo e mensagem do erro (`logServerError`)
 
 ### 4.6 APIs públicas restantes
 
-- [ ] `GET /api/mural?category=&cursor=&limit=12` — só `APPROVED`, só campos publicáveis (`PublicMuralPost`), paginação por cursor
-- [ ] `GET /api/mural/categories`
-- [ ] `POST /api/mural/removal-requests` — pedido de retirada (hoje é via WhatsApp)
+- [x] `GET /api/mural?category=&cursor=&limit=12` — só `APPROVED`, só campos publicáveis, paginação por cursor
+- [x] `GET /api/mural/categories`
+- [x] `POST /api/mural/removal-requests` — formulário na página do mural (WhatsApp segue como alternativa)
 
 ### 4.7 Trocar a demonstração pelo real no front
 
-- [ ] `PhotoUploadForm.tsx`: enviar `FormData` para `POST /api/mural`; mostrar erros do servidor por campo; estado de envio (loading) e erro de rede; mensagem final "Recebemos sua foto! Ela será analisada pela equipe antes de aparecer no mural."
-- [ ] `MuralGallery.tsx`: buscar `GET /api/mural` (ou Server Component) em vez de `demoMuralPosts`; "Carregar mais" com cursor; usar `next/image` com `width/height` ou `aspectRatio` para evitar CLS
-- [ ] Mostrar nome/legenda só quando houver consentimento
-- [ ] Remover `DemoNotice`, `DemoPhotoTile` e `demoMuralPosts` quando houver fotos reais
-- [ ] Atualizar o teste "dados de demonstração" em `tests/mural.test.ts`
-- [ ] Prévia da Home (seção Mural) passa a mostrar as últimas fotos aprovadas
+- [x] `PhotoUploadForm.tsx` envia para a API, mostra erros por campo, estado de envio e erro de rede
+- [x] `MuralGallery.tsx`: primeira página no servidor (`/mural` é dinâmica), filtros e "Carregar mais" pela API, `next/image` com `width/height`
+- [x] Nome só com o checkbox "Pode mostrar meu nome"; legenda aparece se preenchida (avisado no formulário)
+- [x] Removidos `DemoNotice`, `DemoPhotoTile` e `demoMuralPosts`; galeria vazia mostra convite para enviar
+- [x] Testes atualizados (`tests/mural.test.ts`) e novos testes de imagem e payload público (`tests/mural-server.test.ts`)
+- [x] Prévia da Home (`MuralPreview`) mostra as 2 últimas aprovadas; sem fotos, mantém os quadros
 
-### 4.8 Variáveis de ambiente (`.env.example` já tem o esqueleto)
+### 4.8 Variáveis de ambiente
 
-```text
-DATABASE_URL=
-S3_ENDPOINT=
-S3_REGION=
-S3_BUCKET_PRIVATE=
-S3_BUCKET_PUBLIC=        # ou prefixo público no mesmo bucket
-S3_ACCESS_KEY_ID=
-S3_SECRET_ACCESS_KEY=
-AUTH_SECRET=
-NEXT_PUBLIC_SITE_URL=
-RATE_LIMIT_REDIS_URL=    # se usar Upstash
-```
+Ver `.env.example` (valores locais já batem com o `docker-compose.yml`). Novas: `S3_PUBLIC_BASE_URL` (URL de leitura do bucket público, também liberada no `next/image`).
+
+### 4.9 Pendências da Etapa 4 para produção
+
+- [ ] Criar banco e buckets no provedor escolhido (4.1) e rodar `npm run db:deploy`
+- [ ] Bucket público com leitura anônima e, de preferência, domínio próprio/CDN em `S3_PUBLIC_BASE_URL`
+- [ ] Confirmar que a hospedagem preenche `x-forwarded-for` com o IP real (Vercel preenche); senão o rate limit agrupa todos
+- [ ] Política de retenção: hoje o original privado de fotos rejeitadas/removidas é mantido
 
 ---
 
@@ -282,18 +278,18 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 - [x] Filtros não separam GB1 + GB2
 
 ### Mural
-- [ ] Visitante envia foto sem login (hoje só demonstração)
-- [ ] Arquivo inválido rejeitado **pelo servidor**
-- [ ] Envio válido entra como `PENDING`, sem URL pública
-- [ ] Foto pendente não aparece em API, HTML, cache ou storage público
-- [ ] Só admin autenticado modera
-- [ ] Aprovação exige autorizações
-- [ ] Foto aprovada aparece no filtro certo
-- [ ] Rejeição não publica
-- [ ] Remoção retira da galeria e do acesso público
-- [ ] Contatos fora de payloads públicos
-- [ ] Ações administrativas auditadas
-- [x] Existe canal de pedido de retirada (WhatsApp, provisório)
+- [x] Visitante envia foto sem login
+- [x] Arquivo inválido rejeitado **pelo servidor**
+- [x] Envio válido entra como `PENDING`, sem URL pública
+- [x] Foto pendente não aparece em API, HTML ou storage público (conferido localmente; falta teste automatizado na Etapa 6)
+- [ ] Só admin autenticado modera (hoje: CLI local, sem painel; Etapa 5)
+- [x] Aprovação exige autorizações (`approvePost`)
+- [x] Foto aprovada aparece no filtro certo
+- [x] Rejeição não publica
+- [x] Remoção retira da galeria e apaga o derivado público
+- [x] Contatos fora de payloads públicos
+- [ ] Ações administrativas auditadas (eventos já gravados; falta vincular ao admin autenticado na Etapa 5)
+- [x] Existe canal de pedido de retirada (formulário + WhatsApp)
 
 ### Operação
 - [x] Segredos apenas em variáveis de ambiente (nenhum segredo no repositório)

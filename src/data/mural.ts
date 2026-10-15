@@ -1,4 +1,4 @@
-import type { MuralCategory, PublicMuralPost } from '@/types/mural';
+import type { MuralCategory } from '@/types/mural';
 
 export const muralCategories: { id: MuralCategory; label: string }[] = [
   { id: 'TREINOS', label: 'Treinos' },
@@ -18,30 +18,22 @@ export const muralPolicyVersions = {
 
 export const muralLimits = {
   maxFileBytes: 10 * 1024 * 1024,
+  /** Folga para os outros campos do multipart. */
+  maxRequestBytes: 10 * 1024 * 1024 + 256 * 1024,
   acceptedTypes: ['image/jpeg', 'image/png', 'image/webp'] as const,
+  /** Maior imagem que o servidor aceita decodificar (40 megapixels). */
+  maxInputPixels: 40_000_000,
+  /** Maior lado da cópia privada guardada após o reprocessamento. */
+  maxStoredSide: 4000,
+  /** Maior lado do derivado público. */
+  publicSide: 1600,
   captionMaxLength: 280,
-  pageSize: 9,
+  pageSize: 12,
+  maxPageSize: 24,
 };
 
-/**
- * Itens de DEMONSTRAÇÃO, sem foto. Servem só para mostrar o layout da galeria
- * até existir o backend com fotos aprovadas. Não representam alunos reais.
- */
-export const demoMuralPosts: PublicMuralPost[] = (
-  [
-    ['TREINOS', 4 / 3],
-    ['GRADUACOES', 3 / 4],
-    ['CAMPEONATOS', 1],
-    ['EVENTOS', 16 / 9],
-    ['COMUNIDADE', 4 / 5],
-    ['TREINOS', 3 / 4],
-    ['GRADUACOES', 4 / 3],
-    ['CAMPEONATOS', 4 / 5],
-    ['TREINOS', 1],
-    ['EVENTOS', 3 / 4],
-    ['COMUNIDADE', 4 / 3],
-    ['TREINOS', 16 / 9],
-    ['GRADUACOES', 1],
-    ['CAMPEONATOS', 4 / 3],
-  ] as const
-).map(([category, aspectRatio], i) => ({ id: `demo-${i + 1}`, category, aspectRatio }));
+/** Ponto de partida da especificação: 5 envios por hora por origem. */
+export const muralRateLimits = {
+  submission: { limit: 5, windowMs: 60 * 60 * 1000 },
+  removalRequest: { limit: 5, windowMs: 60 * 60 * 1000 },
+};
