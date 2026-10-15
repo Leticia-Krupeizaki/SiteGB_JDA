@@ -13,9 +13,13 @@ export const site = {
   neighborhood: 'Jardim das Américas',
   /** Pendente: não inferir a partir do bairro. */
   address: null as string | null,
-  /** Pendente: perfis oficiais ainda não fornecidos. */
-  social: {} as Partial<Record<'instagram' | 'facebook' | 'youtube', string>>,
+  /** Perfis oficiais confirmados pelo cliente. Facebook e YouTube ainda não fornecidos. */
+  social: {
+    instagram: 'https://www.instagram.com/gbjardimdasamericas/',
+  } as Partial<Record<'instagram' | 'facebook' | 'youtube', string>>,
 } as const;
+
+export const instagramHandle = '@gbjardimdasamericas';
 
 export const contact = {
   displayPhone: '(41) 3205-8109',

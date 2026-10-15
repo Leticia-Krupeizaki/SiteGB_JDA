@@ -245,8 +245,8 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 | Item | Onde entra no código |
 |---|---|
 | Endereço completo e link do Google Maps | `src/config/site.ts → site.address`; seção "Onde estamos" em `ContactCTA.tsx` e `contato/page.tsx` |
-| Redes sociais oficiais | `src/config/site.ts → site.social`; Footer e Contato |
-| Logo oficial (escudo) e manual de marca | `src/components/layout/Logo.tsx` (hoje é marca tipográfica) |
+| Redes sociais oficiais | ✅ Instagram `@gbjardimdasamericas` em `src/config/site.ts → site.social` (rodapé e Contato). Facebook/YouTube: só se o cliente tiver |
+| Logo oficial (escudo) e manual de marca | ✅ Escudo recebido (originais em `assets/marca/`): favicon, ícones `src/app/icon.png` e `apple-icon.png`, cabeçalho e rodapé. O arquivo SVG enviado é um PNG embutido; um SVG vetorial deixaria a marca mais nítida. Manual de marca ainda pendente |
 | **Fonte oficial da marca** | `src/app/layout.tsx` (o logo usa Handel Gothic, que é paga; site usa Barlow até confirmar) |
 | Fotos da unidade, treinos e hero | `PhotoPlaceholder` em `page.tsx` e `Hero.tsx` (usar `next/image`) |
 | Professores (nome, foto, graduação, bio) | criar `src/data/teachers.ts` + `TeacherCard`; páginas Home e `professores/` |

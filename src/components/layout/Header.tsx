@@ -47,7 +47,7 @@ export function Header() {
     // Sem backdrop-filter: ele criaria um bloco de contenção e quebraria o painel `fixed` do menu mobile.
     <header className="sticky top-0 z-40 border-b border-gb-line bg-gb-white">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[4.5rem] lg:px-8">
-        <Logo />
+        <Logo compactOnDesktop />
 
         <nav aria-label="Principal" className="hidden lg:block">
           <ul className="flex items-center gap-1">

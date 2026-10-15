@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { mainNavigation } from '@/config/navigation';
-import { contact, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
+import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
+import { InstagramIcon } from '@/components/ui/icons';
 import { externalLinks } from '@/data/external-links';
 import { Belt } from '@/components/ui/Belt';
 import { Container } from '@/components/ui/Container';
@@ -65,6 +66,16 @@ export function Footer() {
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>
               </li>
+              {site.social.instagram && (
+                <li>
+                  <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="focus-ring inline-flex items-center gap-1.5 hover:text-gb-white">
+                    <InstagramIcon className="h-4 w-4" />
+                    <span className="sr-only">Instagram </span>
+                    {instagramHandle}
+                    <span className="sr-only"> (abre em nova aba)</span>
+                  </a>
+                </li>
+              )}
               <li>Endereço a confirmar</li>
             </ul>
           </div>

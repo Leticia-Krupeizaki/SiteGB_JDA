@@ -4,7 +4,8 @@ import { ButtonLink } from '@/components/ui/ButtonLink';
 import { Container } from '@/components/ui/Container';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { primaryCta } from '@/config/navigation';
-import { contact, phoneUrl, whatsappTrialUrl, whatsappUrl } from '@/config/site';
+import { InstagramIcon } from '@/components/ui/icons';
+import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl, whatsappUrl } from '@/config/site';
 
 export const metadata: Metadata = {
   title: 'Contato',
@@ -40,10 +41,28 @@ export default function ContatoPage() {
             </div>
           </div>
 
-          <div className="space-y-4 border-t-2 border-gb-ink pt-6 lg:border-t-0 lg:border-l-2 lg:pt-0 lg:pl-10">
-            <h2 className="font-display text-3xl font-bold uppercase">Endereço</h2>
-            <p className="text-gb-mute">Jardim das Américas, Curitiba–PR</p>
-            <PlaceholderNotice>endereço completo, mapa e redes sociais oficiais.</PlaceholderNotice>
+          <div className="space-y-8 border-t-2 border-gb-ink pt-6 lg:border-t-0 lg:border-l-2 lg:pt-0 lg:pl-10">
+            <div className="space-y-4">
+              <h2 className="font-display text-3xl font-bold uppercase">Endereço</h2>
+              <p className="text-gb-mute">Jardim das Américas, Curitiba–PR</p>
+              <PlaceholderNotice>endereço completo e mapa.</PlaceholderNotice>
+            </div>
+            {site.social.instagram && (
+              <div className="space-y-3">
+                <h2 className="font-display text-3xl font-bold uppercase">Instagram</h2>
+                <p className="text-gb-mute">Treinos, graduações e novidades da equipe.</p>
+                <a
+                  href={site.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="focus-ring inline-flex items-center gap-2 font-display text-2xl font-semibold text-gb-navy hover:text-gb-red"
+                >
+                  <InstagramIcon className="h-6 w-6" />
+                  {instagramHandle}
+                  <span className="sr-only"> (abre em nova aba)</span>
+                </a>
+              </div>
+            )}
           </div>
         </Container>
       </section>
