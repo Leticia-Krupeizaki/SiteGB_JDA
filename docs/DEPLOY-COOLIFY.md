@@ -20,6 +20,22 @@ O mesmo compose foi testado localmente de ponta a ponta antes de subir: build, m
 
 ---
 
+## Situação atual
+
+**Homologação no ar** desde 15/10/2026 no Coolify da Beste Web (`coolify.besteweb.com.br`):
+
+| | |
+|---|---|
+| Projeto / ambiente | `Site GB` / `production` |
+| Aplicação | `site-gb` (Docker Compose, branch `main`) |
+| Site | https://gb.besteweb.com.br |
+| Fotos | https://fotos-gb.besteweb.com.br |
+| Acesso ao repositório | chave de deploy `site-gb-deploy` (somente leitura, cadastrada no GitHub como "Coolify besteweb") |
+
+O servidor tem domínio curinga `*.besteweb.com.br`, por isso a homologação não precisou de DNS novo. Para ir ao domínio definitivo, troque os domínios dos serviços `app` e `storage` no recurso e faça novo deploy.
+
+O servidor hospeda outros projetos: altere apenas o projeto "Site GB".
+
 ## 1. Antes de começar
 
 - Dois domínios (ou subdomínios) apontando (registro DNS `A`) para o IP do servidor do Coolify, por exemplo:

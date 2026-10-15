@@ -182,7 +182,7 @@ Ver `.env.example` (valores locais já batem com o `docker-compose.yml`). Novas:
 
 - [x] Banco e buckets: criados sozinhos no deploy (migrações e buckets na inicialização do container)
 - [x] Bucket público com leitura anônima só de objetos (listagem bloqueada), servido pelo domínio de fotos
-- [ ] Confirmar em produção que o proxy do Coolify preenche `x-forwarded-for` com o IP real
+- [x] Confirmado na homologação: o proxy do Coolify usa o IP real e ignora `X-Forwarded-For` falsificado (o limite de login bloqueou na 21ª tentativa com IPs forjados)
 - [ ] Política de retenção: hoje o original privado de fotos rejeitadas/removidas é mantido
 
 ---
@@ -228,7 +228,10 @@ Objetivo: só administradores autenticados aprovam, rejeitam ou removem (spec §
 - [ ] Lighthouse / Core Web Vitals (medir antes de afirmar resultados)
 - [x] CI no GitHub Actions: `npm ci`, `lint`, `tsc --noEmit`, `test`, `build` (`.github/workflows/ci.yml`)
 - [x] Imagem Docker de produção (`Dockerfile`, Next standalone, usuário sem root, healthcheck) e `docker-compose.coolify.yml`, testados localmente de ponta a ponta
-- [ ] Deploy de homologação no Coolify e depois produção (com autorização do cliente) — passo a passo em `docs/DEPLOY-COOLIFY.md`
+- [x] Deploy de **homologação** no Coolify (15/10/2026): https://gb.besteweb.com.br (fotos em https://fotos-gb.besteweb.com.br), projeto "Site GB", aplicação `site-gb`, chave de deploy somente leitura no GitHub
+- [ ] Criar as contas do painel na homologação (terminal do container `app`)
+- [ ] Deploy automático a cada push (webhook do GitHub para o Coolify; hoje o deploy é manual)
+- [ ] Produção no domínio definitivo da academia (trocar os domínios do recurso, com autorização do cliente)
 - [ ] Monitoramento de erros (ex.: Sentry) sem vazar dados pessoais
 - [ ] Backups do banco e das fotos configurados no Coolify, com restauração testada (orientação na seção 8 do guia de deploy)
 - [x] README com deploy, migrações e variáveis
