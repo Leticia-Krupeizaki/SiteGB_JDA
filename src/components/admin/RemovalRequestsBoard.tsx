@@ -144,7 +144,7 @@ export function RemovalRequestsBoard() {
       </div>
       <div role="tabpanel" aria-busy={loading}>
         {error && (
-          <p role="alert" className="font-semibold text-gb-red">
+          <p role="alert" className="font-semibold text-gb-red-dark">
             {error}
           </p>
         )}

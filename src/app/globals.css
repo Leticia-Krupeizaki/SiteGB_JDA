@@ -1,20 +1,43 @@
 @import 'tailwindcss';
 
 /*
- * Paleta base definida pelo cliente (14/10/2026):
- * vermelho #D71921, azul #002F80, branco #FFFFFF, preto #111111, cinza #E5E7EB.
- * Os tons "-dark" e "mute" são derivados para hover e texto secundário.
+ * Paleta oficial — Manual de Uso da Marca Gracie Barra (23/09/2025), páginas 11 e 12.
+ * Detalhes e regras de uso: docs/IDENTIDADE-VISUAL.md.
+ *
+ *   Vermelho GB  #E1251B  RGB 225 37 27   Pantone 485 C
+ *   Azul GB      #11286D  RGB 17 40 109   Pantone P 103-8 C
+ *   Preto K100   #000000
+ *   Cinza K65    #595959  (aproximação digital de K 65%)
+ *   Cinza K45    #8C8C8C  (aproximação digital de K 45%; não usar em texto sobre branco, contraste 3,4:1)
+ *   Branco       #FFFFFF
  */
 @theme {
-  --color-gb-red: #d71921;
-  --color-gb-red-dark: #b0141b;
-  --color-gb-navy: #002f80;
-  --color-gb-navy-dark: #00225c;
-  --color-gb-ink: #111111;
-  --color-gb-mute: #4a4f5a;
-  --color-gb-line: #e5e7eb;
+  /* Nomes do manual */
+  --color-gb-red: #e1251b;
+  --color-gb-blue: #11286d;
+  --color-gb-black: #000000;
+  --color-gb-gray-65: #595959;
+  --color-gb-gray-45: #8c8c8c;
   --color-gb-white: #ffffff;
 
+  /* Nomes usados pelos componentes (mesmos valores oficiais) */
+  --color-gb-navy: #11286d; /* = gb-blue */
+  --color-gb-ink: #000000; /* = gb-black: texto principal e fundos escuros */
+  --color-gb-mute: #595959; /* = gb-gray-65: texto secundário (7:1 sobre branco) */
+
+  /*
+   * Derivados — não constam do manual; só estados interativos e superfícies.
+   * Calculados a partir das cores oficiais, sem tons novos.
+   */
+  --color-gb-red-dark: #b91e16; /* hover: vermelho GB 82% + preto */
+  --color-gb-navy-dark: #0e2057; /* hover: azul GB 80% + preto */
+  --color-gb-line: #e2e2e2; /* bordas e fundos claros: cinza K45 25% + branco */
+
+  /*
+   * Tipografia PROVISÓRIA. O manual (p. 15) exige AdiHaus DIN como única fonte;
+   * os arquivos licenciados ainda não foram fornecidos. Barlow fica até lá.
+   * Para trocar: docs/IDENTIDADE-VISUAL.md, seção "Tipografia".
+   */
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-condensed), 'Arial Narrow', ui-sans-serif, sans-serif;
 }

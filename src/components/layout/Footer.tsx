@@ -81,7 +81,7 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mt-12 border-t border-white/15 pt-6 text-xs">
+        <p className="mt-12 border-t border-gb-white/15 pt-6 text-xs">
           © {year} {site.name}. Versão em desenvolvimento; textos e imagens sujeitos à aprovação.
         </p>
       </Container>

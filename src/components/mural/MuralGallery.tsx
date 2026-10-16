@@ -109,7 +109,7 @@ export function MuralGallery({ initial }: { initial: PublicMuralPage }) {
       )}
 
       {error && (
-        <p role="alert" className="mt-6 text-center font-semibold text-gb-red">
+        <p role="alert" className="mt-6 text-center font-semibold text-gb-red-dark">
           Não foi possível carregar as fotos. Verifique sua conexão e tente de novo.
         </p>
       )}

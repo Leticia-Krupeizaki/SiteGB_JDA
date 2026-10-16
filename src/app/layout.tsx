@@ -3,6 +3,14 @@ import { Barlow, Barlow_Condensed } from 'next/font/google';
 import { site, siteUrl } from '@/config/site';
 import './globals.css';
 
+/*
+ * FONTES PROVISÓRIAS. O Manual de Uso da Marca (p. 15–16) exige AdiHaus DIN
+ * como única fonte da identidade visual. Os arquivos licenciados para web ainda
+ * não foram fornecidos; não usar cópias de sites não oficiais.
+ * Quando chegarem: trocar por next/font/local mantendo as variáveis
+ * --font-body (AdihausDIN) e --font-condensed (AdihausDIN Cn).
+ * Passo a passo e pesos em docs/IDENTIDADE-VISUAL.md.
+ */
 const body = Barlow({
   variable: '--font-body',
   subsets: ['latin'],

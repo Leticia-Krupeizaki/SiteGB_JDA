@@ -13,7 +13,7 @@ export function Hero() {
     <section className="relative isolate bg-gb-ink text-gb-white">
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(17,17,17,0.2),rgba(17,17,17,0.85)),repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_10px)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-gb-ink)_20%,transparent),color-mix(in_srgb,var(--color-gb-ink)_85%,transparent)),repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_10px)]"
       />
       <div className="mx-auto flex min-h-[34rem] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[40rem] sm:px-6 lg:px-8">
         <p className="font-display text-xl font-semibold uppercase tracking-[0.15em] text-gb-line">{site.name}</p>

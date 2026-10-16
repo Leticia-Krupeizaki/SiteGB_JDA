@@ -95,9 +95,9 @@ tests/
 
 ### Decisões já tomadas (não reverter sem falar com o cliente)
 
-- **Cores do cliente:** `#D71921` (vermelho), `#002F80` (azul), `#FFFFFF`, `#111111`, `#E5E7EB`. Tons `-dark` e `gb-mute` são derivados para hover e texto secundário.
+- **Identidade visual segue o Manual de Uso da Marca GB (23/09/2025)** desde 16/10/2026: vermelho `#E1251B`, azul `#11286D`, preto, cinzas K65/K45, branco. Tokens, contraste, logotipos e pendências em [`IDENTIDADE-VISUAL.md`](IDENTIDADE-VISUAL.md). (Antes: `#D71921`, `#002F80`, `#111111`.)
 - **Visual inspirado no site da Gracie Barra Brasil**, sem copiar textos, imagens ou código. A **faixa com graus** (`Belt.tsx`) separa as seções.
-- **Cores auxiliares por turma** (Contexto.md): GBK verde, GB1 azul, GB2 roxo, GBF rosa, No-Gi cinza.
+- **Cores auxiliares por turma** (Contexto.md): GBK verde, GB1 azul (oficial), GB2 roxo, GBF rosa, No-Gi cinza (oficial). Verde, roxo e rosa estão fora da paleta do manual: pendente de confirmação.
 - **Telefones confirmados pelo cliente (15/10/2026):** fixo (41) 3205-8109 para ligações; WhatsApp (41) 99683-1171 (`5541996831171`, o mesmo do Instagram). Mensagens sempre com `encodeURIComponent` (use `whatsappUrl()`).
 - **Trabalho direto na `main`**, Conventional Commits em português.
 - **Nada de dados inventados:** endereço, professores, fotos, história e depoimentos aparecem como "A confirmar" (`PlaceholderNotice`) até o cliente enviar.
@@ -249,7 +249,8 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 | Endereço completo e link do Google Maps | `src/config/site.ts → site.address`; seção "Onde estamos" em `ContactCTA.tsx` e `contato/page.tsx` |
 | Redes sociais oficiais | ✅ Instagram `@gbjardimdasamericas` em `src/config/site.ts → site.social` (rodapé e Contato). Facebook/YouTube: só se o cliente tiver |
 | Logo oficial (escudo) e manual de marca | ✅ Escudo recebido (originais em `assets/marca/`), usado no favicon e nos ícones (`src/app/icon.png`, `apple-icon.png`). No cabeçalho e rodapé o cliente preferiu manter o nome em texto (15/10/2026). O SVG enviado é um PNG embutido; um vetorial deixaria a marca mais nítida. Manual de marca pendente |
-| **Fonte oficial da marca** | `src/app/layout.tsx` (o logo usa Handel Gothic, que é paga; site usa Barlow até confirmar) |
+| **Fonte oficial da marca** | Manual exige **AdiHaus DIN** (única permitida). Faltam os arquivos web licenciados; Barlow é provisória. Como instalar: `docs/IDENTIDADE-VISUAL.md` |
+| **Logotipos oficiais em vetor** (Escudo, Linear, Verticalizada, identificação da escola) | Pedir a `suporte@graciebarra.com`; detalhes em `docs/IDENTIDADE-VISUAL.md` |
 | Fotos da unidade, treinos e hero | `PhotoPlaceholder` em `page.tsx` e `Hero.tsx` (usar `next/image`) |
 | Professores (nome, foto, graduação, bio) | criar `src/data/teachers.ts` + `TeacherCard`; páginas Home e `professores/` |
 | História e diferenciais da unidade | `sobre/page.tsx` e seção "Somos Gracie Barra..." da Home |

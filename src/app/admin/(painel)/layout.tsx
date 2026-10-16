@@ -14,7 +14,7 @@ export default async function PainelLayout({ children }: { children: ReactNode }
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div>
             <p className="font-display text-xl font-extrabold uppercase tracking-wide">
-              Gracie <span className="text-gb-red">Barra</span> · Painel
+              Gracie Barra · Painel
             </p>
             <p className="text-sm text-gb-line">
               {admin.name ?? admin.email} · {admin.role === 'ADMIN' ? 'Administrador' : 'Moderador'}

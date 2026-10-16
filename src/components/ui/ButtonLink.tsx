@@ -7,7 +7,8 @@ const variants: Record<Variant, string> = {
   primary: 'bg-gb-red text-gb-white hover:bg-gb-red-dark',
   outline: 'border-2 border-gb-ink text-gb-ink hover:bg-gb-ink hover:text-gb-white',
   'outline-light': 'border-2 border-gb-white text-gb-white hover:bg-gb-white hover:text-gb-navy',
-  light: 'bg-gb-white text-gb-red hover:bg-gb-line',
+  // No hover o fundo fica cinza; o vermelho mais escuro mantém o contraste (4,97:1).
+  light: 'bg-gb-white text-gb-red hover:bg-gb-line hover:text-gb-red-dark',
 };
 
 type Props = {
