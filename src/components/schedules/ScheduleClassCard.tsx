@@ -1,4 +1,4 @@
-import { whatsappUrl } from '@/config/site';
+import { site, whatsappUrl } from '@/config/site';
 import { programs } from '@/data/programs';
 import { classColors, classLabel, type ScheduleBlock } from '@/data/schedule';
 
@@ -7,7 +7,7 @@ const audience = Object.fromEntries(programs.map((p) => [p.code, p.audience]));
 export function ScheduleClassCard({ block, dayLabel }: { block: ScheduleBlock; dayLabel: string }) {
   const label = classLabel(block.classes);
   const question = whatsappUrl(
-    `Olá! Tenho uma dúvida sobre a turma ${label} de ${dayLabel.toLowerCase()}, das ${block.start} às ${block.end}, na Gracie Barra Jardim das Américas.`,
+    `Olá! Tenho uma dúvida sobre a turma ${label} de ${dayLabel.toLowerCase()}, das ${block.start} às ${block.end}, na ${site.name}.`,
   );
 
   return (

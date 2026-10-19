@@ -19,7 +19,7 @@ export function Footer() {
       <Container className="pt-14 pb-24 sm:pb-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
-            <Logo tone="light" />
+            <Logo tone="light" premium />
             <p className="mt-4 max-w-xs text-sm leading-relaxed">
               Jiu-Jitsu no {site.neighborhood}, {site.city}–{site.state}.
             </p>

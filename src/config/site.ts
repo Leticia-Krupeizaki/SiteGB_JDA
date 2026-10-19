@@ -6,8 +6,9 @@
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
 export const site = {
-  name: 'Gracie Barra Jardim das Américas',
-  shortName: 'GB Jardim das Américas',
+  /** Certificada como escola Premium pela Gracie Barra em 2026 (confirmado pelo cliente em 19/10/2026). */
+  name: 'Gracie Barra Premium Jardim das Américas',
+  shortName: 'GB Premium Jardim das Américas',
   city: 'Curitiba',
   state: 'PR',
   neighborhood: 'Jardim das Américas',
@@ -28,8 +29,7 @@ export const contact = {
   /** Celular do WhatsApp (o mesmo do Instagram), confirmado pelo cliente em 15/10/2026. */
   whatsappDisplay: '(41) 99683-1171',
   whatsappDigits: '5541996831171',
-  trialMessage:
-    'Olá! Gostaria de agendar uma aula experimental na Gracie Barra Jardim das Américas. Poderiam me passar mais informações?',
+  trialMessage: `Olá! Gostaria de agendar uma aula experimental na ${site.name}. Poderiam me passar mais informações?`,
 } as const;
 
 export const phoneUrl = `tel:${contact.phoneE164}`;

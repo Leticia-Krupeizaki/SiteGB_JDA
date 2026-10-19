@@ -5,11 +5,12 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { site } from '@/config/site';
 import { trainingFocuses } from '@/data/programs';
 
 export const metadata: Metadata = {
   title: 'Programas',
-  description: 'Turmas de Jiu-Jitsu infantil, adulto, feminino e No-Gi na Gracie Barra Jardim das Américas.',
+  description: `Turmas de Jiu-Jitsu infantil, adulto, feminino e No-Gi na ${site.name}.`,
   alternates: { canonical: '/programas' },
 };
 

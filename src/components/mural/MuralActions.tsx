@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
-import { whatsappUrl } from '@/config/site';
+import { site, whatsappUrl } from '@/config/site';
 import { PhotoUploadForm } from './PhotoUploadForm';
 import { RemovalRequestForm } from './RemovalRequestForm';
 
@@ -13,7 +13,7 @@ const options: { id: Panel; title: string; text: string }[] = [
   { id: 'retirar', title: 'Pedir remoção de foto', text: 'Aparece em uma foto do mural e quer que ela seja retirada?' },
 ];
 
-const removalWhatsapp = whatsappUrl('Olá! Gostaria de pedir a retirada de uma foto do mural da Gracie Barra Jardim das Américas.');
+const removalWhatsapp = whatsappUrl(`Olá! Gostaria de pedir a retirada de uma foto do mural da ${site.name}.`);
 
 /**
  * Dois caminhos do mural: enviar foto ou pedir remoção. Cada botão abre o seu

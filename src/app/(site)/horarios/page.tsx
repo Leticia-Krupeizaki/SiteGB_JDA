@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ScheduleBoard } from '@/components/schedules/ScheduleBoard';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { site } from '@/config/site';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
 
 /** Regera a página a cada hora para a aba inicial acompanhar o dia. */
@@ -13,7 +14,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Horários',
   description:
-    'Grade de aulas de Jiu-Jitsu da Gracie Barra Jardim das Américas, de segunda a sexta: infantil (GBK), adultos (GB1 e GB2), feminino (GBF) e No-Gi.',
+    `Grade de aulas de Jiu-Jitsu da ${site.name}, de segunda a sexta: infantil (GBK), adultos (GB1 e GB2), feminino (GBF) e No-Gi.`,
   alternates: { canonical: '/horarios' },
 };
 

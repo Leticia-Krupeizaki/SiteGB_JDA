@@ -9,7 +9,7 @@ import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl, whatsappUrl
 
 export const metadata: Metadata = {
   title: 'Contato',
-  description: 'Fale com a Gracie Barra Jardim das Américas: telefone (41) 3205-8109 ou WhatsApp (41) 99683-1171.',
+  description: `Fale com a ${site.name}: telefone ${contact.displayPhone} ou WhatsApp ${contact.whatsappDisplay}.`,
   alternates: { canonical: '/contato' },
 };
 
@@ -44,7 +44,7 @@ export default function ContatoPage() {
               <ButtonLink href={whatsappTrialUrl} external>
                 {primaryCta.label}
               </ButtonLink>
-              <ButtonLink href={whatsappUrl('Olá! Tenho uma dúvida sobre a Gracie Barra Jardim das Américas.')} external variant="outline">
+              <ButtonLink href={whatsappUrl(`Olá! Tenho uma dúvida sobre a ${site.name}.`)} external variant="outline">
                 Falar pelo WhatsApp
               </ButtonLink>
               <ButtonLink href={phoneUrl} variant="outline">

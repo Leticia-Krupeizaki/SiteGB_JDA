@@ -4,6 +4,7 @@ import { MuralActions } from '@/components/mural/MuralActions';
 import { MuralGallery } from '@/components/mural/MuralGallery';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { site } from '@/config/site';
 import { muralLimits } from '@/data/mural';
 import { listPublicPosts } from '@/lib/mural/posts';
 
@@ -12,7 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Mural',
-  description: 'Mural da comunidade da Gracie Barra Jardim das Américas: fotos de treinos, graduações, campeonatos e eventos enviadas pelos alunos.',
+  description: `Mural da comunidade da ${site.name}: fotos de treinos, graduações, campeonatos e eventos enviadas pelos alunos.`,
   alternates: { canonical: '/mural' },
 };
 

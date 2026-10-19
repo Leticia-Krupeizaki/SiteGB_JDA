@@ -95,6 +95,7 @@ tests/
 
 ### Decisões já tomadas (não reverter sem falar com o cliente)
 
+- **Nome oficial: "Gracie Barra Premium Jardim das Américas"** (certificação Premium em 2026, confirmado em 19/10/2026). Centralizado em `site.name` (`src/config/site.ts`); textos, SEO e mensagens do WhatsApp usam a variável. O cabeçalho mostra só "Gracie Barra / Jardim das Américas" por falta de espaço; o rodapé mostra "Premium".
 - **Identidade visual segue o Manual de Uso da Marca GB (23/09/2025)** desde 16/10/2026: vermelho `#E1251B`, azul `#11286D`, preto, cinzas K65/K45, branco. Tokens, contraste, logotipos e pendências em [`IDENTIDADE-VISUAL.md`](IDENTIDADE-VISUAL.md). (Antes: `#D71921`, `#002F80`, `#111111`.)
 - **Visual inspirado no site da Gracie Barra Brasil**, sem copiar textos, imagens ou código. A **faixa com graus** (`Belt.tsx`) separa as seções.
 - **Cores auxiliares por turma** (Contexto.md): GBK verde, GB1 azul (oficial), GB2 roxo, GBF rosa, No-Gi cinza (oficial). Verde, roxo e rosa estão fora da paleta do manual: pendente de confirmação.

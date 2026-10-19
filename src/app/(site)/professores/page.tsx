@@ -3,10 +3,11 @@ import { ContactCTA } from '@/components/home/ContactCTA';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Container } from '@/components/ui/Container';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
+import { site } from '@/config/site';
 
 export const metadata: Metadata = {
   title: 'Professores',
-  description: 'Equipe de professores da Gracie Barra Jardim das Américas.',
+  description: `Equipe de professores da ${site.name}.`,
   alternates: { canonical: '/professores' },
 };
 

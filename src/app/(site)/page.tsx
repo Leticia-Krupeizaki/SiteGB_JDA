@@ -12,7 +12,7 @@ import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { primaryCta } from '@/config/navigation';
-import { contact, phoneUrl, whatsappTrialUrl } from '@/config/site';
+import { contact, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { benefits } from '@/data/benefits';
 import { externalLinks } from '@/data/external-links';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
@@ -33,7 +33,7 @@ export default function HomePage() {
           <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[4/3] w-full max-w-full" />
           <div className="space-y-6">
             <SectionHeading
-              title="Somos Gracie Barra Jardim das Américas"
+              title={`Somos ${site.name}`}
               description="Uma unidade da rede Gracie Barra em Curitiba, com aulas para crianças, adultos e uma turma exclusiva para mulheres, de segunda a sexta."
             />
             <PlaceholderNotice>história e diferenciais da unidade, com o material enviado pelo cliente.</PlaceholderNotice>

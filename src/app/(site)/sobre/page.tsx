@@ -4,18 +4,19 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { Container } from '@/components/ui/Container';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { site } from '@/config/site';
 import { benefits } from '@/data/benefits';
 
 export const metadata: Metadata = {
   title: 'A Academia',
-  description: 'Conheça a Gracie Barra Jardim das Américas, unidade de Jiu-Jitsu em Curitiba–PR.',
+  description: `Conheça a ${site.name}, unidade de Jiu-Jitsu em Curitiba–PR.`,
   alternates: { canonical: '/sobre' },
 };
 
 export default function SobrePage() {
   return (
     <>
-      <PageHeader title="A academia" description="Gracie Barra Jardim das Américas, Curitiba–PR." />
+      <PageHeader title="A academia" description={`${site.name}, Curitiba–PR.`} />
 
       <section className="py-16 sm:py-20">
         <Container className="grid gap-12 lg:grid-cols-2">
