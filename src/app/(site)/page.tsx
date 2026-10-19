@@ -9,10 +9,10 @@ import { ButtonLink } from '@/components/ui/ButtonLink';
 import { Container } from '@/components/ui/Container';
 import { ExternalLinkCard } from '@/components/ui/ExternalLinkCard';
 import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
-import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
+import { about } from '@/data/about';
 import { benefits } from '@/data/benefits';
 import { externalLinks } from '@/data/external-links';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
@@ -29,14 +29,18 @@ export default function HomePage() {
 
       {/* Quem somos */}
       <section className="py-16 sm:py-24">
-        <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
-          <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[4/3] w-full max-w-full" />
+        <Container className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+          {/* Foto acompanha a leitura no computador (o texto é mais alto que ela). */}
+          <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[4/3] w-full max-w-full lg:sticky lg:top-28" />
           <div className="space-y-6">
-            <SectionHeading
-              title={`Somos ${site.name}`}
-              description="Uma unidade da rede Gracie Barra em Curitiba, com aulas para crianças, adultos e uma turma exclusiva para mulheres, de segunda a sexta."
-            />
-            <PlaceholderNotice>história e diferenciais da unidade, com o material enviado pelo cliente.</PlaceholderNotice>
+            <SectionHeading title={`Somos ${site.name}`} />
+            <p className="font-display text-2xl font-bold uppercase text-balance text-gb-red sm:text-3xl">{about.lead}</p>
+            <div className="space-y-4 text-lg leading-relaxed">
+              {about.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+              ))}
+            </div>
+            <p className="border-l-4 border-gb-red pl-4 font-display text-2xl font-bold uppercase leading-snug text-balance">{about.closing}</p>
             <ButtonLink href="/sobre" variant="outline">
               Conheça a academia
             </ButtonLink>
