@@ -1,28 +1,36 @@
 import type { Metadata } from 'next';
-import { Barlow, Barlow_Condensed } from 'next/font/google';
+import localFont from 'next/font/local';
 import { site, siteUrl } from '@/config/site';
 import './globals.css';
 
 /*
- * FONTES PROVISÓRIAS. O Manual de Uso da Marca (p. 15–16) exige AdiHaus DIN
- * como única fonte da identidade visual. Os arquivos licenciados para web ainda
- * não foram fornecidos; não usar cópias de sites não oficiais.
- * Quando chegarem: trocar por next/font/local mantendo as variáveis
+ * FONTE PROVISÓRIA: D-DIN (Datto, SIL Open Font License 1.1; licença em
+ * src/app/fonts/D-DIN-LICENSE-OFL.txt). É da mesma família DIN da fonte oficial.
+ * O Manual de Uso da Marca (p. 15–16) exige AdiHaus DIN; quando os arquivos
+ * licenciados chegarem, trocar os `src` abaixo mantendo as variáveis
  * --font-body (AdihausDIN) e --font-condensed (AdihausDIN Cn).
- * Passo a passo e pesos em docs/IDENTIDADE-VISUAL.md.
+ * Passo a passo em docs/IDENTIDADE-VISUAL.md.
+ *
+ * A D-DIN só tem 400 e 700: pesos 500/600/800 usados nas classes caem no peso
+ * real mais próximo (sem negrito artificial; ver font-synthesis em globals.css).
  */
-const body = Barlow({
+const body = localFont({
   variable: '--font-body',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
   display: 'swap',
+  src: [
+    { path: './fonts/D-DIN.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/D-DIN-Italic.woff2', weight: '400', style: 'italic' },
+    { path: './fonts/D-DIN-Bold.woff2', weight: '700', style: 'normal' },
+  ],
 });
 
-const condensed = Barlow_Condensed({
+const condensed = localFont({
   variable: '--font-condensed',
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
   display: 'swap',
+  src: [
+    { path: './fonts/D-DINCondensed.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/D-DINCondensed-Bold.woff2', weight: '700', style: 'normal' },
+  ],
 });
 
 export const metadata: Metadata = {

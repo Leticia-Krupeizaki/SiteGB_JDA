@@ -2,7 +2,7 @@
 
 Referência obrigatória: **Manual de Uso da Marca Gracie Barra (23/09/2025)**, 20 páginas. As páginas citadas abaixo são desse manual.
 
-> **Status:** cores alinhadas ao manual. **Tipografia e logotipos ainda NÃO estão em conformidade total**: dependem de arquivos oficiais que não temos (ver "Pendências"). Não declarar o site 100% conforme enquanto houver pendências.
+> **Status:** cores alinhadas ao manual. Tipografia provisória da mesma família (D-DIN, licença livre). **Tipografia e logotipos ainda NÃO estão em conformidade total**: dependem de arquivos oficiais que não temos (ver "Pendências"). Não declarar o site 100% conforme enquanto houver pendências.
 
 ---
 
@@ -70,18 +70,26 @@ O manual define **AdiHaus DIN** como **única fonte permitida**. Hierarquia indi
 
 | Elemento | Fonte do manual | Hoje (provisório) |
 |---|---|---|
-| Títulos principais | AdihausDIN Regular Bold | Barlow Condensed (`font-display`) |
-| Destaques | AdihausDIN Cn Bold | Barlow Condensed (`font-display`) |
-| Subtítulos | AdihausDIN Medium | Barlow Condensed (`font-display`) |
-| Texto, botões, navegação | AdihausDIN (peso adequado) | Barlow (`font-sans`) |
+| Títulos principais | AdihausDIN Regular Bold | D-DIN Condensed Bold (`font-display`) |
+| Destaques | AdihausDIN Cn Bold | D-DIN Condensed Bold (`font-display`) |
+| Subtítulos | AdihausDIN Medium | D-DIN Condensed (`font-display`) |
+| Texto, botões, navegação | AdihausDIN (peso adequado) | D-DIN Regular/Bold/Italic (`font-sans`) |
 
-**Status: NÃO implementada.** Os arquivos não estão no projeto e não devem ser obtidos de sites não oficiais. A Barlow segue como fonte provisória (`src/app/layout.tsx`).
+**Status: AdiHaus DIN NÃO implementada.** Os arquivos licenciados não foram fornecidos, e cópias de sites não oficiais não podem ser usadas: a fonte é proprietária e o site redistribuiria o arquivo a cada visitante.
+
+**Fonte provisória desde 19/10/2026: D-DIN** (mesma família DIN; Copyright 2017 Datto Inc., desenho de Charles Nix/Monotype).
+
+- Licença: **SIL Open Font License 1.1**, que permite uso e embed em sites, inclusive comerciais. A licença e o FONTLOG ficam junto dos arquivos, como a OFL exige: `src/app/fonts/D-DIN-LICENSE-OFL.txt` e `D-DIN-FONTLOG.txt`.
+- Origem: repositório [amcchord/datto-d-din](https://github.com/amcchord/datto-d-din) (Austin McChord, fundador da Datto), arquivos `.woff2` originais, assinatura conferida.
+- Estilos instalados: D-DIN Regular, Italic e Bold; D-DIN Condensed Regular e Bold. Cobre todo o Latin-1 (todos os acentos do português).
+- A D-DIN só tem pesos 400 e 700. Classes com 500/600/800 usam o peso real mais próximo; `font-synthesis: none` impede negrito ou itálico artificial.
+- Antes (até 19/10/2026): Barlow e Barlow Condensed (Google Fonts).
 
 ### Como instalar quando os arquivos chegarem
 
 1. Confirmar que a licença permite **uso web** (embed em site).
-2. Colocar os arquivos `.woff2` em `src/app/fonts/` (ou `.otf`/`.ttf`, se forem os disponíveis).
-3. Em `src/app/layout.tsx`, trocar `Barlow`/`Barlow_Condensed` por `next/font/local`, **mantendo as variáveis** `--font-body` e `--font-condensed`, e declarando só os pesos que existirem nos arquivos (sem pesos fictícios):
+2. Colocar os arquivos `.woff2` em `src/app/fonts/` (ou `.otf`/`.ttf`, se forem os disponíveis) e remover os arquivos e textos de licença da D-DIN.
+3. Em `src/app/layout.tsx`, trocar os `src` da D-DIN pelos da AdiHaus DIN, **mantendo as variáveis** `--font-body` e `--font-condensed`, e declarando só os pesos que existirem nos arquivos (sem pesos fictícios):
 
    ```ts
    import localFont from 'next/font/local';
@@ -111,7 +119,7 @@ O manual define **AdiHaus DIN** como **única fonte permitida**. Hierarquia indi
 
 4. Revisar onde há `font-extrabold` (800) e `font-semibold` (600): a AdiHaus DIN do manual não tem esses pesos; trocar por `font-bold` (700) e `font-medium` (500).
 5. Aplicar a hierarquia acima: títulos principais em AdihausDIN Bold (não condensada), destaques em Cn Bold.
-6. Conferir quebras de linha (a DIN tem largura diferente da Barlow), principalmente no cabeçalho.
+6. Conferir quebras de linha (a AdiHaus DIN tem largura diferente da D-DIN), principalmente no cabeçalho.
 
 ---
 

@@ -34,9 +34,9 @@
   --color-gb-line: #e2e2e2; /* bordas e fundos claros: cinza K45 25% + branco */
 
   /*
-   * Tipografia PROVISÓRIA. O manual (p. 15) exige AdiHaus DIN como única fonte;
-   * os arquivos licenciados ainda não foram fornecidos. Barlow fica até lá.
-   * Para trocar: docs/IDENTIDADE-VISUAL.md, seção "Tipografia".
+   * Tipografia PROVISÓRIA: D-DIN (família DIN, licença livre). O manual (p. 15)
+   * exige AdiHaus DIN; trocar quando os arquivos licenciados chegarem.
+   * Ver docs/IDENTIDADE-VISUAL.md, seção "Tipografia".
    */
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-condensed), 'Arial Narrow', ui-sans-serif, sans-serif;
@@ -46,6 +46,8 @@ body {
   background: var(--color-gb-white);
   color: var(--color-gb-ink);
   font-family: var(--font-sans);
+  /* O manual veda distorcer a fonte: sem negrito/itálico artificial quando o estilo não existe. */
+  font-synthesis: none;
 }
 
 h1,

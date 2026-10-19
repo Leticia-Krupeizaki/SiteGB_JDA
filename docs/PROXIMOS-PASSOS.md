@@ -53,7 +53,7 @@ Extensões úteis no VS Code: ESLint, Tailwind CSS IntelliSense, Vitest.
 - Tailwind CSS v4 (tokens em `src/app/globals.css`, bloco `@theme`)
 - Zod 3 (validação compartilhável entre formulário e API)
 - Vitest 3 (testes unitários)
-- Fontes: Barlow Condensed (títulos) e Barlow (texto) via `next/font/google`
+- Fontes: D-DIN Condensed (títulos) e D-DIN (texto) via `next/font/local`, provisórias até a AdiHaus DIN oficial (`docs/IDENTIDADE-VISUAL.md`)
 
 ### Mapa de arquivos
 
@@ -249,7 +249,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 | Endereço completo e link do Google Maps | `src/config/site.ts → site.address`; seção "Onde estamos" em `ContactCTA.tsx` e `contato/page.tsx` |
 | Redes sociais oficiais | ✅ Instagram `@gbjardimdasamericas` em `src/config/site.ts → site.social` (rodapé e Contato). Facebook/YouTube: só se o cliente tiver |
 | Logo oficial (escudo) e manual de marca | ✅ Escudo recebido (originais em `assets/marca/`), usado no favicon e nos ícones (`src/app/icon.png`, `apple-icon.png`). No cabeçalho e rodapé o cliente preferiu manter o nome em texto (15/10/2026). O SVG enviado é um PNG embutido; um vetorial deixaria a marca mais nítida. Manual de marca pendente |
-| **Fonte oficial da marca** | Manual exige **AdiHaus DIN** (única permitida). Faltam os arquivos web licenciados; Barlow é provisória. Como instalar: `docs/IDENTIDADE-VISUAL.md` |
+| **Fonte oficial da marca** | Manual exige **AdiHaus DIN** (única permitida). Faltam os arquivos web licenciados; **D-DIN** (mesma família, licença OFL) é a provisória desde 19/10/2026. Como instalar: `docs/IDENTIDADE-VISUAL.md` |
 | **Logotipos oficiais em vetor** (Escudo, Linear, Verticalizada, identificação da escola) | Pedir a `suporte@graciebarra.com`; detalhes em `docs/IDENTIDADE-VISUAL.md` |
 | Fotos da unidade, treinos e hero | `PhotoPlaceholder` em `page.tsx` e `Hero.tsx` (usar `next/image`) |
 | Professores (nome, foto, graduação, bio) | criar `src/data/teachers.ts` + `TeacherCard`; páginas Home e `professores/` |
