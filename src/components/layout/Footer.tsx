@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { mainNavigation } from '@/config/navigation';
 import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { InstagramIcon } from '@/components/ui/icons';
+import { PremiumSeal } from '@/components/ui/PremiumSeal';
 import { externalLinks } from '@/data/external-links';
 import { Belt } from '@/components/ui/Belt';
 import { Container } from '@/components/ui/Container';
@@ -23,6 +24,7 @@ export function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed">
               Jiu-Jitsu no {site.neighborhood}, {site.city}–{site.state}.
             </p>
+            <PremiumSeal sizes="96px" className="mt-6 w-24" />
           </div>
 
           <nav aria-label="Rodapé">

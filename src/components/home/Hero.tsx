@@ -3,6 +3,7 @@ import { site, whatsappTrialUrl } from '@/config/site';
 import { Belt } from '@/components/ui/Belt';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { PlaceholderBadge } from '@/components/ui/PlaceholderNotice';
+import { PremiumSeal } from '@/components/ui/PremiumSeal';
 
 /**
  * Hero em tela cheia, pensado para receber uma foto oficial de treino em P&B
@@ -16,6 +17,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-gb-ink)_20%,transparent),color-mix(in_srgb,var(--color-gb-ink)_85%,transparent)),repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_10px)]"
       />
       <div className="mx-auto flex min-h-[34rem] max-w-6xl flex-col items-center justify-center px-4 py-20 text-center sm:min-h-[40rem] sm:px-6 lg:px-8">
+        <PremiumSeal priority sizes="(min-width: 640px) 144px, 112px" className="mb-6 w-28 sm:w-36" />
         <p className="font-display text-xl font-semibold uppercase tracking-[0.15em] text-balance text-gb-line">{site.name}</p>
         {/* Valores da Gracie Barra (Manual da Marca, p. 5). "Desenvolvimento" é longa: tamanhos medidos para caber a partir de 360 px. */}
         <h1 className="mt-4 font-display text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl lg:text-8xl">
