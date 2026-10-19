@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   alternates: { canonical: '/sobre' },
 };
 
+/** Trechos entre *asteriscos* no texto do cliente viram itálico (destaques do original). */
+function Emphasis({ text }: { text: string }) {
+  return text.split('*').map((part, i) => (i % 2 === 1 ? <em key={i}>{part}</em> : part));
+}
+
 export default function SobrePage() {
   return (
     <>
@@ -45,16 +50,26 @@ export default function SobrePage() {
             <p className="mt-4 font-display text-2xl font-bold uppercase text-gb-red sm:text-3xl">{history.lead}</p>
             <div className="mt-8 space-y-5 text-lg leading-relaxed">
               {history.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-              ))}
-            </div>
-            <div className="mt-10 space-y-3 border-l-4 border-gb-red pl-5 text-xl leading-relaxed">
-              {history.invitation.map((sentence) => (
-                <p key={sentence.slice(0, 32)} className="first:font-bold">
-                  {sentence}
+                <p key={paragraph.slice(0, 32)}>
+                  <Emphasis text={paragraph} />
                 </p>
               ))}
             </div>
+
+            <blockquote className="my-10 border-y-2 border-gb-ink py-6 font-display text-2xl font-bold uppercase leading-snug text-balance sm:text-3xl">
+              {history.quote}
+            </blockquote>
+
+            <div className="space-y-4 border-l-4 border-gb-red pl-5 text-lg leading-relaxed">
+              {history.invitation.map((sentence) => (
+                <p key={sentence.slice(0, 32)} className="last:text-xl">
+                  <Emphasis text={sentence} />
+                </p>
+              ))}
+            </div>
+
+            <p className="mt-10 font-display text-xl font-bold uppercase text-gb-navy text-balance">{history.tagline}</p>
+            <p className="mt-3 text-sm text-gb-mute">{history.signature}</p>
           </div>
         </Container>
       </section>

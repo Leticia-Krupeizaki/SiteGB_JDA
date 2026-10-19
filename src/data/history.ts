@@ -1,26 +1,34 @@
+import type { StaticImageData } from 'next/image';
+
 /**
- * "Nossa história", texto enviado pelo cliente em 19/10/2026 (narrado pelo
- * fundador). Correções só de digitação e pontuação; nomes como enviados.
+ * "Nossa história": texto ORIGINAL enviado pelo cliente em 19/10/2026, narrado
+ * pelo fundador. Mantido como veio. Trechos entre *asteriscos* são os destaques
+ * marcados pelo cliente e aparecem em itálico (ver `Emphasis` na página).
  */
 export const history = {
+  founder: 'Fabio Daurélio Gusso',
   lead: 'Uma história de família, um sonho e um legado.',
   paragraphs: [
-    'Mas nossa história começou bem antes. Começou com um sonho, ideias e vontade de construir algo significativo. Tive o apoio do meu filho Fabio dauréli Gusso Filho, que esteve sempre ao meu lado, e juntos enfrentamos os desafios e demos os primeiros passos para transformar uma ideia em realidade. Poder compartilhar essa jornada com meu filho é uma das partes mais especiais dessa conquista.',
-    'Mas nossa história carrega as raízes de nossa família. A casa que hoje é nossa escola foi adquirida anos antes pelo meu pai, e agora ganhou um outro propósito: se tornou um local dedicado ao Jiu-Jitsu, à educação e a transformar vidas através dessa arte. É de grande gratidão ver um patrimônio construído por uma geração servir aos sonhos da geração futura.',
-    'Hoje minha filha Maria Fernanda Gusso também faz parte desse projeto, trabalhando conosco e treinando Jiu-Jitsu. Ter meus dois filhos juntos comigo nessa trajetória é mais do que especial. Mais do que construir uma escola, estamos criando a nossa história e dividindo valores.',
-    'Nos inspiramos no legado da Gracie Barra, cultivando os princípios de respeito, disciplina, integridade, irmandade, superação e desenvolvimento. Acreditamos que a irmandade vai além dos tatames: está no apoio, na união e em nos ajudar a evoluir.',
-    'Para mim, a GB Premium Jardim das Américas representa muito mais que um empreendimento: é a junção da história do meu pai e a construção da minha história junto dos meus filhos. É a oportunidade de fazer a diferença na vida de outras famílias.',
+    'No dia 7 de abril de 2025, nasceu oficialmente a Gracie Barra Premium Jardim das Américas, um projeto idealizado e fundado por Fabio Daurélio Gusso, com o propósito de levar a filosofia e os valores da Gracie Barra a um bairro que, até então, não contava com uma escola da equipe.',
+    'Mas essa história começou antes mesmo de a escola existir. Começou com um sonho, muitas ideias e a vontade de construir algo significativo. *Desde o início, quando ainda não tínhamos nada além desse sonho, meu filho, Fabio Daurélio Gusso Filho, esteve ao meu lado.* Juntos, acompanhamos os primeiros passos, enfrentamos os desafios e trabalhamos para transformar uma ideia em realidade. Como pai, poder compartilhar essa jornada com meu filho é uma das partes mais especiais dessa conquista.',
+    'Nossa história também carrega as raízes da nossa família. A casa onde hoje funciona a escola foi adquirida pelo meu pai muitos anos atrás e, com o tempo, ganhou um novo propósito: tornou-se um espaço dedicado ao Jiu-Jitsu, à educação e à transformação de vidas. É gratificante ver um patrimônio construído por uma geração servir de base para os sonhos das gerações seguintes.',
+    'Hoje, minha filha, *Maria Fernanda Gusso*, também faz parte desse projeto, trabalhando conosco e treinando Jiu-Jitsu. Ter meus dois filhos presentes nessa caminhada torna tudo ainda mais especial. Mais do que construir uma escola, estamos compartilhando experiências, transmitindo valores e criando uma história que desejamos levar adiante.',
+    'Inspirados pelo legado da Gracie Barra, buscamos cultivar os princípios de *respeito, disciplina, integridade, irmandade, superação e desenvolvimento humano*. Acreditamos que a irmandade vai além dos tatames: está no apoio mútuo, na união diante dos desafios e na compreensão de que crescemos ainda mais quando ajudamos uns aos outros a evoluir.',
+    'Para mim, a GB Premium Jardim das Américas representa muito mais do que um empreendimento. É a união entre a história do meu pai, um sonho construído ao lado do meu filho e a participação da minha filha em uma jornada que continua crescendo. É a oportunidade de transformar uma conquista familiar em algo que também faça a diferença na vida de tantas outras famílias.',
   ],
-  /** Fecho em destaque. */
+  /** Frase de legado, em destaque como citação. */
+  quote:
+    'Porque o verdadeiro legado não está apenas naquilo que construímos, mas nos valores que transmitimos, nas pessoas que ajudamos a formar e nas histórias que deixamos para as próximas gerações.',
   invitation: [
-    'Por isso convidamos você e sua família para fazer parte da nossa história.',
-    'As portas da nossa escola estão abertas. Será uma alegria receber sua família e construir, juntos, novos capítulos dessa história.',
+    'E é com esse propósito que convidamos você e sua família a fazerem parte da nossa história. Queremos que a GB Premium Jardim das Américas seja também a casa de vocês: um lugar para aprender, superar desafios, construir amizades e crescer juntos. Seja para seus filhos, para você ou para toda a família, o Jiu-Jitsu pode ser o começo de uma transformação que vai muito além dos tatames.',
+    '*As portas da nossa escola estão abertas. Será uma alegria receber sua família e construir, juntos, novos capítulos dessa história.*',
   ],
+  tagline: 'Gracie Barra Premium Jardim das Américas — tradição no tatame, irmandade na caminhada e um legado construído em família.',
+  signature: 'Idealização, fundação e propriedade: Fabio Daurélio Gusso.',
   /**
    * Foto do fundador com os filhos. Pendente: quando chegar, colocar o arquivo
-   * em src/assets/ e importar aqui (ex.: `photo: fotoFundador`), com o texto
-   * alternativo abaixo descrevendo quem aparece.
+   * em src/assets/, importar aqui e preencher { src, alt }.
    */
-  photo: null as null | { src: import('next/image').StaticImageData; alt: string },
-  photoCaption: 'O fundador com os filhos, Fabio e Maria Fernanda.',
+  photo: null as null | { src: StaticImageData; alt: string },
+  photoCaption: 'Fabio Daurélio Gusso, fundador, com os filhos Fabio Daurélio Gusso Filho e Maria Fernanda Gusso.',
 };
