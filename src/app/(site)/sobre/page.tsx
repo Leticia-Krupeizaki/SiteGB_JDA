@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Container } from '@/components/ui/Container';
+import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { site } from '@/config/site';
 import { benefits } from '@/data/benefits';
+import { history } from '@/data/history';
 
 export const metadata: Metadata = {
   title: 'A Academia',
@@ -18,16 +21,48 @@ export default function SobrePage() {
     <>
       <PageHeader title="A academia" description={`${site.name}, Curitiba–PR.`} />
 
-      <section className="py-16 sm:py-20">
-        <Container className="grid gap-12 lg:grid-cols-2">
-          <div className="space-y-6">
-            <SectionHeading title="Nossa história" />
-            <PlaceholderNotice>a história da unidade, a partir das informações enviadas pelo cliente.</PlaceholderNotice>
+      <section aria-labelledby="nossa-historia" className="py-16 sm:py-20">
+        <Container className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
+          {/* Foto: acima do texto no celular; ao lado (fixa durante a leitura) no computador. */}
+          <figure className="lg:sticky lg:top-28 lg:self-start">
+            {history.photo ? (
+              <Image
+                src={history.photo.src}
+                alt={history.photo.alt}
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                className="aspect-[4/5] h-auto w-full object-cover"
+              />
+            ) : (
+              <PhotoPlaceholder label="Foto do fundador com os filhos a definir" className="aspect-[4/5] w-full" />
+            )}
+            <figcaption className="mt-3 text-sm text-gb-mute">{history.photoCaption}</figcaption>
+          </figure>
+
+          <div>
+            <h2 id="nossa-historia" className="font-display text-4xl font-bold uppercase sm:text-5xl">
+              Nossa história
+            </h2>
+            <p className="mt-4 font-display text-2xl font-bold uppercase text-gb-red sm:text-3xl">{history.lead}</p>
+            <div className="mt-8 space-y-5 text-lg leading-relaxed">
+              {history.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+              ))}
+            </div>
+            <div className="mt-10 space-y-3 border-l-4 border-gb-red pl-5 text-xl leading-relaxed">
+              {history.invitation.map((sentence) => (
+                <p key={sentence.slice(0, 32)} className="first:font-bold">
+                  {sentence}
+                </p>
+              ))}
+            </div>
           </div>
-          <div className="space-y-6">
-            <SectionHeading title="Estrutura" />
-            <PlaceholderNotice>fotos e descrição do espaço, com material oficial.</PlaceholderNotice>
-          </div>
+        </Container>
+      </section>
+
+      <section className="border-t border-gb-line py-16 sm:py-20">
+        <Container className="space-y-6">
+          <SectionHeading title="Estrutura" />
+          <PlaceholderNotice>fotos e descrição do espaço, com material oficial.</PlaceholderNotice>
         </Container>
       </section>
 
