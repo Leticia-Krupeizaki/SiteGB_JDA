@@ -5,8 +5,11 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ScheduleBoard } from '@/components/schedules/ScheduleBoard';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { site } from '@/config/site';
+import { instagramHandle, site } from '@/config/site';
+import { scheduleDisclaimer, scheduleValidFrom } from '@/data/schedule';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
+
+const validFrom = scheduleValidFrom.split('-').reverse().join('/');
 
 /** Regera a página a cada hora para a aba inicial acompanhar o dia. */
 export const revalidate = 3600;
@@ -21,11 +24,21 @@ export const metadata: Metadata = {
 export default function HorariosPage() {
   return (
     <>
-      <PageHeader title="Horários" description="Aulas de segunda a sexta-feira. Grade vigente desde 26/02/2026." />
+      <PageHeader title="Horários" description={`Aulas de segunda a sexta-feira. Grade vigente desde ${validFrom}.`} />
 
       <section className="bg-gb-line/60 py-12 sm:py-16">
         <Container>
           <ScheduleBoard initialDay={defaultDay(new Date(), academyTimeZone).day} />
+          <p className="mt-8 text-sm text-gb-mute">
+            {scheduleDisclaimer}{' '}
+            {site.social.instagram && (
+              <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="focus-ring font-semibold text-gb-navy underline">
+                {instagramHandle}
+                <span className="sr-only"> (abre em nova aba)</span>
+              </a>
+            )}
+            .
+          </p>
         </Container>
       </section>
 

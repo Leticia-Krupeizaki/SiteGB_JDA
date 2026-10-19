@@ -1,10 +1,25 @@
 'use client';
 
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import { classColors, schedule, weekdays, type Weekday } from '@/data/schedule';
+import { classColors, schedule, scheduleSlots, slotOf, weekdays, type Weekday } from '@/data/schedule';
 import { useMediaQuery, wideQuery } from '@/lib/hooks/useMediaQuery';
 import { academyTimeZone, defaultDay, filterBlocks, filterGroups, type FilterGroup } from '@/lib/schedule';
 import { ScheduleClassCard } from './ScheduleClassCard';
+
+/**
+ * Faixa de horário sem aula. Fica visível (pedido do cliente) para a grade manter
+ * as linhas alinhadas e o aluno não se perder. No computador é só o espaço
+ * tracejado; no celular, uma linha curta com o horário.
+ */
+function EmptySlot({ slot }: { slot: string }) {
+  return (
+    <div className="flex h-full min-h-10 items-center border border-dashed border-gb-gray-45/50 px-4 py-2 text-sm text-gb-mute lg:min-h-24">
+      <span className="lg:sr-only">
+        <span className="font-semibold tabular-nums">{slot}</span> · sem aula neste horário
+      </span>
+    </div>
+  );
+}
 
 /**
  * Grade semanal. No celular, abas por dia (abre no dia atual). A partir de
@@ -90,7 +105,12 @@ export function ScheduleBoard({ initialDay }: { initialDay: Weekday }) {
         })}
       </div>
 
-      <div className="mt-6 grid gap-6 lg:mt-10 lg:grid-cols-5 lg:gap-4">
+      {/*
+       * Computador: 5 colunas e uma linha por faixa de horário (scheduleSlots), como na
+       * arte oficial. Os dias usam subgrid, então cada faixa tem a mesma altura em
+       * todas as colunas e o espaço vazio marca "sem aula naquele horário".
+       */}
+      <div className="mt-6 grid gap-6 lg:mt-10 lg:grid-cols-5 lg:grid-rows-[auto_repeat(7,auto)] lg:gap-x-4 lg:gap-y-3">
         {weekdays.map((w) => {
           const blocks = filterBlocks(schedule[w.id], active);
           return (
@@ -98,20 +118,22 @@ export function ScheduleBoard({ initialDay }: { initialDay: Weekday }) {
               key={w.id}
               id={`painel-${w.id}`}
               {...(isWide ? {} : { role: 'tabpanel', 'aria-labelledby': `tab-${w.id}` })}
-              className={`${w.id === day ? 'block' : 'hidden'} lg:block`}
+              className={`${w.id === day ? 'block' : 'hidden'} lg:row-span-8 lg:grid lg:grid-rows-subgrid`}
             >
               <h2 className="font-display text-2xl font-bold uppercase lg:border-b-2 lg:border-gb-ink lg:pb-2">{w.label}</h2>
-              {blocks.length > 0 ? (
-                <ul className="mt-4 space-y-3">
-                  {blocks.map((block) => (
-                    <li key={`${block.start}-${block.classes.join()}`}>
-                      <ScheduleClassCard block={block} dayLabel={w.label} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-4 border border-dashed border-gb-mute/40 p-4 text-sm text-gb-mute">Sem aulas da turma selecionada neste dia.</p>
+              {blocks.length === 0 && (
+                <p className="mt-4 border border-dashed border-gb-mute/40 p-4 text-sm text-gb-mute lg:hidden">Sem aulas da turma selecionada neste dia.</p>
               )}
+              <ul className={`mt-4 space-y-3 lg:row-span-7 lg:mt-0 lg:grid lg:grid-rows-subgrid lg:space-y-0 ${blocks.length === 0 ? 'max-lg:hidden' : ''}`}>
+                {scheduleSlots.map((slot) => {
+                  const block = blocks.find((b) => slotOf(b.start) === slot);
+                  return (
+                    <li key={slot} className="lg:h-full">
+                      {block ? <ScheduleClassCard block={block} dayLabel={w.label} /> : <EmptySlot slot={slot} />}
+                    </li>
+                  );
+                })}
+              </ul>
             </section>
           );
         })}

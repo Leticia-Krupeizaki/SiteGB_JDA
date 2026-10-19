@@ -33,6 +33,7 @@ export function TodayOnMat({ initial }: { initial: DayState }) {
             </span>
             <span className="min-w-0">
               <span className="font-semibold">{classLabel(block.classes)}</span>
+              {block.ageGroup && <span className="ml-2 text-sm text-gb-mute">{block.ageGroup}</span>}
               {block.note && <span className="ml-2 text-sm text-gb-red">{block.note}</span>}
             </span>
           </li>

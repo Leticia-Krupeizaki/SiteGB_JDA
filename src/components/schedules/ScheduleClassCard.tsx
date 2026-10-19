@@ -11,7 +11,7 @@ export function ScheduleClassCard({ block, dayLabel }: { block: ScheduleBlock; d
   );
 
   return (
-    <article className={`border-l-4 bg-gb-white p-4 ${classColors[block.classes[0]].border}`}>
+    <article className={`h-full border-l-4 bg-gb-white p-4 ${classColors[block.classes[0]].border}`}>
       <p className="font-display text-2xl font-bold tabular-nums">
         {block.start}
         <span className="text-gb-mute">–{block.end}</span>
@@ -24,6 +24,7 @@ export function ScheduleClassCard({ block, dayLabel }: { block: ScheduleBlock; d
           </li>
         ))}
       </ul>
+      {block.ageGroup && <p className="mt-2 text-sm font-semibold">{block.ageGroup}</p>}
       {block.note && <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-gb-red">{block.note}</p>}
       <a
         href={question}

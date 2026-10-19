@@ -78,7 +78,7 @@ src/
     site.ts                 # nome, telefone, WhatsApp (whatsappUrl, whatsappTrialUrl), siteUrl
     navigation.ts           # menu principal e CTA
   data/
-    schedule.ts             # GRADE OFICIAL (22 blocos) + cores auxiliares por turma
+    schedule.ts             # GRADE OFICIAL a partir de 10/08/2026 (27 blocos) + faixas de horário + cores por turma
     programs.ts             # turmas (legenda da grade) e focos de treino
     benefits.ts             # benefícios exibidos na Home/Sobre
     external-links.ts       # plataformas e federações
@@ -255,8 +255,8 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 | Fotos da unidade, treinos e hero | `PhotoPlaceholder` em `page.tsx` e `Hero.tsx` (usar `next/image`) |
 | Professores (nome, foto, graduação, bio) | criar `src/data/teachers.ts` + `TeacherCard`; páginas Home e `professores/` |
 | História e diferenciais da unidade | `sobre/page.tsx` e seção "Somos Gracie Barra..." da Home |
-| Confirmar se a grade de 26/02/2026 segue atual | `src/data/schedule.ts` (os testes em `tests/schedule.test.ts` precisam ser atualizados junto) |
-| Ressalva "Horários sujeitos a alterações" | só exibir se aprovada (página Horários) |
+| ✅ Grade atualizada para a versão de 10/08/2026 (19/10/2026) | Próximas mudanças: `src/data/schedule.ts` e `tests/schedule.test.ts` juntos. A grade é exibida em linhas por faixa de horário (`scheduleSlots`), com espaço vazio onde não há aula (pedido do cliente) |
+| ✅ Ressalva "Sujeito a alterações…" | Faz parte da grade oficial; exibida abaixo da grade com link para o Instagram |
 | Política de imagens de menores, autorizações e retirada | textos do formulário em `PhotoUploadForm.tsx` e página Mural |
 | Administradores da moderação | seed de `Admin` na Etapa 5 |
 | Hospedagem, domínio, banco, storage, e-mail | Etapa 4 |
@@ -288,7 +288,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 - [x] Endereço, professores e fotos oficiais não inventados
 
 ### Grade
-- [x] 22 blocos conferem com o PDF (teste automático)
+- [x] 27 blocos conferem com o PDF de 10/08/2026 (teste automático), incluindo faixas etárias do GBK
 - [x] Siglas, horários, notas e legenda corretos
 - [x] Sem sábado/domingo
 - [x] Filtros não separam GB1 + GB2
