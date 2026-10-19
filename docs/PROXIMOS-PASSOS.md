@@ -99,7 +99,7 @@ tests/
 - **Identidade visual segue o Manual de Uso da Marca GB (23/09/2025)** desde 16/10/2026: vermelho `#E1251B`, azul `#11286D`, preto, cinzas K65/K45, branco. Tokens, contraste, logotipos e pendências em [`IDENTIDADE-VISUAL.md`](IDENTIDADE-VISUAL.md). (Antes: `#D71921`, `#002F80`, `#111111`.)
 - **Visual inspirado no site da Gracie Barra Brasil**, sem copiar textos, imagens ou código. A **faixa com graus** (`Belt.tsx`) separa as seções.
 - **Cores auxiliares por turma** (Contexto.md): GBK verde, GB1 azul (oficial), GB2 roxo, GBF rosa, No-Gi cinza (oficial). Verde, roxo e rosa estão fora da paleta do manual: pendente de confirmação.
-- **Telefones confirmados pelo cliente (15/10/2026):** fixo (41) 3205-8109 para ligações; WhatsApp (41) 99683-1171 (`5541996831171`, o mesmo do Instagram). Mensagens sempre com `encodeURIComponent` (use `whatsappUrl()`).
+- **Telefone único (19/10/2026, pedido do cliente):** (41) 3205-8109 para ligação e WhatsApp (`554132058109`). O celular (41) 99683-1171, usado entre 15 e 19/10, saiu do site. Mensagens sempre com `encodeURIComponent` (use `whatsappUrl()`).
 - **Trabalho direto na `main`**, Conventional Commits em português.
 - **Nada de dados inventados:** endereço, professores, fotos, história e depoimentos aparecem como "A confirmar" (`PlaceholderNotice`) até o cliente enviar.
 
@@ -284,7 +284,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 - [x] Funciona em celular, tablet e desktop (conferido em 390px e 1440px)
 - [x] Navegação e CTAs acessíveis por teclado (menu mobile com Esc e foco)
 - [x] Links externos com `target="_blank" rel="noopener noreferrer"`
-- [x] Telefone (41) 3205-8109 (`tel:+554132058109`) e WhatsApp (41) 99683-1171 (`wa.me/5541996831171` com mensagem)
+- [x] Telefone e WhatsApp (41) 3205-8109 (`tel:+554132058109` e `wa.me/554132058109` com mensagem)
 - [x] Endereço, professores e fotos oficiais não inventados
 
 ### Grade

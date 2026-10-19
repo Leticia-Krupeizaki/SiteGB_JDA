@@ -9,7 +9,7 @@ import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl, whatsappUrl
 
 export const metadata: Metadata = {
   title: 'Contato',
-  description: `Fale com a ${site.name}: telefone ${contact.displayPhone} ou WhatsApp ${contact.whatsappDisplay}.`,
+  description: `Fale com a ${site.name} pelo telefone ou WhatsApp ${contact.displayPhone}.`,
   alternates: { canonical: '/contato' },
 };
 
@@ -21,22 +21,10 @@ export default function ContatoPage() {
       <section className="py-16 sm:py-20">
         <Container className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <p className="font-display text-lg font-semibold uppercase tracking-wide text-gb-mute">WhatsApp</p>
-            <a
-              href={whatsappTrialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring mt-2 block font-display text-5xl font-bold tabular-nums text-gb-navy hover:text-gb-red sm:text-7xl"
-            >
-              {contact.whatsappDisplay}
-              <span className="sr-only"> (abre o WhatsApp em nova aba)</span>
+            <p className="font-display text-lg font-semibold uppercase tracking-wide text-gb-mute">Telefone e WhatsApp</p>
+            <a href={phoneUrl} className="focus-ring mt-2 block font-display text-5xl font-bold tabular-nums text-gb-navy hover:text-gb-red sm:text-7xl">
+              {contact.displayPhone}
             </a>
-            <p className="mt-4 font-display text-lg font-semibold uppercase tracking-wide text-gb-mute">
-              Telefone fixo:{' '}
-              <a href={phoneUrl} className="focus-ring tabular-nums text-gb-navy hover:text-gb-red">
-                {contact.displayPhone}
-              </a>
-            </p>
             <p className="mt-4 max-w-md text-gb-mute">
               O botão abre o WhatsApp com uma mensagem pronta. O horário da aula é combinado na conversa com a equipe.
             </p>

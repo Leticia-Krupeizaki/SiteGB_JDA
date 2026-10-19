@@ -59,12 +59,12 @@ export function Footer() {
             <ul className="mt-4 space-y-2 text-sm">
               <li>
                 <a href={phoneUrl} className="focus-ring hover:text-gb-white">
-                  Telefone {contact.displayPhone}
+                  Telefone e WhatsApp {contact.displayPhone}
                 </a>
               </li>
               <li>
                 <a href={whatsappTrialUrl} target="_blank" rel="noopener noreferrer" className="focus-ring hover:text-gb-white">
-                  WhatsApp {contact.whatsappDisplay}
+                  Falar no WhatsApp
                   <span className="sr-only"> (abre em nova aba)</span>
                 </a>
               </li>

@@ -23,12 +23,10 @@ export const site = {
 export const instagramHandle = '@gbjardimdasamericas';
 
 export const contact = {
-  /** Fixo, para ligações. */
+  /** Único número de contato, para ligação e WhatsApp (pedido do cliente em 19/10/2026). */
   displayPhone: '(41) 3205-8109',
   phoneE164: '+554132058109',
-  /** Celular do WhatsApp (o mesmo do Instagram), confirmado pelo cliente em 15/10/2026. */
-  whatsappDisplay: '(41) 99683-1171',
-  whatsappDigits: '5541996831171',
+  whatsappDigits: '554132058109',
   trialMessage: `Olá! Gostaria de agendar uma aula experimental na ${site.name}. Poderiam me passar mais informações?`,
 } as const;
 
