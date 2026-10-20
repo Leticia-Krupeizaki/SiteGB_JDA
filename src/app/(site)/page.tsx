@@ -135,7 +135,7 @@ export default function HomePage() {
       {/* Ecossistema */}
       <section className="bg-gb-line/60 py-16 sm:py-24">
         <Container>
-          <SectionHeading title="Ecossistema Gracie Barra" description="Plataformas de estudo, federações de Jiu-Jitsu e a loja oficial." />
+          <SectionHeading title="Ecossistema Gracie Barra" description="Plataformas de estudo, a busca de escolas da rede, federações de Jiu-Jitsu e a loja oficial." />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {externalLinks.map((link) => (
               <ExternalLinkCard key={link.url} link={link} />
