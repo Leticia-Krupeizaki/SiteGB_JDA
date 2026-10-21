@@ -33,18 +33,35 @@ const condensed = localFont({
   ],
 });
 
+/** Título e descrição do cartão de compartilhamento (e do Google). */
+const shareTitle = `${site.name} — Jiu-Jitsu em ${site.city}`;
+const shareDescription = `Escola oficial Gracie Barra, certificada Premium. Jiu-Jitsu Para Todos: aulas para crianças, adultos e mulheres no ${site.neighborhood}, ${site.city}–${site.state}. Agende sua aula experimental.`;
+
 export const metadata: Metadata = {
   title: {
-    default: `${site.name} | Jiu-Jitsu em ${site.city}`,
+    default: shareTitle,
     template: `%s | ${site.name}`,
   },
-  description: `Jiu-Jitsu na ${site.name}, ${site.city}–${site.state}. Aulas para crianças, adultos e mulheres. Agende sua aula experimental.`,
+  description: shareDescription,
   metadataBase: new URL(siteUrl),
   alternates: { canonical: '/' },
+  /*
+   * Cartão de pré-visualização ao compartilhar o link (WhatsApp, Instagram,
+   * Facebook, LinkedIn...). A imagem vem de src/app/opengraph-image.png (logo da
+   * unidade, 1200x630) e vale para todas as páginas.
+   */
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
+    url: '/',
     siteName: site.name,
+    title: shareTitle,
+    description: shareDescription,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: shareTitle,
+    description: shareDescription,
   },
 };
 
