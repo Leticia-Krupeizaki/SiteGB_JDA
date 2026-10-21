@@ -44,7 +44,8 @@ export const metadata: Metadata = {
   },
   description: shareDescription,
   metadataBase: new URL(siteUrl),
-  alternates: { canonical: '/' },
+  // Versão em Markdown para IAs (/llms.txt), anunciada no <head> de todas as páginas.
+  alternates: { canonical: '/', types: { 'text/markdown': '/llms.txt' } },
   /*
    * Cartão de pré-visualização ao compartilhar o link (WhatsApp, Instagram,
    * Facebook, LinkedIn...). A imagem vem de src/app/opengraph-image.png (logo da
