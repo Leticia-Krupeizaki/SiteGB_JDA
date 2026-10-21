@@ -36,14 +36,16 @@ export function TodayPopup() {
        * Mesmo formato do botão do WhatsApp, à esquerda dele: distância da borda do
        * WhatsApp + 3,5rem do botão + 0,75rem de espaço. Some com o menu mobile e
        * durante o formulário passo a passo do mural no celular. Borda branca para
-       * não sumir sobre os fundos pretos (topo da Home, rodapé).
+       * não sumir sobre os fundos pretos (topo da Home, rodapé). Fundo preto a 55%
+       * (pedido do cliente): deixa ver o texto por trás e mantém o branco legível
+       * sobre fundo claro (4,7:1); fica sólido no hover.
        */}
       <button
         type="button"
         onClick={open}
         aria-haspopup="dialog"
         title="Aulas de hoje"
-        className="focus-ring fixed right-[5.25rem] bottom-4 z-30 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-gb-ink text-gb-white shadow-lg ring-2 ring-gb-white transition-transform hover:scale-105 in-data-menu-open:hidden in-data-wizard-open:max-md:hidden sm:right-[5.75rem] sm:bottom-6 sm:w-auto sm:px-5"
+        className="focus-ring fixed right-[5.25rem] bottom-4 z-30 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-gb-ink/55 text-gb-white shadow-lg ring-2 ring-gb-white transition hover:scale-105 hover:bg-gb-ink in-data-menu-open:hidden in-data-wizard-open:max-md:hidden sm:right-[5.75rem] sm:bottom-6 sm:w-auto sm:px-5"
       >
         <ClockIcon className="h-7 w-7 shrink-0" />
         <span className="max-sm:sr-only font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap">Aulas de hoje</span>
