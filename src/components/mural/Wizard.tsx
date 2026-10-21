@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { mobileQuery, useMediaQuery } from '@/lib/hooks/useMediaQuery';
 
 /**
@@ -15,6 +15,15 @@ export function useWizard(steps: WizardStepDef[]) {
   const isMobile = useMediaQuery(mobileQuery);
   const headings = useRef<(HTMLHeadingElement | null)[]>([]);
   const last = steps.length - 1;
+
+  // Enquanto o formulário está na tela, esconde os botões flutuantes no celular
+  // (eles cobririam Voltar/Próximo, que ficam fixos no rodapé da tela).
+  useEffect(() => {
+    document.body.dataset.wizardOpen = 'true';
+    return () => {
+      delete document.body.dataset.wizardOpen;
+    };
+  }, []);
 
   const goTo = (index: number) => {
     setCurrent(index);

@@ -2,33 +2,20 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { CloseIcon } from '@/components/ui/icons';
+import { ClockIcon, CloseIcon } from '@/components/ui/icons';
 import type { Weekday } from '@/data/schedule';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
 import { TodayOnMat } from './TodayOnMat';
 
-/** Uma vez por visita: some ao navegar ou recarregar; volta numa nova visita (nova sessão do navegador). */
-const seenKey = 'gb-hoje-no-tatame-visto';
-
 /**
- * Pop-up "Hoje no tatame" ao abrir o site (pedido do cliente: informação
- * importante). <dialog> nativo: prende o foco, fecha com Esc, com o botão ou
- * clicando fora. Só no navegador, então não afeta o HTML lido por buscadores.
+ * Botão flutuante "Aulas de hoje", ao lado do botão do WhatsApp (pedido do
+ * cliente), que abre o quadro "Hoje no tatame". Não abre sozinho.
+ * <dialog> nativo: prende o foco, fecha com Esc, com o botão ou clicando fora, e
+ * devolve o foco ao botão flutuante ao fechar.
  */
 export function TodayPopup() {
   const ref = useRef<HTMLDialogElement>(null);
   const [day, setDay] = useState<{ day: Weekday; isToday: boolean } | null>(null);
-
-  useEffect(() => {
-    let seen = false;
-    try {
-      seen = sessionStorage.getItem(seenKey) === '1';
-      sessionStorage.setItem(seenKey, '1');
-    } catch {
-      // Armazenamento bloqueado (ex.: modo privado restrito): mostra só nesta carga de página.
-    }
-    if (!seen) setDay(defaultDay(new Date(), academyTimeZone));
-  }, []);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -39,50 +26,71 @@ export function TodayPopup() {
     }
   }, [day]);
 
-  if (!day) return null;
-
+  // O dia é calculado na hora do clique, então vale mesmo com a página aberta desde ontem.
+  const open = () => setDay(defaultDay(new Date(), academyTimeZone));
   const close = () => ref.current?.close();
 
   return (
-    <dialog
-      ref={ref}
-      aria-labelledby="popup-hoje-titulo"
-      onClose={() => setDay(null)}
-      onClick={(event) => {
-        if (event.target === ref.current) close();
-      }}
-      className="m-auto w-[min(30rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-y-auto bg-transparent p-0 backdrop:bg-gb-ink/70"
-    >
-      <div data-initial-focus tabIndex={-1} className="relative bg-gb-white focus:outline-none">
-        <button
-          type="button"
-          onClick={close}
-          className="focus-ring absolute top-1.5 right-1.5 z-10 inline-flex h-10 w-10 items-center justify-center text-gb-white hover:text-gb-line"
+    <>
+      {/*
+       * Mesmo formato do botão do WhatsApp, à esquerda dele: distância da borda do
+       * WhatsApp + 3,5rem do botão + 0,75rem de espaço. Some com o menu mobile e
+       * durante o formulário passo a passo do mural no celular. Borda branca para
+       * não sumir sobre os fundos pretos (topo da Home, rodapé).
+       */}
+      <button
+        type="button"
+        onClick={open}
+        aria-haspopup="dialog"
+        title="Aulas de hoje"
+        className="focus-ring fixed right-[5.25rem] bottom-4 z-30 inline-flex h-14 w-14 items-center justify-center gap-2 rounded-full bg-gb-ink text-gb-white shadow-lg ring-2 ring-gb-white transition-transform hover:scale-105 in-data-menu-open:hidden in-data-wizard-open:max-md:hidden sm:right-[5.75rem] sm:bottom-6 sm:w-auto sm:px-5"
+      >
+        <ClockIcon className="h-7 w-7 shrink-0" />
+        <span className="max-sm:sr-only font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap">Aulas de hoje</span>
+      </button>
+
+      {day && (
+        <dialog
+          ref={ref}
+          aria-labelledby="popup-hoje-titulo"
+          onClose={() => setDay(null)}
+          onClick={(event) => {
+            if (event.target === ref.current) close();
+          }}
+          className="m-auto w-[min(30rem,calc(100vw-2rem))] max-h-[calc(100dvh-2rem)] overflow-y-auto bg-transparent p-0 backdrop:bg-gb-ink/70"
         >
-          <CloseIcon className="h-5 w-5" />
-          <span className="sr-only">Fechar</span>
-        </button>
-        {/* pr no topo para o "x" não cobrir o dia da semana */}
-        <div className="[&>div>div:first-child]:pr-14">
-          <TodayOnMat initial={day} titleId="popup-hoje-titulo" />
-        </div>
-        <div className="flex flex-col gap-2 border-t border-gb-line p-4 sm:flex-row">
-          <Link
-            href="/horarios"
-            onClick={close}
-            className="focus-ring inline-flex min-h-11 flex-1 items-center justify-center bg-gb-red px-4 font-display text-lg font-semibold uppercase tracking-wide text-gb-white hover:bg-gb-red-dark"
-          >
-            Ver a grade completa
-          </Link>
-          <button
-            type="button"
-            onClick={close}
-            className="focus-ring min-h-11 flex-1 border-2 border-gb-ink px-4 font-display text-lg font-semibold uppercase tracking-wide hover:bg-gb-ink hover:text-gb-white"
-          >
-            Fechar
-          </button>
-        </div>
-      </div>
-    </dialog>
+          <div data-initial-focus tabIndex={-1} className="relative bg-gb-white focus:outline-none">
+            <button
+              type="button"
+              onClick={close}
+              className="focus-ring absolute top-1.5 right-1.5 z-10 inline-flex h-10 w-10 items-center justify-center text-gb-white hover:text-gb-line"
+            >
+              <CloseIcon className="h-5 w-5" />
+              <span className="sr-only">Fechar</span>
+            </button>
+            {/* pr no topo para o "x" não cobrir o dia da semana */}
+            <div className="[&>div>div:first-child]:pr-14">
+              <TodayOnMat initial={day} titleId="popup-hoje-titulo" />
+            </div>
+            <div className="flex flex-col gap-2 border-t border-gb-line p-4 sm:flex-row">
+              <Link
+                href="/horarios"
+                onClick={close}
+                className="focus-ring inline-flex min-h-11 flex-1 items-center justify-center bg-gb-red px-4 font-display text-lg font-semibold uppercase tracking-wide text-gb-white hover:bg-gb-red-dark"
+              >
+                Ver a grade completa
+              </Link>
+              <button
+                type="button"
+                onClick={close}
+                className="focus-ring min-h-11 flex-1 border-2 border-gb-ink px-4 font-display text-lg font-semibold uppercase tracking-wide hover:bg-gb-ink hover:text-gb-white"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+    </>
   );
 }
