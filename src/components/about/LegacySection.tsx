@@ -39,9 +39,10 @@ export function LegacySection() {
             <li key={master.name}>
               <figure>
                 {master.photo ? (
-                  <Image src={master.photo.src} alt={master.photo.alt} sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw" className="aspect-[3/4] h-auto w-full object-cover grayscale" />
+                  // Retratos oficiais (quadrados, P&B), sem edição.
+                  <Image src={master.photo.src} alt={master.photo.alt} sizes="(min-width: 1024px) 205px, (min-width: 640px) 33vw, 50vw" className="aspect-square h-auto w-full" />
                 ) : (
-                  <div role="img" aria-label={`Retrato de ${master.name} a definir`} className="flex aspect-[3/4] w-full items-end border border-gb-white/20 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.05)_0_1px,transparent_1px_10px)] p-3">
+                  <div role="img" aria-label={`Retrato de ${master.name} a definir`} className="flex aspect-square w-full items-end border border-gb-white/20 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.05)_0_1px,transparent_1px_10px)] p-3">
                     <span className="border border-dashed border-gb-line/50 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-gb-line">Retrato oficial a definir</span>
                   </div>
                 )}
