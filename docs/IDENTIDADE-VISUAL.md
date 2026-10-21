@@ -127,8 +127,9 @@ O manual define **AdiHaus DIN** como **única fonte permitida**. Hierarquia indi
 
 | Local | O que é usado hoje | Origem | Situação |
 |---|---|---|---|
-| Favicon (`src/app/favicon.ico`) | Escudo com identificação da escola (formato da p. 17) | Arquivo enviado pelo cliente (`assets/marca/…-sem-degrade.ico`) | **Não validado** como arquivo oficial |
-| Ícones `src/app/icon.png` (256 px) e `apple-icon.png` (180 px, fundo branco com margem) | Mesmo escudo, só redimensionado | Gerados do arquivo do cliente, sem alterar o desenho | **Não validado** |
+| Favicon (`src/app/favicon.ico`, 16/32/48 px), `icon.png` (256 px) e imagem do link compartilhado (`opengraph-image.png`, 512 px) | **Selo dourado Escola Premium**, fundo transparente (pedido do cliente, 21/10/2026) | Gerados de `assets/marca/selo-escola-premium-2026-transparente.png`: o JPG do selo com o fundo preto recortado só nas bordas (o selo em si não foi alterado) | Pedir à franqueadora a versão oficial com transparência |
+| `apple-icon.png` (180 px) | Selo dourado sobre fundo branco | O iOS não aceita transparência (pintaria de preto) | — |
+| Antes (até 21/10/2026) | Escudo vermelho com identificação da escola (formato da p. 17) | Arquivos do cliente em `assets/marca/` (`…-sem-degrade.ico`, `logo-jda.pdf`) | Guardados para uso futuro |
 | Cabeçalho, rodapé, menu mobile, painel | **Nome em texto** "Gracie Barra / Jardim das Américas" (a pedido do cliente), em uma cor só | Texto na fonte provisória | **Não é logotipo oficial.** Ver pendências |
 | Escudo no cabeçalho/rodapé | Removido a pedido do cliente (15/10/2026) | — | — |
 | Topo da Home e rodapé | **Selo "Escola Premium · Certificação 2026"** (`PremiumSeal.tsx`) | JPG 1280 px enviado pelo cliente em 19/10/2026 (original em `assets/marca/selo-escola-premium-2026.jpg`), sem edição | Usado só sobre fundo preto: o JPG não tem transparência (cantos pretos). Pedir versão PNG/SVG com fundo transparente para usar em fundos claros |
