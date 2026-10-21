@@ -37,6 +37,8 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+# Arquivos públicos servidos como estão (ex.: PDFs dos currículos).
+COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/dist-scripts ./scripts
 COPY --from=migrator --chown=node:node /app/migrate ./migrate
 COPY --chown=node:node docker/start-app.sh ./start.sh
