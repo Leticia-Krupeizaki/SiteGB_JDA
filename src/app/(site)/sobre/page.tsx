@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { LegacySection } from '@/components/about/LegacySection';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Container } from '@/components/ui/Container';
@@ -73,6 +74,8 @@ export default function SobrePage() {
           </div>
         </Container>
       </section>
+
+      <LegacySection />
 
       <section className="border-t border-gb-line py-16 sm:py-20">
         <Container className="space-y-6">

@@ -253,6 +253,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 | **Fonte oficial da marca** | Manual exige **AdiHaus DIN** (única permitida). Faltam os arquivos web licenciados; **D-DIN** (mesma família, licença OFL) é a provisória desde 19/10/2026. Como instalar: `docs/IDENTIDADE-VISUAL.md` |
 | **Logotipos oficiais em vetor** (Escudo, Linear, Verticalizada, identificação da escola) | Pedir a `suporte@graciebarra.com`; detalhes em `docs/IDENTIDADE-VISUAL.md` |
 | Fotos da unidade, treinos e hero | `PhotoPlaceholder` em `page.tsx` e `Hero.tsx` (usar `next/image`) |
+| **Retratos do Mural do Legado** (Maeda, Carlos Gracie Sr., Hélio, Rolls, Carlos Gracie Jr.) | Seção "O legado Gracie Barra" em `/sobre#legado` (`src/data/legacy.ts`). Pedir à franqueadora os retratos oficiais **e autorização por escrito**: o manual (p. 19) proíbe usar a imagem de Carlos Gracie Sr. e Jr. sem ela. Não usar fotos da internet |
 | Professores (nome, foto, graduação, bio) | criar `src/data/teachers.ts` + `TeacherCard`; páginas Home e `professores/` |
 | História e diferenciais da unidade | `sobre/page.tsx` e seção "Somos Gracie Barra..." da Home |
 | ✅ Grade atualizada para a versão de 10/08/2026 (19/10/2026) | Próximas mudanças: `src/data/schedule.ts` e `tests/schedule.test.ts` juntos. A grade é exibida em linhas por faixa de horário (`scheduleSlots`), com espaço vazio onde não há aula (pedido do cliente) |
