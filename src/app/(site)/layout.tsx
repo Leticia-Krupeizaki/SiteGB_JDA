@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { TodayPopup } from '@/components/home/TodayPopup';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { SkipLink } from '@/components/layout/SkipLink';
@@ -14,6 +15,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       </main>
       <Footer />
       <WhatsAppFloatingButton />
+      <TodayPopup />
     </>
   );
 }

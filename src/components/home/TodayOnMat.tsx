@@ -10,7 +10,7 @@ type DayState = { day: Weekday; isToday: boolean };
  * Aulas do dia. O servidor já calcula o dia no fuso da academia; o navegador
  * só corrige se a página em cache tiver virado o dia.
  */
-export function TodayOnMat({ initial }: { initial: DayState }) {
+export function TodayOnMat({ initial, titleId }: { initial: DayState; titleId?: string }) {
   const [state, setState] = useState<DayState>(initial);
 
   useEffect(() => setState(defaultDay(new Date(), academyTimeZone)), []);
@@ -20,7 +20,7 @@ export function TodayOnMat({ initial }: { initial: DayState }) {
   return (
     <div className="bg-gb-white text-gb-ink">
       <div className="flex items-baseline justify-between gap-4 bg-gb-ink px-5 py-3 text-gb-white">
-        <p className="font-display text-xl font-semibold uppercase tracking-wide">
+        <p id={titleId} className="font-display text-xl font-semibold uppercase tracking-wide">
           {state.isToday ? 'Hoje no tatame' : 'Segunda no tatame'}
         </p>
         <p className="text-sm text-gb-line">{info.label}</p>
