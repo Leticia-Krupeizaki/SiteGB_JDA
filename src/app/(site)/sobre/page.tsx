@@ -37,7 +37,8 @@ export default function SobrePage() {
                 alt={history.photo.alt}
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 placeholder="blur"
-                className="h-auto w-full"
+                // Hover elevation: a foto sobe um pouco e ganha sombra (sem movimento para quem prefere menos animação).
+                className="h-auto w-full shadow-md transition duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               />
             ) : (
               <PhotoPlaceholder label="Foto do fundador com os filhos a definir" className="aspect-[4/5] w-full" />
