@@ -64,14 +64,14 @@ export function buildLlmsTxt(): string {
     `- [Mural](${url('/mural')}): fotos da comunidade, enviadas pelos alunos e revisadas pela equipe`,
     `- [Contato](${url('/contato')}): telefone, WhatsApp e Instagram`,
     '',
-    '## Currículos de treino (PDF)',
+    '## Currículos de treino',
     '',
-    'Currículos oficiais Gracie Barra: 16 semanas de aulas, com as técnicas das aulas A e B.',
+    `Currículos oficiais Gracie Barra: 16 semanas de aulas, com as técnicas das aulas A e B. Só para visualização no site, em ${url('/programas#curriculos')}.`,
     '',
   );
   for (const group of curriculumGroups) {
     for (const c of group.items) {
-      push(`- [Currículo ${c.title}](${url(c.file)}): ${c.audience ?? group.title}; versão ${c.version}`);
+      push(`- Currículo ${c.title}: ${c.audience ?? group.title}; versão ${c.version}`);
     }
   }
 
