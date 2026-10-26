@@ -1,4 +1,5 @@
 import type { StaticImageData } from 'next/image';
+import founderWithChildren from '@/assets/historia/fundador-com-filhos.jpg';
 
 /**
  * "Nossa história": texto ORIGINAL enviado pelo cliente em 19/10/2026, narrado
@@ -25,10 +26,10 @@ export const history = {
   ],
   tagline: 'Gracie Barra Premium Jardim das Américas — tradição no tatame, irmandade na caminhada e um legado construído em família.',
   signature: 'Idealização, fundação e propriedade: Fabio Daurélio Gusso.',
-  /**
-   * Foto do fundador com os filhos. Pendente: quando chegar, colocar o arquivo
-   * em src/assets/, importar aqui e preencher { src, alt }.
-   */
-  photo: null as null | { src: StaticImageData; alt: string },
+  /** Foto do fundador com os filhos, enviada pelo cliente em 26/10/2026. */
+  photo: {
+    src: founderWithChildren,
+    alt: 'Fabio Daurélio Gusso de kimono branco e faixa azul, sorrindo e abraçado aos filhos, um de cada lado, no tatame da academia, sob o símbolo da Gracie Barra iluminado na parede.',
+  } as null | { src: StaticImageData; alt: string },
   photoCaption: 'Fabio Daurélio Gusso, fundador, com os filhos Fabio Daurélio Gusso Filho e Maria Fernanda Gusso.',
 };

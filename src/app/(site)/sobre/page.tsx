@@ -36,7 +36,8 @@ export default function SobrePage() {
                 src={history.photo.src}
                 alt={history.photo.alt}
                 sizes="(min-width: 1024px) 40vw, 100vw"
-                className="aspect-[4/5] h-auto w-full object-cover"
+                placeholder="blur"
+                className="h-auto w-full"
               />
             ) : (
               <PhotoPlaceholder label="Foto do fundador com os filhos a definir" className="aspect-[4/5] w-full" />
