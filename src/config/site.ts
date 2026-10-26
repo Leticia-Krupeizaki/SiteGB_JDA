@@ -27,10 +27,13 @@ export const contact = {
   displayPhone: '(41) 3205-8109',
   phoneE164: '+554132058109',
   whatsappDigits: '554132058109',
+  /** E-mail oficial da unidade (enviado pelo cliente em 26/10/2026). */
+  email: 'gbjardimdasamericas@outlook.com',
   trialMessage: `Olá! Gostaria de agendar uma aula experimental na ${site.name}. Poderiam me passar mais informações?`,
 } as const;
 
 export const phoneUrl = `tel:${contact.phoneE164}`;
+export const emailUrl = `mailto:${contact.email}`;
 
 export function whatsappUrl(message?: string): string {
   const base = `https://wa.me/${contact.whatsappDigits}`;

@@ -5,11 +5,11 @@ import { Container } from '@/components/ui/Container';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { primaryCta } from '@/config/navigation';
 import { InstagramIcon } from '@/components/ui/icons';
-import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl, whatsappUrl } from '@/config/site';
+import { contact, emailUrl, instagramHandle, phoneUrl, site, whatsappTrialUrl, whatsappUrl } from '@/config/site';
 
 export const metadata: Metadata = {
   title: 'Contato',
-  description: `Fale com a ${site.name} pelo telefone ou WhatsApp ${contact.displayPhone}.`,
+  description: `Fale com a ${site.name} pelo telefone ou WhatsApp ${contact.displayPhone} ou pelo e-mail ${contact.email}.`,
   alternates: { canonical: '/contato' },
 };
 
@@ -46,6 +46,12 @@ export default function ContatoPage() {
               <h2 className="font-display text-3xl font-bold uppercase">Endereço</h2>
               <p className="text-gb-mute">Jardim das Américas, Curitiba–PR</p>
               <PlaceholderNotice>endereço completo e mapa.</PlaceholderNotice>
+            </div>
+            <div className="space-y-3">
+              <h2 className="font-display text-3xl font-bold uppercase">E-mail</h2>
+              <a href={emailUrl} className="focus-ring inline-block font-display text-2xl font-semibold break-all text-gb-navy hover:text-gb-red">
+                {contact.email}
+              </a>
             </div>
             {site.social.instagram && (
               <div className="space-y-3">

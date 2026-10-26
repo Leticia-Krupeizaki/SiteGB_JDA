@@ -31,6 +31,7 @@ export function buildLlmsTxt(): string {
     `- Fundação da unidade: 7 de abril de 2025, por Fabio Daurélio Gusso`,
     `- Localização: ${site.neighborhood}, ${site.city}–${site.state}. Endereço completo: a confirmar (consulte pelo WhatsApp).`,
     `- Telefone e WhatsApp: ${contact.displayPhone}`,
+    `- E-mail: ${contact.email}`,
     `- Agendar aula experimental: ${whatsappTrialUrl}`,
     ...(site.social.instagram ? [`- Instagram: [${instagramHandle}](${site.social.instagram})`] : []),
     `- Site: ${url('/')}`,

@@ -14,6 +14,7 @@ describe('/llms.txt', () => {
 
   it('traz o contato e o agendamento', () => {
     expect(text).toContain(contact.displayPhone);
+    expect(text).toContain('gbjardimdasamericas@outlook.com');
     expect(text).toContain(`https://wa.me/${contact.whatsappDigits}`);
   });
 

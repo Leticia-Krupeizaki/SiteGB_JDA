@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { mainNavigation } from '@/config/navigation';
-import { contact, instagramHandle, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
+import { contact, emailUrl, instagramHandle, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { InstagramIcon } from '@/components/ui/icons';
 import { PremiumSeal } from '@/components/ui/PremiumSeal';
 import { externalLinks } from '@/data/external-links';
@@ -66,6 +66,12 @@ export function Footer() {
                 <a href={whatsappTrialUrl} target="_blank" rel="noopener noreferrer" className="focus-ring hover:text-gb-white">
                   Falar no WhatsApp
                   <span className="sr-only"> (abre em nova aba)</span>
+                </a>
+              </li>
+              <li>
+                <a href={emailUrl} className="focus-ring break-all hover:text-gb-white">
+                  <span className="sr-only">E-mail </span>
+                  {contact.email}
                 </a>
               </li>
               {site.social.instagram && (
