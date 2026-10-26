@@ -49,8 +49,9 @@ describe('faixas de horário (linhas da grade)', () => {
     }
   });
 
-  it('segunda 17:30 fica na linha das 17:00, como na arte oficial', () => {
-    expect(slotOf('17:30')).toBe('17:00');
+  it('segunda 17:30 tem linha própria, separada das aulas das 17:00', () => {
+    expect(slotOf('17:30')).toBe('17:30');
+    expect(slotOf('17:00')).toBe('17:00');
     expect(slotOf('06:15')).toBe('06:15');
     expect(slotOf('19:00')).toBe('19:00');
   });

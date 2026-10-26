@@ -109,8 +109,10 @@ export function ScheduleBoard({ initialDay }: { initialDay: Weekday }) {
        * Computador: 5 colunas e uma linha por faixa de horário (scheduleSlots), como na
        * arte oficial. Os dias usam subgrid, então cada faixa tem a mesma altura em
        * todas as colunas e o espaço vazio marca "sem aula naquele horário".
+       * Os números de linhas (8 faixas; 9 com o título) acompanham scheduleSlots:
+       * ao mudar as faixas, ajustar aqui (o Tailwind precisa das classes fixas).
        */}
-      <div className="mt-6 grid gap-6 lg:mt-10 lg:grid-cols-5 lg:grid-rows-[auto_repeat(7,auto)] lg:gap-x-4 lg:gap-y-3">
+      <div className="mt-6 grid gap-6 lg:mt-10 lg:grid-cols-5 lg:grid-rows-[auto_repeat(8,auto)] lg:gap-x-4 lg:gap-y-3">
         {weekdays.map((w) => {
           const blocks = filterBlocks(schedule[w.id], active);
           return (
@@ -118,17 +120,20 @@ export function ScheduleBoard({ initialDay }: { initialDay: Weekday }) {
               key={w.id}
               id={`painel-${w.id}`}
               {...(isWide ? {} : { role: 'tabpanel', 'aria-labelledby': `tab-${w.id}` })}
-              className={`${w.id === day ? 'block' : 'hidden'} lg:row-span-8 lg:grid lg:grid-rows-subgrid`}
+              className={`${w.id === day ? 'block' : 'hidden'} lg:row-span-9 lg:grid lg:grid-rows-subgrid`}
             >
               <h2 className="font-display text-2xl font-bold uppercase lg:border-b-2 lg:border-gb-ink lg:pb-2">{w.label}</h2>
               {blocks.length === 0 && (
                 <p className="mt-4 border border-dashed border-gb-mute/40 p-4 text-sm text-gb-mute lg:hidden">Sem aulas da turma selecionada neste dia.</p>
               )}
-              <ul className={`mt-4 space-y-3 lg:row-span-7 lg:mt-0 lg:grid lg:grid-rows-subgrid lg:space-y-0 ${blocks.length === 0 ? 'max-lg:hidden' : ''}`}>
+              <ul className={`mt-4 space-y-3 lg:row-span-8 lg:mt-0 lg:grid lg:grid-rows-subgrid lg:space-y-0 ${blocks.length === 0 ? 'max-lg:hidden' : ''}`}>
                 {scheduleSlots.map((slot) => {
                   const block = blocks.find((b) => slotOf(b.start) === slot);
+                  // No celular, some o "sem aula" de uma faixa em que outra aula do dia ainda está
+                  // acontecendo (ex.: 17:30 na terça, durante a aula das 17:00–18:00).
+                  const covered = !block && blocks.some((b) => b.start < slot && slot < b.end);
                   return (
-                    <li key={slot} className="lg:h-full">
+                    <li key={slot} className={`lg:h-full ${covered ? 'max-lg:hidden' : ''}`}>
                       {block ? <ScheduleClassCard block={block} dayLabel={w.label} /> : <EmptySlot slot={slot} />}
                     </li>
                   );

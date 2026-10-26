@@ -35,9 +35,10 @@ export const weekdays: { id: Weekday; label: string; short: string; jsDay: numbe
  * Faixas de horário da arte oficial. Na grade, cada faixa é uma linha: dias sem
  * aula naquela faixa ficam com o espaço vazio, para o aluno não se perder
  * (pedido do cliente). Um bloco entra na última faixa que começa até o seu
- * início (ex.: segunda 17:30 fica na faixa das 17:00, como na arte).
+ * início. A segunda 17:30 tem linha própria, logo abaixo das 17:00 (pedido do
+ * cliente, 26/10/2026), para não parecer que começa no mesmo horário das outras.
  */
-export const scheduleSlots = ['06:15', '09:30', '12:00', '17:00', '18:00', '19:00', '20:00'] as const;
+export const scheduleSlots = ['06:15', '09:30', '12:00', '17:00', '17:30', '18:00', '19:00', '20:00'] as const;
 
 export type ScheduleSlot = (typeof scheduleSlots)[number];
 
