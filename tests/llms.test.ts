@@ -25,8 +25,8 @@ describe('/llms.txt', () => {
     }
   });
 
-  it('não inventa endereço e não tem valores vazios', () => {
-    expect(text).toContain('Endereço completo: a confirmar');
+  it('traz o endereço confirmado e não tem valores vazios', () => {
+    expect(text).toContain('Rua Marechal Cardoso Júnior, 194 – Jardim das Américas, Curitiba–PR, 81530-420');
     expect(text).not.toMatch(/undefined|null|\[object/);
   });
 });

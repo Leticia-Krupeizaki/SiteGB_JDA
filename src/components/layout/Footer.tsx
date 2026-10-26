@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { mainNavigation } from '@/config/navigation';
-import { contact, emailUrl, instagramHandle, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
+import { contact, emailUrl, instagramHandle, maps, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { InstagramIcon } from '@/components/ui/icons';
 import { PremiumSeal } from '@/components/ui/PremiumSeal';
 import { externalLinks } from '@/data/external-links';
@@ -84,7 +84,16 @@ export function Footer() {
                   </a>
                 </li>
               )}
-              <li>Endereço a confirmar</li>
+              <li>
+                <a href={maps.directionsUrl} target="_blank" rel="noopener noreferrer" className="focus-ring hover:text-gb-white">
+                  {site.address.street}
+                  <br />
+                  {site.neighborhood}, {site.city}–{site.state}
+                  <br />
+                  CEP {site.address.postalCode}
+                  <span className="sr-only"> (rota no Google Maps, abre em nova aba)</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>

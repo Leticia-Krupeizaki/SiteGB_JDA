@@ -247,7 +247,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 
 | Item | Onde entra no código |
 |---|---|
-| Endereço completo e link do Google Maps | `src/config/site.ts → site.address`; seção "Onde estamos" em `ContactCTA.tsx` e `contato/page.tsx` |
+| ✅ **Endereço e mapa** (26/10/2026): Rua Marechal Cardoso Júnior, 194 – Jardim das Américas, Curitiba–PR, 81530-420 | `src/config/site.ts` (`site.address`, `fullAddress`, `maps`). Contato: endereço, "Como chegar" (rota no Google Maps), "Ver no Google" (perfil enviado pelo cliente) e mapa incorporado sem chave de API. Também no `ContactCTA`, no rodapé e no /llms.txt |
 | Redes sociais oficiais | ✅ Instagram `@gbjardimdasamericas` em `src/config/site.ts → site.social` (rodapé e Contato). Facebook/YouTube: só se o cliente tiver |
 | Logo oficial (escudo) e manual de marca | ✅ Escudo recebido (originais em `assets/marca/`), usado no favicon e nos ícones (`src/app/icon.png`, `apple-icon.png`). No cabeçalho e rodapé o cliente preferiu manter o nome em texto (15/10/2026). O SVG enviado é um PNG embutido; um vetorial deixaria a marca mais nítida. Manual de marca pendente |
 | **Fonte oficial da marca** | Manual exige **AdiHaus DIN** (única permitida). Faltam os arquivos web licenciados; **D-DIN** (mesma família, licença OFL) é a provisória desde 19/10/2026. Como instalar: `docs/IDENTIDADE-VISUAL.md` |
@@ -265,7 +265,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 | Hospedagem, domínio, banco, storage, e-mail | Etapa 4 |
 | Aprovação dos textos provisórios | Home, Sobre, Programas, benefícios (`src/data/benefits.ts`) |
 | Depoimentos reais autorizados | seção ainda não criada; só criar com depoimentos reais |
-| Dados estruturados `LocalBusiness` | adicionar JSON-LD no `layout.tsx` **somente** com endereço confirmado |
+| ✅ Dados estruturados (JSON-LD `SportsActivityLocation`) | `src/app/(site)/layout.tsx`: nome, telefone, e-mail, endereço, mapa e Instagram. Ao confirmar horário de funcionamento ou coordenadas, acrescentar lá |
 
 ---
 
@@ -273,7 +273,7 @@ Quando chegar cada item, o lugar de trocar já está indicado:
 
 - [x] **Abas da grade em telas largas:** `ScheduleBoard.tsx` só aplica `role="tabpanel"` abaixo de `lg` (via `matchMedia`); em telas largas a semana é uma lista de seções.
 - [x] **Hidratação do "dia atual":** Home e Horários calculam o dia no servidor com fuso `America/Sao_Paulo` (`defaultDay(date, academyTimeZone)`) e revalidam a cada hora; o navegador só corrige se o cache tiver virado o dia.
-- [ ] **Aviso de endereço repetido:** `ContactCTA` mostra "A confirmar · endereço completo e mapa" em todas as páginas; remover quando o endereço chegar.
+- [x] **Aviso de endereço repetido:** removido do `ContactCTA` com a chegada do endereço (26/10/2026).
 - [ ] **`next/image`:** ainda não há imagens reais; ao adicionar, configurar `images.remotePatterns` para o domínio do storage.
 - [ ] **Teste de navegador:** não há Playwright no `package.json` ainda (Etapa 6).
 - [ ] **Branches antigas** `feat/etapa-1-fundacao-visual` e `feat/etapa-2-horarios` podem ser apagadas no GitHub; tudo já está na `main`.

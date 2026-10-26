@@ -2,14 +2,13 @@ import type { Metadata } from 'next';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { Container } from '@/components/ui/Container';
-import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { primaryCta } from '@/config/navigation';
 import { InstagramIcon } from '@/components/ui/icons';
-import { contact, emailUrl, instagramHandle, phoneUrl, site, whatsappTrialUrl, whatsappUrl } from '@/config/site';
+import { contact, emailUrl, fullAddress, instagramHandle, maps, phoneUrl, site, whatsappTrialUrl, whatsappUrl } from '@/config/site';
 
 export const metadata: Metadata = {
   title: 'Contato',
-  description: `Fale com a ${site.name} pelo telefone ou WhatsApp ${contact.displayPhone} ou pelo e-mail ${contact.email}.`,
+  description: `${fullAddress}. Fale com a ${site.name} pelo telefone ou WhatsApp ${contact.displayPhone} ou pelo e-mail ${contact.email}.`,
   alternates: { canonical: '/contato' },
 };
 
@@ -44,8 +43,21 @@ export default function ContatoPage() {
           <div className="space-y-8 border-t-2 border-gb-ink pt-6 lg:border-t-0 lg:border-l-2 lg:pt-0 lg:pl-10">
             <div className="space-y-4">
               <h2 className="font-display text-3xl font-bold uppercase">Endereço</h2>
-              <p className="text-gb-mute">Jardim das Américas, Curitiba–PR</p>
-              <PlaceholderNotice>endereço completo e mapa.</PlaceholderNotice>
+              <address className="text-lg not-italic">
+                {site.address.street}
+                <br />
+                {site.neighborhood}, {site.city}–{site.state}
+                <br />
+                CEP {site.address.postalCode}
+              </address>
+              <div className="flex flex-wrap gap-3">
+                <ButtonLink href={maps.directionsUrl} external>
+                  Como chegar
+                </ButtonLink>
+                <ButtonLink href={maps.profileUrl} external variant="outline">
+                  Ver no Google
+                </ButtonLink>
+              </div>
             </div>
             <div className="space-y-3">
               <h2 className="font-display text-3xl font-bold uppercase">E-mail</h2>
@@ -70,6 +82,15 @@ export default function ContatoPage() {
               </div>
             )}
           </div>
+        </Container>
+        <Container className="mt-12">
+          <iframe
+            src={maps.embedUrl}
+            title={`Mapa: ${fullAddress}`}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="block h-80 w-full border-2 border-gb-ink sm:h-[28rem]"
+          />
         </Container>
       </section>
     </>

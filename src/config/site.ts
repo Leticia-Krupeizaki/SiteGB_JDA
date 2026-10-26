@@ -12,8 +12,11 @@ export const site = {
   city: 'Curitiba',
   state: 'PR',
   neighborhood: 'Jardim das Américas',
-  /** Pendente: não inferir a partir do bairro. */
-  address: null as string | null,
+  /** Endereço da unidade (enviado pelo cliente em 26/10/2026, igual ao perfil no Google). */
+  address: {
+    street: 'Rua Marechal Cardoso Júnior, 194',
+    postalCode: '81530-420',
+  },
   /** Perfis oficiais confirmados pelo cliente. Facebook e YouTube ainda não fornecidos. */
   social: {
     instagram: 'https://www.instagram.com/gbjardimdasamericas/',
@@ -41,3 +44,15 @@ export function whatsappUrl(message?: string): string {
 }
 
 export const whatsappTrialUrl = whatsappUrl(contact.trialMessage);
+
+/** Endereço completo em uma linha (contato, rodapé, llms.txt). */
+export const fullAddress = `${site.address.street} – ${site.neighborhood}, ${site.city}–${site.state}, ${site.address.postalCode}`;
+
+export const maps = {
+  /** Perfil da escola no Google (link enviado pelo cliente): avaliações, fotos e rota. */
+  profileUrl: 'https://share.google/BCkij0Hs97cPPHfa3',
+  /** Abre a rota até a escola no Google Maps (app no celular). */
+  directionsUrl: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${site.address.street}, ${site.city} - ${site.state}, ${site.address.postalCode}`)}`,
+  /** Mapa incorporado sem chave de API. */
+  embedUrl: `https://www.google.com/maps?q=${encodeURIComponent(`${site.address.street}, ${site.neighborhood}, ${site.city} - ${site.state}, ${site.address.postalCode}`)}&z=16&output=embed`,
+};

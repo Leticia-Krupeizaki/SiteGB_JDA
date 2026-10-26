@@ -1,4 +1,4 @@
-import { contact, instagramHandle, site, siteUrl, whatsappTrialUrl } from '@/config/site';
+import { contact, fullAddress, instagramHandle, maps, site, siteUrl, whatsappTrialUrl } from '@/config/site';
 import { about } from '@/data/about';
 import { curriculumGroups } from '@/data/curriculums';
 import { legacy, legacyWall } from '@/data/legacy';
@@ -29,7 +29,8 @@ export function buildLlmsTxt(): string {
     `- Nome: ${site.name}`,
     `- Rede: Gracie Barra (fundada em 1986 pelo Mestre Carlos Gracie Jr.). Missão: "Jiu-Jitsu Para Todos". Valores: Irmandade, Integridade e Desenvolvimento.`,
     `- Fundação da unidade: 7 de abril de 2025, por Fabio Daurélio Gusso`,
-    `- Localização: ${site.neighborhood}, ${site.city}–${site.state}. Endereço completo: a confirmar (consulte pelo WhatsApp).`,
+    `- Endereço: ${fullAddress}`,
+    `- Mapa e rota: ${maps.profileUrl}`,
     `- Telefone e WhatsApp: ${contact.displayPhone}`,
     `- E-mail: ${contact.email}`,
     `- Agendar aula experimental: ${whatsappTrialUrl}`,
