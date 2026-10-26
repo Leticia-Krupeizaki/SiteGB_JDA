@@ -3,10 +3,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { categoryLabel, muralCategories } from '@/data/mural';
 import type { MuralStatus } from '@/types/mural';
-import { adminFetch } from './api';
+import { AdminApiError, adminFetch } from './api';
+import { ConfirmDialog } from './ConfirmDialog';
 import { formatDateTime, statusTabs } from './labels';
 import { PostDetail } from './PostDetail';
 import { StatusBadge } from './StatusBadge';
+import { useToast } from './Toast';
 import type { AdminPost, AdminPostPage } from './types';
 
 type Filters = { category: string; from: string; to: string };
@@ -24,6 +26,11 @@ export function ModerationBoard({ initialPostId }: { initialPostId?: string }) {
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(initialPostId ?? null);
   const request = useRef(0);
+  const toast = useToast();
+  /** Foto publicada que a equipe decidiu retirar (atalho direto na lista, sem abrir o detalhe). */
+  const [removing, setRemoving] = useState<AdminPost | null>(null);
+  const [removeBusy, setRemoveBusy] = useState(false);
+  const [removeError, setRemoveError] = useState<string>();
 
   const load = useCallback(async (next: { status: MuralStatus; filters: Filters; after?: string | null }) => {
     const id = ++request.current;
@@ -53,6 +60,24 @@ export function ModerationBoard({ initialPostId }: { initialPostId?: string }) {
   const onChanged = (post: AdminPost) => {
     setItems((current) => (post.status === status ? current.map((p) => (p.id === post.id ? post : p)) : current.filter((p) => p.id !== post.id)));
     void adminFetch<AdminPostPage>(`/api/admin/mural?status=${status}&limit=1`).then((page) => setCounts(page.counts)).catch(() => undefined);
+  };
+
+  const remove = async (reason: string) => {
+    if (!removing) return;
+    setRemoveBusy(true);
+    setRemoveError(undefined);
+    try {
+      const updated = await adminFetch<AdminPost>(`/api/admin/mural/${removing.id}`, { method: 'DELETE', body: { reason } });
+      onChanged(updated);
+      setRemoving(null);
+      toast('success', 'Foto retirada do mural.');
+    } catch (err) {
+      setRemoveError(err instanceof AdminApiError ? err.message : 'Algo deu errado.');
+      // Conflito: outra pessoa já mexeu na foto. Recarrega a lista real.
+      if (err instanceof AdminApiError && err.status === 409) void load({ status, filters });
+    } finally {
+      setRemoveBusy(false);
+    }
   };
 
   const filtered = filters.category || filters.from || filters.to;
@@ -121,8 +146,8 @@ export function ModerationBoard({ initialPostId }: { initialPostId?: string }) {
         )}
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((post) => (
-            <li key={post.id}>
-              <button type="button" onClick={() => setSelected(post.id)} className="focus-ring block w-full bg-gb-white text-left hover:outline hover:outline-2 hover:outline-gb-ink">
+            <li key={post.id} className="flex flex-col bg-gb-white">
+              <button type="button" onClick={() => setSelected(post.id)} className="focus-ring block w-full flex-1 text-left hover:outline hover:outline-2 hover:outline-gb-ink">
                 <div className="aspect-[4/3] overflow-hidden bg-gb-ink">
                   {/* eslint-disable-next-line @next/next/no-img-element -- URL assinada temporária do bucket privado */}
                   <img src={post.imageUrl} alt="" loading="lazy" className="h-full w-full object-cover" />
@@ -138,6 +163,21 @@ export function ModerationBoard({ initialPostId }: { initialPostId?: string }) {
                 </div>
                 <span className="sr-only">Abrir detalhe</span>
               </button>
+              {post.status === 'APPROVED' && (
+                <div className="px-3 pb-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRemoveError(undefined);
+                      setRemoving(post);
+                    }}
+                    className="focus-ring min-h-11 w-full border-2 border-gb-red font-display text-base font-semibold uppercase text-gb-red hover:bg-gb-red hover:text-gb-white"
+                  >
+                    Retirar do mural
+                    <span className="sr-only">: foto de {post.studentName}, {categoryLabel[post.category]}</span>
+                  </button>
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -156,6 +196,18 @@ export function ModerationBoard({ initialPostId }: { initialPostId?: string }) {
       </div>
 
       <PostDetail postId={selected} onClose={() => setSelected(null)} onChanged={onChanged} />
+      <ConfirmDialog
+        open={removing !== null}
+        title="Retirar do mural"
+        description="A foto sai do mural na hora, por decisão da equipe, sem precisar de pedido do aluno. A cópia pública é apagada; a foto original continua guardada no painel, na aba Removidas. O motivo fica registrado no histórico."
+        reasonLabel="Motivo (só a equipe vê)"
+        confirmLabel="Retirar"
+        danger
+        busy={removeBusy}
+        error={removeError}
+        onCancel={() => setRemoving(null)}
+        onConfirm={(reason) => void remove(reason)}
+      />
     </div>
   );
 }

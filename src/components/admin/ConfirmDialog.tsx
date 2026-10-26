@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 
 type Props = {
   open: boolean;
@@ -20,6 +20,9 @@ type Props = {
 export function ConfirmDialog({ open, title, description, confirmLabel, reasonLabel, danger = false, busy = false, error, onConfirm, onCancel }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const [reason, setReason] = useState('');
+  // Ids únicos: há mais de uma confirmação na mesma página (lista e detalhe).
+  const titleId = useId();
+  const reasonId = useId();
 
   useEffect(() => {
     const dialog = ref.current;
@@ -37,19 +40,19 @@ export function ConfirmDialog({ open, title, description, confirmLabel, reasonLa
   };
 
   return (
-    <dialog ref={ref} onClose={onCancel} aria-labelledby="confirm-title" className="m-auto w-[min(32rem,calc(100vw-2rem))] p-0 backdrop:bg-gb-ink/70">
+    <dialog ref={ref} onClose={onCancel} aria-labelledby={titleId} className="m-auto w-[min(32rem,calc(100vw-2rem))] p-0 backdrop:bg-gb-ink/70">
       <form onSubmit={submit} className="space-y-4 p-6">
-        <h2 id="confirm-title" className="font-display text-2xl font-bold uppercase">
+        <h2 id={titleId} className="font-display text-2xl font-bold uppercase">
           {title}
         </h2>
         <p className="text-gb-mute">{description}</p>
         {reasonLabel && (
           <div>
-            <label htmlFor="confirm-reason" className="font-semibold">
+            <label htmlFor={reasonId} className="font-semibold">
               {reasonLabel}
             </label>
             <textarea
-              id="confirm-reason"
+              id={reasonId}
               rows={3}
               required
               maxLength={500}

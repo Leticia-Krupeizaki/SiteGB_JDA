@@ -232,8 +232,9 @@ export function PostDetail({ postId, onClose, onChanged }: Props) {
             {post.status === 'APPROVED' && (
               <section className="border-2 border-gb-red p-4">
                 <p className="font-semibold">Esta foto está publicada no mural.</p>
+                <p className="mt-1 text-sm text-gb-mute">A equipe pode retirá-la a qualquer momento, sem esperar pedido do aluno.</p>
                 <button type="button" disabled={busy} onClick={() => setConfirm('remove')} className={`${buttonBase} mt-3 bg-gb-red text-gb-white hover:bg-gb-red-dark`}>
-                  Remover do mural
+                  Retirar do mural
                 </button>
               </section>
             )}
@@ -293,15 +294,15 @@ export function PostDetail({ postId, onClose, onChanged }: Props) {
       />
       <ConfirmDialog
         open={confirm === 'remove'}
-        title="Remover do mural"
-        description="A foto sai do mural na hora e a cópia pública é apagada. Esta ação não pode ser desfeita."
-        reasonLabel="Motivo da remoção"
-        confirmLabel="Remover"
+        title="Retirar do mural"
+        description="A foto sai do mural na hora, por decisão da equipe, sem precisar de pedido do aluno. A cópia pública é apagada; a foto original continua guardada no painel, na aba Removidas. O motivo fica registrado no histórico."
+        reasonLabel="Motivo (só a equipe vê)"
+        confirmLabel="Retirar"
         danger
         busy={busy}
         error={confirmError}
         onCancel={() => setConfirm(null)}
-        onConfirm={(reason) => post && run(() => adminFetch(`/api/admin/mural/${post.id}`, { method: 'DELETE', body: { reason } }), 'Foto removida do mural.')}
+        onConfirm={(reason) => post && run(() => adminFetch(`/api/admin/mural/${post.id}`, { method: 'DELETE', body: { reason } }), 'Foto retirada do mural.')}
       />
     </dialog>
   );
