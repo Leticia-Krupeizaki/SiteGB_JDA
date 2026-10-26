@@ -1,4 +1,6 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import schoolLogo from '@/assets/marca/logo-escola-jda.png';
 import { mainNavigation } from '@/config/navigation';
 import { contact, emailUrl, instagramHandle, maps, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { InstagramIcon } from '@/components/ui/icons';
@@ -24,7 +26,14 @@ export function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed">
               Jiu-Jitsu no {site.neighborhood}, {site.city}–{site.state}.
             </p>
-            <PremiumSeal sizes="96px" className="mt-6 w-24" />
+            {/*
+             * Logo da escola (arquivo do cliente, assets/marca/logo-jda.pdf, com disco branco
+             * atrás para o texto preto do anel aparecer no fundo preto) ao lado do selo Premium.
+             */}
+            <div className="mt-6 flex items-center gap-5">
+              <Image src={schoolLogo} alt={`Logo ${site.name}: Jiu-Jitsu & Defesa Pessoal, Jardim das Américas, Curitiba, PR`} sizes="96px" className="h-auto w-24" />
+              <PremiumSeal sizes="96px" className="w-24" />
+            </div>
           </div>
 
           <nav aria-label="Rodapé">

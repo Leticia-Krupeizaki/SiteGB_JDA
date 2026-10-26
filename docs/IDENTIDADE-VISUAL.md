@@ -131,7 +131,8 @@ O manual define **AdiHaus DIN** como **única fonte permitida**. Hierarquia indi
 | `apple-icon.png` (180 px) | Selo dourado sobre fundo branco | O iOS não aceita transparência (pintaria de preto) | — |
 | Antes (até 21/10/2026) | Escudo vermelho com identificação da escola (formato da p. 17) | Arquivos do cliente em `assets/marca/` (`…-sem-degrade.ico`, `logo-jda.pdf`) | Guardados para uso futuro |
 | Cabeçalho, rodapé, menu mobile, painel | **Nome em texto** "Gracie Barra / Jardim das Américas" (a pedido do cliente), em uma cor só | Texto na fonte provisória | **Não é logotipo oficial.** Ver pendências |
-| Escudo no cabeçalho/rodapé | Removido a pedido do cliente (15/10/2026) | — | — |
+| Escudo no cabeçalho | Removido a pedido do cliente (15/10/2026) | — | — |
+| Rodapé, ao lado do selo Premium | **Logo da escola** (identificação "Jiu-Jitsu & Defesa Pessoal · Jardim das Américas - Curitiba, PR"), a pedido do cliente (26/10/2026) | `src/assets/marca/logo-escola-jda.png` (384 px): a imagem PNG de dentro de `assets/marca/logo-jda.pdf`, com a máscara de transparência original, sobre um disco branco do tamanho do círculo do logo (o anel do texto é transparente com letras pretas, feito para fundo claro). O logo em si não foi alterado | Validar com a franqueadora (p. 17) junto com o arquivo oficial |
 | Topo da Home e rodapé | **Selo "Escola Premium · Certificação 2026"** (`PremiumSeal.tsx`) | JPG 1280 px enviado pelo cliente em 19/10/2026 (original em `assets/marca/selo-escola-premium-2026.jpg`), sem edição | Usado só sobre fundo preto: o JPG não tem transparência (cantos pretos). Pedir versão PNG/SVG com fundo transparente para usar em fundos claros |
 
 Observações:
