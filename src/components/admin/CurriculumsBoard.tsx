@@ -17,7 +17,6 @@ import {
   textInputClass,
   useObjectUrl,
 } from './contentForm';
-import { formatDateTime } from './labels';
 import { pdfToImage } from './pdfToImage';
 import { useToast } from './Toast';
 
@@ -27,7 +26,6 @@ function CurriculumRow({ item, month }: { item: AdminCurriculum; month: string }
   const [poster, setPoster] = useState<Blob | null>(null);
   const [note, setNote] = useState<string>();
   const [converting, setConverting] = useState(false);
-  const [version, setVersion] = useState(item.version);
   const [referenceMonth, setReferenceMonth] = useState(item.referenceMonth ?? month);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
@@ -35,7 +33,6 @@ function CurriculumRow({ item, month }: { item: AdminCurriculum; month: string }
   const [resetError, setResetError] = useState<string>();
   const preview = useObjectUrl(poster);
   const id = `curriculo-${item.slug}`;
-  const upToDate = item.referenceMonth === month;
 
   const choose = async (file: File | null) => {
     setErrors({});
@@ -67,7 +64,6 @@ function CurriculumRow({ item, month }: { item: AdminCurriculum; month: string }
     setErrors({});
     const form = new FormData();
     if (poster) form.set('poster', poster, 'curriculo');
-    form.set('version', version);
     form.set('referenceMonth', referenceMonth);
     try {
       await adminFetch(`/api/admin/curriculums/${item.slug}`, { method: 'PUT', body: form });
@@ -105,18 +101,7 @@ function CurriculumRow({ item, month }: { item: AdminCurriculum; month: string }
         {preview && <span className="absolute top-1 left-1 bg-gb-red px-1.5 py-0.5 text-xs font-bold uppercase text-gb-white">Prévia</span>}
       </div>
       <form onSubmit={submit} noValidate className="space-y-3">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="font-display text-2xl font-bold uppercase leading-tight">Currículo {item.title}</h3>
-          <span className={`px-2 py-1 text-xs font-bold uppercase ${upToDate ? 'bg-gb-navy text-gb-white' : 'bg-gb-line text-gb-ink'}`}>
-            {upToDate ? 'Em dia neste mês' : 'Não atualizado neste mês'}
-          </span>
-        </div>
-        <p className="text-sm text-gb-mute">
-          Versão {item.version}
-          {item.referenceMonth && ` · referência ${formatMonth(item.referenceMonth)}`}
-          {' · '}
-          {item.custom ? `enviado em ${formatDateTime(item.updatedAt!)}${item.updatedBy ? ` por ${item.updatedBy}` : ''}` : 'pôster original do site'}
-        </p>
+        <h3 className="font-display text-2xl font-bold uppercase leading-tight">Currículo {item.title}</h3>
 
         <div>
           <label htmlFor={`${id}-arquivo`} className="text-sm font-semibold">
@@ -136,23 +121,7 @@ function CurriculumRow({ item, month }: { item: AdminCurriculum; month: string }
           <FieldError id={`${id}-arquivo-erro`} message={errors.poster} />
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div>
-            <label htmlFor={`${id}-versao`} className="text-sm font-semibold">
-              Versão
-            </label>
-            <input
-              id={`${id}-versao`}
-              value={version}
-              maxLength={20}
-              onChange={(event) => setVersion(event.target.value)}
-              aria-invalid={!!errors.version}
-              aria-describedby={errors.version ? `${id}-versao-erro` : undefined}
-              className={textInputClass}
-            />
-            <FieldError id={`${id}-versao-erro`} message={errors.version} />
-          </div>
-          <div>
+        <div className="sm:max-w-xs">
             <label htmlFor={`${id}-mes`} className="text-sm font-semibold">
               Mês de referência
             </label>
@@ -166,12 +135,11 @@ function CurriculumRow({ item, month }: { item: AdminCurriculum; month: string }
               className={textInputClass}
             />
             <FieldError id={`${id}-mes-erro`} message={errors.referenceMonth} />
-          </div>
         </div>
 
         <div className="flex flex-wrap gap-2">
           <button type="submit" disabled={busy || converting || (!poster && !item.custom)} className={primaryButton}>
-            {busy ? 'Enviando…' : poster || !item.custom ? 'Publicar currículo' : 'Salvar versão e mês'}
+            {busy ? 'Enviando…' : poster || !item.custom ? 'Publicar currículo' : 'Salvar mês'}
           </button>
           {item.custom && (
             <button type="button" disabled={busy} onClick={() => setConfirming(true)} className={secondaryButton}>

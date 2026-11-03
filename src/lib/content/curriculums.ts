@@ -71,7 +71,9 @@ export async function listCurriculumsForAdmin(): Promise<AdminCurriculum[]> {
 }
 
 function curriculumOrThrow(slug: string) {
-  if (!allCurriculums.some((item) => item.slug === slug)) throw new ContentError(404, 'NOT_FOUND', 'Currículo não encontrado.');
+  const item = allCurriculums.find((curriculum) => curriculum.slug === slug);
+  if (!item) throw new ContentError(404, 'NOT_FOUND', 'Currículo não encontrado.');
+  return item;
 }
 
 /**
@@ -80,12 +82,14 @@ function curriculumOrThrow(slug: string) {
  */
 export async function saveCurriculum(
   slug: string,
-  input: { poster: Uint8Array | null; version: string; referenceMonth: string | null },
+  input: { poster: Uint8Array | null; version: string | null; referenceMonth: string | null },
   adminId: string,
 ): Promise<void> {
-  curriculumOrThrow(slug);
+  const item = curriculumOrThrow(slug);
   const previous = await db().curriculumPoster.findUnique({ where: { slug } });
-  const meta = { version: input.version, referenceMonth: input.referenceMonth, updatedById: adminId };
+  // Sem versão no envio, mantém a que já estava (enviada antes ou a do pôster padrão).
+  const version = input.version ?? previous?.version ?? item.version;
+  const meta = { version, referenceMonth: input.referenceMonth, updatedById: adminId };
 
   if (!input.poster) {
     if (!previous) throw new ContentError(422, 'PHOTO_REQUIRED', 'Escolha o arquivo do currículo.', { poster: 'Escolha o arquivo do currículo.' });

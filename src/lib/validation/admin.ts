@@ -52,7 +52,8 @@ export const siteImageFormSchema = z.object({
 });
 
 export const curriculumFormSchema = z.object({
-  version: z.string().trim().min(1, 'Informe a versão.').max(20, 'Use no máximo 20 caracteres.'),
+  /** Opcional: sem versão, vale a atual do currículo. */
+  version: z.string().trim().max(20, 'Use no máximo 20 caracteres.').transform((value) => value || null),
   referenceMonth: z
     .string()
     .trim()

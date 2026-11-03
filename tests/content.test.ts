@@ -30,7 +30,8 @@ describe('formulário de currículo', () => {
     expect(curriculumFormSchema.parse({ version: '4.1', referenceMonth: '2026-11' }).referenceMonth).toBe('2026-11');
     expect(curriculumFormSchema.parse({ version: '4.1', referenceMonth: '' }).referenceMonth).toBeNull();
     expect(curriculumFormSchema.safeParse({ version: '4.1', referenceMonth: '2026-13' }).success).toBe(false);
-    expect(curriculumFormSchema.safeParse({ version: '', referenceMonth: '' }).success).toBe(false);
+    // Versão é opcional: vazia, o servidor mantém a atual.
+    expect(curriculumFormSchema.parse({ version: '', referenceMonth: '' }).version).toBeNull();
   });
 
   it('slugs dos currículos são únicos', () => {
