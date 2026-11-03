@@ -53,7 +53,7 @@ export function CurriculumCard({ curriculum }: { curriculum: Curriculum }) {
         <h4 className="font-display text-2xl font-bold uppercase leading-tight">{name}</h4>
         {curriculum.audience && <p className="mt-1 text-sm text-gb-mute">{curriculum.audience}</p>}
         <p className="mt-2 text-sm text-gb-mute">
-          16 semanas · Aulas A e B · Versão {curriculum.version}
+          16 semanas · Aulas A e B
           {curriculum.referenceMonth && <> · {formatMonth(curriculum.referenceMonth)}</>}
         </p>
         <div className="mt-auto pt-4">

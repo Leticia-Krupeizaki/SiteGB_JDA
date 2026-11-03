@@ -73,7 +73,7 @@ export function buildLlmsTxt(): string {
   );
   for (const group of curriculumGroups) {
     for (const c of group.items) {
-      push(`- Currículo ${c.title}: ${c.audience ?? group.title}; versão ${c.version}`);
+      push(`- Currículo ${c.title}: ${c.audience ?? group.title}`);
     }
   }
 
