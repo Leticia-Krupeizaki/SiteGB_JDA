@@ -4,14 +4,19 @@ import { Belt } from '@/components/ui/Belt';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { PlaceholderBadge } from '@/components/ui/PlaceholderNotice';
 import { PremiumSeal } from '@/components/ui/PremiumSeal';
+import { SitePhoto } from '@/components/ui/SitePhoto';
+import { getSiteImages } from '@/lib/content/site-images';
 
 /**
- * Hero em tela cheia, pensado para receber uma foto oficial de treino em P&B
- * com sobreposição escura. Até lá, fundo gráfico identificado.
+ * Hero em tela cheia com foto de treino (enviada pelo painel) em P&B e
+ * sobreposição escura. Sem foto, fundo gráfico identificado.
  */
-export function Hero() {
+export async function Hero() {
+  const photo = (await getSiteImages())['home-hero'];
+
   return (
     <section className="relative isolate bg-gb-ink text-gb-white">
+      {photo && <SitePhoto image={photo} fill priority sizes="100vw" className="-z-20 object-cover grayscale" />}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-gb-ink)_20%,transparent),color-mix(in_srgb,var(--color-gb-ink)_85%,transparent)),repeating-linear-gradient(135deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_10px)]"
@@ -34,9 +39,11 @@ export function Hero() {
           {primaryCta.label}
         </ButtonLink>
       </div>
-      <div className="absolute right-4 bottom-6 text-gb-line">
-        <PlaceholderBadge label="Foto oficial a definir" />
-      </div>
+      {!photo && (
+        <div className="absolute right-4 bottom-6 text-gb-line">
+          <PlaceholderBadge label="Foto oficial a definir" />
+        </div>
+      )}
       <Belt />
     </section>
   );

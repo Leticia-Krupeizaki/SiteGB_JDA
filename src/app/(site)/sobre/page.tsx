@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { LegacySection } from '@/components/about/LegacySection';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -7,9 +6,11 @@ import { Container } from '@/components/ui/Container';
 import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { PlaceholderNotice } from '@/components/ui/PlaceholderNotice';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { SitePhoto } from '@/components/ui/SitePhoto';
 import { site } from '@/config/site';
 import { benefits } from '@/data/benefits';
 import { history } from '@/data/history';
+import { getSiteImages } from '@/lib/content/site-images';
 
 export const metadata: Metadata = {
   title: 'A Academia',
@@ -22,7 +23,11 @@ function Emphasis({ text }: { text: string }) {
   return text.split('*').map((part, i) => (i % 2 === 1 ? <em key={i}>{part}</em> : part));
 }
 
-export default function SobrePage() {
+export default async function SobrePage() {
+  const images = await getSiteImages();
+  const historyPhoto = images['sobre-historia'];
+  const structurePhotos = [1, 2, 3].flatMap((n) => images[`sobre-estrutura-${n}`] ?? []);
+
   return (
     <>
       <PageHeader title="A academia" description={`${site.name}, Curitiba–PR.`} />
@@ -31,12 +36,11 @@ export default function SobrePage() {
         <Container className="grid gap-10 lg:grid-cols-[5fr_7fr] lg:gap-16">
           {/* Foto: acima do texto no celular; ao lado (fixa durante a leitura) no computador. */}
           <figure className="lg:sticky lg:top-28 lg:self-start">
-            {history.photo ? (
-              <Image
-                src={history.photo.src}
-                alt={history.photo.alt}
+            {historyPhoto ? (
+              <SitePhoto
+                image={historyPhoto}
                 sizes="(min-width: 1024px) 40vw, 100vw"
-                placeholder="blur"
+                blur
                 // Hover elevation: a foto sobe um pouco e ganha sombra (sem movimento para quem prefere menos animação).
                 className="h-auto w-full shadow-md transition duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               />
@@ -82,7 +86,16 @@ export default function SobrePage() {
       <section className="border-t border-gb-line py-16 sm:py-20">
         <Container className="space-y-6">
           <SectionHeading title="Estrutura" />
-          <PlaceholderNotice>fotos e descrição do espaço, com material oficial.</PlaceholderNotice>
+          {structurePhotos.length > 0 && (
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {structurePhotos.map((photo) => (
+                <li key={photo.src.src}>
+                  <SitePhoto image={photo} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="aspect-[4/3] h-auto w-full object-cover" />
+                </li>
+              ))}
+            </ul>
+          )}
+          <PlaceholderNotice>{structurePhotos.length > 0 ? 'descrição do espaço, com material oficial.' : 'fotos e descrição do espaço, com material oficial.'}</PlaceholderNotice>
         </Container>
       </section>
 

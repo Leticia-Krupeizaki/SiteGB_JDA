@@ -32,6 +32,8 @@ export const legacy = {
 };
 
 export type LegacyMaster = {
+  /** Usado na chave da foto no painel (`legado-<id>`). */
+  id: string;
   name: string;
   role: string;
   /** Retrato oficial do Mural do Legado (ver aviso no topo do arquivo). */
@@ -43,27 +45,32 @@ export type LegacyMaster = {
 /** Mural do Legado, na ordem da página oficial (linhagem). */
 export const legacyWall: LegacyMaster[] = [
   {
+    id: 'mitsuyo-maeda',
     name: 'Mitsuyo Maeda',
     role: 'Mestre japonês, um dos grandes responsáveis por trazer o Jiu-Jitsu ao Brasil.',
     photo: { src: mitsuyoMaeda, alt: 'Retrato em preto e branco de Mitsuyo Maeda, de kimono' },
   },
   {
+    id: 'carlos-gracie-sr',
     name: 'Carlos Gracie Sr.',
     role: 'Pioneiro do Jiu-Jitsu Brasileiro, dedicou-se a desenvolver e difundir a arte.',
     photo: { src: carlosGracieSr, alt: 'Retrato em preto e branco do Mestre Carlos Gracie Sr.' },
     requiresWrittenAuthorization: true,
   },
   {
+    id: 'helio-gracie',
     name: 'Hélio Gracie',
     role: 'Pioneiro do Jiu-Jitsu Brasileiro, dedicou a vida ao aperfeiçoamento da técnica.',
     photo: { src: helioGracie, alt: 'Retrato em preto e branco de Hélio Gracie, de kimono' },
   },
   {
+    id: 'rolls-gracie',
     name: 'Rolls Gracie',
     role: 'Inovador da sua geração, levou ao Jiu-Jitsu uma abordagem moderna e atlética.',
     photo: { src: rollsGracie, alt: 'Retrato em preto e branco de Rolls Gracie, de kimono' },
   },
   {
+    id: 'carlos-gracie-jr',
     name: 'Carlos Gracie Jr.',
     role: 'Fundador da Gracie Barra, transformou o Jiu-Jitsu Para Todos em um movimento global.',
     photo: { src: carlosGracieJr, alt: 'Retrato em preto e branco do Mestre Carlos Gracie Jr., de kimono Gracie Barra' },

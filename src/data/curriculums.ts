@@ -23,6 +23,9 @@ import gbkPequenos2Full from '@/assets/curriculos/gbk-pequenos-campeoes-2-comple
  * gerada do PDF) e não publica o PDF. Os PDFs otimizados ficam em assets/curriculos/,
  * fora da pasta pública, como fonte para gerar as imagens.
  * Informações abaixo tiradas dos próprios PDFs e da legenda oficial da grade.
+ *
+ * São os pôsteres PADRÃO: o administrador envia as versões novas pelo painel
+ * (/admin/curriculos) e elas valem no lugar destes (src/lib/content/curriculums.ts).
  */
 export type Curriculum = {
   slug: string;
@@ -34,6 +37,10 @@ export type Curriculum = {
   preview: StaticImageData;
   /** Pôster inteiro, legível, para o visualizador. */
   full: StaticImageData;
+  /** Preenchidos quando o pôster foi enviado pelo painel. */
+  custom?: boolean;
+  /** Mês de referência, AAAA-MM. */
+  referenceMonth?: string;
 };
 
 export const curriculumGroups: { title: string; items: Curriculum[] }[] = [

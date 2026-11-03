@@ -10,18 +10,19 @@ import { Container } from '@/components/ui/Container';
 import { ExternalLinkCard } from '@/components/ui/ExternalLinkCard';
 import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { SitePhoto } from '@/components/ui/SitePhoto';
 import { primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { about } from '@/data/about';
 import { benefits } from '@/data/benefits';
 import { externalLinks } from '@/data/external-links';
+import { getSiteImages } from '@/lib/content/site-images';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
 
-/** Regera a página a cada hora para o "Hoje no tatame" acompanhar o dia. */
-export const revalidate = 3600;
-
-export default function HomePage() {
+/** Renderizada por requisição (fotos do painel), então o "Hoje no tatame" sempre acompanha o dia. */
+export default async function HomePage() {
   const today = defaultDay(new Date(), academyTimeZone);
+  const unitPhoto = (await getSiteImages())['home-unidade'];
 
   return (
     <>
@@ -31,7 +32,11 @@ export default function HomePage() {
       <section className="py-16 sm:py-24">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
           {/* Foto acompanha a leitura no computador (o texto é mais alto que ela). */}
-          <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[4/3] w-full max-w-full lg:sticky lg:top-28" />
+          {unitPhoto ? (
+            <SitePhoto image={unitPhoto} sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/3] h-auto w-full max-w-full object-cover lg:sticky lg:top-28" />
+          ) : (
+            <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[4/3] w-full max-w-full lg:sticky lg:top-28" />
+          )}
           <div className="space-y-6">
             <SectionHeading title={`Somos ${site.name}`} />
             <p className="font-display text-2xl font-bold uppercase text-balance text-gb-red sm:text-3xl">{about.lead}</p>

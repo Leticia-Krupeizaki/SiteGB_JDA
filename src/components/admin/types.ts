@@ -1,6 +1,8 @@
 import type { ContactType, MuralCategory, MuralStatus } from '@/types/mural';
 
 /** Formatos que o painel recebe das APIs /api/admin (datas chegam como texto ISO). */
+export type AdminRole = 'ADMIN' | 'MODERATOR';
+
 export type GuardianStatus = 'NOT_EVALUATED' | 'NOT_REQUIRED' | 'REQUIRED_PENDING' | 'RECEIVED';
 
 export type AdminPost = {

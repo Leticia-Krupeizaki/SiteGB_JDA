@@ -12,16 +12,18 @@ export class AdminApiError extends Error {
 }
 
 /**
- * fetch do painel: envia/recebe JSON e, se a sessão expirou (401), volta para o login.
+ * fetch do painel: envia JSON (ou FormData, para arquivos), recebe JSON e, se a
+ * sessão expirou (401), volta para o login.
  * O navegador manda o cabeçalho Origin sozinho, usado pela proteção CSRF do servidor.
  */
 export async function adminFetch<T>(url: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
+  const isForm = init.body instanceof FormData;
   let response: Response;
   try {
     response = await fetch(url, {
       method: init.method ?? 'GET',
-      headers: init.body === undefined ? undefined : { 'Content-Type': 'application/json' },
-      body: init.body === undefined ? undefined : JSON.stringify(init.body),
+      headers: init.body === undefined || isForm ? undefined : { 'Content-Type': 'application/json' },
+      body: init.body === undefined ? undefined : isForm ? (init.body as FormData) : JSON.stringify(init.body),
       cache: 'no-store',
     });
   } catch {

@@ -45,3 +45,17 @@ export const resolveRemovalSchema = z.object({
   /** Atalho: resolver e já remover a foto vinculada. */
   removePost: z.boolean().default(false),
 });
+
+/** Texto alternativo das fotos do site (leitores de tela e buscadores). */
+export const siteImageFormSchema = z.object({
+  alt: z.string().trim().min(3, 'Descreva a foto em poucas palavras.').max(300, 'Use no máximo 300 caracteres.'),
+});
+
+export const curriculumFormSchema = z.object({
+  version: z.string().trim().min(1, 'Informe a versão.').max(20, 'Use no máximo 20 caracteres.'),
+  referenceMonth: z
+    .string()
+    .trim()
+    .regex(/^(\d{4}-(0[1-9]|1[0-2]))?$/, 'Use o formato AAAA-MM.')
+    .transform((value) => value || null),
+});

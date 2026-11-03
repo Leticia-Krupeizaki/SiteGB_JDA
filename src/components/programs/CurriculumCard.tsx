@@ -5,6 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { CloseIcon } from '@/components/ui/icons';
 import type { Curriculum } from '@/data/curriculums';
 
+const monthName = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+/** "2026-11" → "novembro de 2026". */
+const formatMonth = (month: string) => monthName.format(new Date(`${month}-01T00:00:00Z`));
+
 const buttonClass = 'focus-ring inline-flex min-h-11 items-center justify-center px-4 font-display text-base font-semibold uppercase tracking-wide transition-colors';
 
 /** Bloqueia "Salvar imagem como" e arrastar a imagem. Só dificulta: print de tela continua possível. */
@@ -42,13 +46,15 @@ export function CurriculumCard({ curriculum }: { curriculum: Curriculum }) {
     <li className="flex flex-col bg-gb-white">
       {/* Miniatura clicável. Decorativa para leitor de tela (o botão "Ver currículo" já descreve a ação). */}
       <button type="button" onClick={show} tabIndex={-1} aria-hidden className="block cursor-zoom-in border-b border-gb-line">
-        <Image src={curriculum.preview} alt="" sizes="(min-width: 1024px) 270px, (min-width: 640px) 45vw, 90vw" className="h-auto w-full select-none" {...noSave} />
+        {/* Pôster enviado pelo painel já vem no tamanho do card: dispensa o otimizador. */}
+        <Image src={curriculum.preview} alt="" unoptimized={curriculum.custom} sizes="(min-width: 1024px) 270px, (min-width: 640px) 45vw, 90vw" className="h-auto w-full select-none" {...noSave} />
       </button>
       <div className="flex flex-1 flex-col p-4">
         <h4 className="font-display text-2xl font-bold uppercase leading-tight">{name}</h4>
         {curriculum.audience && <p className="mt-1 text-sm text-gb-mute">{curriculum.audience}</p>}
         <p className="mt-2 text-sm text-gb-mute">
           16 semanas · Aulas A e B · Versão {curriculum.version}
+          {curriculum.referenceMonth && <> · {formatMonth(curriculum.referenceMonth)}</>}
         </p>
         <div className="mt-auto pt-4">
           <button type="button" onClick={show} aria-haspopup="dialog" className={`${buttonClass} w-full border-2 border-gb-ink text-gb-ink hover:bg-gb-ink hover:text-gb-white`}>

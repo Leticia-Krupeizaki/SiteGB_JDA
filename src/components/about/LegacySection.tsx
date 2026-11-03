@@ -1,13 +1,16 @@
-import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { ExternalIcon } from '@/components/ui/icons';
+import { SitePhoto } from '@/components/ui/SitePhoto';
 import { legacy, legacySourceUrl, legacyWall } from '@/data/legacy';
+import { getSiteImages } from '@/lib/content/site-images';
 
 /**
  * "O legado Gracie Barra": história da rede e o Mural do Legado (5 mestres).
  * Fundo preto, como uma parede de honra. Retratos pendentes: ver src/data/legacy.ts.
  */
-export function LegacySection() {
+export async function LegacySection() {
+  const images = await getSiteImages();
+
   return (
     <section id="legado" aria-labelledby="legado-titulo" className="scroll-mt-24 bg-gb-ink py-16 text-gb-white sm:py-24">
       <Container>
@@ -35,12 +38,14 @@ export function LegacySection() {
         <h3 className="mt-16 font-display text-3xl font-bold uppercase">Mural do Legado</h3>
         <p className="mt-2 text-gb-line">Os mestres que construíram o caminho que seguimos no tatame.</p>
         <ol className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-          {legacyWall.map((master) => (
+          {legacyWall.map((master) => {
+            const photo = images[`legado-${master.id}`];
+            return (
             <li key={master.name}>
               <figure>
-                {master.photo ? (
-                  // Retratos oficiais (quadrados, P&B), sem edição.
-                  <Image src={master.photo.src} alt={master.photo.alt} sizes="(min-width: 1024px) 205px, (min-width: 640px) 33vw, 50vw" className="aspect-square h-auto w-full" />
+                {photo ? (
+                  // Retratos oficiais (quadrados, P&B), sem edição; trocáveis no painel.
+                  <SitePhoto image={photo} sizes="(min-width: 1024px) 205px, (min-width: 640px) 33vw, 50vw" className="aspect-square h-auto w-full object-cover" />
                 ) : (
                   <div role="img" aria-label={`Retrato de ${master.name} a definir`} className="flex aspect-square w-full items-end border border-gb-white/20 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.05)_0_1px,transparent_1px_10px)] p-3">
                     <span className="border border-dashed border-gb-line/50 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-gb-line">Retrato oficial a definir</span>
@@ -52,7 +57,8 @@ export function LegacySection() {
                 </figcaption>
               </figure>
             </li>
-          ))}
+            );
+          })}
         </ol>
 
         <a

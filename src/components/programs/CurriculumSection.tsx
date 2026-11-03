@@ -1,10 +1,12 @@
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { curriculumGroups } from '@/data/curriculums';
+import { getCurriculumGroups } from '@/lib/content/curriculums';
 import { CurriculumCard } from './CurriculumCard';
 
-/** Currículos oficiais por semana, só para visualização (página Programas). */
-export function CurriculumSection() {
+/** Currículos oficiais por semana, só para visualização (página Programas). Atualizados pelo painel. */
+export async function CurriculumSection() {
+  const curriculumGroups = await getCurriculumGroups();
+
   return (
     <section aria-labelledby="curriculos" className="py-16 sm:py-20">
       <Container>

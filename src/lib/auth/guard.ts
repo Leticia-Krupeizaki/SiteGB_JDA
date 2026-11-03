@@ -7,6 +7,9 @@ import { getSession, type AdminSessionInfo } from './session';
 /** Papéis que podem moderar o mural. */
 export const moderatorRoles: AdminRole[] = ['ADMIN', 'MODERATOR'];
 
+/** Papéis que trocam conteúdo do site (fotos e currículos). */
+export const contentRoles: AdminRole[] = ['ADMIN'];
+
 /**
  * Mutação só vale se vier do próprio site. Junto com o cookie SameSite=Lax,
  * fecha CSRF: outro domínio não consegue enviar Origin igual ao nosso.

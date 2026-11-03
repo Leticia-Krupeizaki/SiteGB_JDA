@@ -27,7 +27,7 @@ export default async function PainelLayout({ children }: { children: ReactNode }
             <LogoutButton />
           </div>
         </div>
-        <AdminNav />
+        <AdminNav role={admin.role} />
       </header>
       <main id="conteudo" className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         {children}

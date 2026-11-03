@@ -75,6 +75,8 @@ model Admin {
   moderatedPosts   MuralPost[]
   moderationEvents MuralModerationEvent[]
   resolvedRemovals MuralRemovalRequest[]
+  siteImages       SiteImage[]
+  curriculums      CurriculumPoster[]
 }
 
 /// Sessão do painel. O cookie leva um token aleatório; aqui só fica o hash dele.
@@ -175,4 +177,36 @@ model RateLimitHit {
   createdAt DateTime @default(now())
 
   @@index([key, createdAt])
+}
+
+/// Foto do site trocada pelo painel. Sem linha = imagem padrão do código (src/data/site-images.ts).
+model SiteImage {
+  /// Chave do espaço da foto, ex.: "home-unidade".
+  slot        String   @id
+  /// Arquivo no bucket público.
+  objectKey   String
+  width       Int
+  height      Int
+  alt         String
+  updatedAt   DateTime @updatedAt
+  updatedById String?  @db.Uuid
+  updatedBy   Admin?   @relation(fields: [updatedById], references: [id], onDelete: SetNull)
+}
+
+/// Pôster de currículo enviado pelo painel. Sem linha = pôster padrão do código (src/data/curriculums.ts).
+model CurriculumPoster {
+  slug           String   @id
+  version        String
+  /// Mês de referência no formato AAAA-MM (opcional).
+  referenceMonth String?
+  /// Pôster inteiro (1800 px) e miniatura do card, ambos no bucket público.
+  fullKey        String
+  fullWidth      Int
+  fullHeight     Int
+  previewKey     String
+  previewWidth   Int
+  previewHeight  Int
+  updatedAt      DateTime @updatedAt
+  updatedById    String?  @db.Uuid
+  updatedBy      Admin?   @relation(fields: [updatedById], references: [id], onDelete: SetNull)
 }

@@ -1,19 +1,20 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import schoolLogo from '@/assets/marca/logo-escola-jda.png';
 import { mainNavigation } from '@/config/navigation';
 import { contact, emailUrl, instagramHandle, maps, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { InstagramIcon } from '@/components/ui/icons';
 import { PremiumSeal } from '@/components/ui/PremiumSeal';
+import { SitePhoto } from '@/components/ui/SitePhoto';
 import { externalLinks } from '@/data/external-links';
+import { getSiteImages } from '@/lib/content/site-images';
 import { Belt } from '@/components/ui/Belt';
 import { Container } from '@/components/ui/Container';
 import { Logo } from './Logo';
 
 const headingClass = 'font-display text-lg font-semibold uppercase tracking-wide text-gb-white';
 
-export function Footer() {
+export async function Footer() {
   const year = new Date().getFullYear();
+  const schoolLogo = (await getSiteImages())['marca-logo-escola'];
 
   return (
     <footer className="bg-gb-ink text-gb-line">
@@ -29,9 +30,10 @@ export function Footer() {
             {/*
              * Logo da escola (arquivo do cliente, assets/marca/logo-jda.pdf, com disco branco
              * atrás para o texto preto do anel aparecer no fundo preto) ao lado do selo Premium.
+             * Os dois são trocáveis no painel (Fotos do site → Marca).
              */}
             <div className="mt-6 flex items-center gap-5">
-              <Image src={schoolLogo} alt={`Logo ${site.name}: Jiu-Jitsu & Defesa Pessoal, Jardim das Américas, Curitiba, PR`} sizes="96px" className="h-auto w-24" />
+              {schoolLogo && <SitePhoto image={schoolLogo} sizes="96px" className="h-auto w-24" />}
               <PremiumSeal sizes="96px" className="w-24" />
             </div>
           </div>
