@@ -82,7 +82,7 @@ export const siteImageSlots: SiteImageSlot[] = [
     key: 'marca-logo-escola',
     group: 'Marca',
     label: 'Logo da escola',
-    hint: 'Topo da página inicial (ao lado do selo) e rodapé. Quadrado; aparece sobre fundo branco e preto.',
+    hint: 'Topo da página inicial (marca d’água à esquerda) e rodapé. Quadrado; aparece sobre fundo preto.',
     maxSide: 600,
     default: { src: schoolLogo, alt: `Logo ${site.name}: Jiu-Jitsu & Defesa Pessoal, Jardim das Américas, Curitiba, PR` },
   },

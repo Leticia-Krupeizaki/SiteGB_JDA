@@ -81,3 +81,34 @@ h3 {
     transform: translateX(-50%);
   }
 }
+
+/* Topo da página inicial: logo entra pela esquerda e some em degradê; textos sobem em sequência. */
+@keyframes gb-hero-logo {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 0.2;
+    transform: none;
+  }
+}
+
+@keyframes gb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-hero-logo {
+  animation: gb-hero-logo 1.4s ease-out both;
+}
+
+@utility animate-rise {
+  animation: gb-rise 0.9s ease-out both;
+}
