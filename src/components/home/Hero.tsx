@@ -30,10 +30,14 @@ export async function Hero() {
           <PremiumSeal priority sizes="(min-width: 640px) 144px, 112px" className="w-28 sm:w-36" />
         </div>
         <p className="font-display text-xl font-semibold uppercase tracking-[0.15em] text-balance text-gb-line">{site.name}</p>
-        {/* Valores da Gracie Barra (Manual da Marca, p. 5), um por linha. "Desenvolvimento" é longa: tamanhos medidos para caber a partir de 360 px. */}
-        <h1 className="mt-4 font-display text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl lg:text-8xl">
-          <span className="block">Irmandade.</span>
-          <span className="block">Integridade.</span>
+        {/*
+         * Valores da Gracie Barra (Manual da Marca, p. 5), um por linha e na mesma largura:
+         * as palavras curtas crescem na proporção medida contra "Desenvolvimento" (400 e 435
+         * contra 616 px no mesmo corpo), formando um bloco. Corpo medido para caber a partir de 360 px.
+         */}
+        <h1 className="mt-4 font-display text-[2.75rem] font-extrabold uppercase leading-[0.95] sm:text-5xl lg:text-[4rem]">
+          <span className="block text-[1.54em]">Irmandade.</span>
+          <span className="block text-[1.416em]">Integridade.</span>
           <span className="block">Desenvolvimento.</span>
         </h1>
         <p className="mt-8 font-display text-2xl font-bold uppercase tracking-wide text-balance sm:text-3xl">
