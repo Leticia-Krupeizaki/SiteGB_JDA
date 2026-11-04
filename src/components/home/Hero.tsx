@@ -50,7 +50,7 @@ export async function Hero() {
           image={{ ...logo, alt: '' }}
           priority
           sizes="(min-width: 1024px) 700px, 420px"
-          className="animate-hero-logo absolute top-[calc(50%-13rem)] -left-40 -z-10 h-auto w-[26rem] [mask-image:linear-gradient(to_right,#000_35%,transparent_88%)] lg:top-[calc(50%-22rem)] lg:-left-44 lg:w-[44rem]"
+          className="animate-hero-logo absolute [--hero-logo-opacity:0.22] lg:[--hero-logo-opacity:0.42] top-[calc(50%-13rem)] -left-56 -z-10 h-auto w-[26rem] [mask-image:linear-gradient(to_right,#000_45%,transparent_95%)] lg:top-[calc(50%-22rem)] lg:-left-44 lg:w-[44rem]"
         />
       )}
       <div className="mx-auto flex min-h-[34rem] max-w-6xl px-4 py-16 sm:min-h-[40rem] sm:px-6 lg:px-8">
@@ -76,17 +76,13 @@ export async function Hero() {
           <p className="animate-rise font-display text-2xl font-bold uppercase tracking-wide text-balance [animation-delay:0.35s] sm:text-3xl">
             Transforme sua vida através do <span className="whitespace-nowrap">Jiu-Jitsu.</span>
           </p>
-          <p className="animate-rise text-lg leading-relaxed text-gb-line [animation-delay:0.45s]">
-            Na {site.name}, você encontra muito mais do que uma arte marcial: encontra uma família, um método de ensino e um
-            caminho de evolução para todas as idades, a vida toda.
-          </p>
-          <ButtonLink href={whatsappTrialUrl} external className="animate-rise px-10 text-xl [animation-delay:0.55s]">
+          <ButtonLink href={whatsappTrialUrl} external className="animate-rise px-10 text-xl [animation-delay:0.45s]">
             {primaryCta.label}
           </ButtonLink>
           {/* Sem animação aqui: ela isolaria o selo e o preto dos cantos (mix-blend-lighten) voltaria a aparecer. */}
-          <div className="flex items-center gap-3">
-            <PremiumSeal sizes="56px" className="w-14" />
-            <span className="font-display text-sm uppercase tracking-[0.15em] text-gb-line">Escola Premium · Certificação 2026</span>
+          <div className="flex flex-col items-center gap-3 sm:flex-row">
+            <PremiumSeal sizes="(min-width: 640px) 112px, 96px" className="w-24 sm:w-28" />
+            <span className="font-display text-base uppercase tracking-[0.15em] text-gb-line">Escola Premium · Certificação 2026</span>
           </div>
         </div>
       </div>

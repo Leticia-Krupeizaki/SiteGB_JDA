@@ -89,7 +89,7 @@ h3 {
     transform: translateX(-60px);
   }
   to {
-    opacity: 0.2;
+    opacity: var(--hero-logo-opacity, 0.42);
     transform: none;
   }
 }
