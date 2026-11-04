@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { SkipLink } from '@/components/layout/SkipLink';
 import { WhatsAppFloatingButton } from '@/components/layout/WhatsAppFloatingButton';
 import { contact, maps, site, siteUrl } from '@/config/site';
+import { getSiteImages } from '@/lib/content/site-images';
 
 /** Dados estruturados da unidade (schema.org), para o Google mostrar endereço e contato nas buscas locais. Só constantes do site (sem texto de visitante). */
 const localBusiness = {
@@ -26,12 +27,13 @@ const localBusiness = {
   sameAs: Object.values(site.social),
 };
 
-export default function SiteLayout({ children }: { children: ReactNode }) {
+export default async function SiteLayout({ children }: { children: ReactNode }) {
+  const logo = (await getSiteImages())['marca-logo-escola'];
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
       <SkipLink />
-      <Header />
+      <Header logo={logo} />
       <main id="conteudo" tabIndex={-1} className="focus:outline-none">
         {children}
       </main>

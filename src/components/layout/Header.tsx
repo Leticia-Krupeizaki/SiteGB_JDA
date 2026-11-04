@@ -6,13 +6,15 @@ import { useEffect, useRef, useState } from 'react';
 import { mainNavigation, primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, whatsappTrialUrl } from '@/config/site';
 import { CloseIcon, LockIcon, MenuIcon, PhoneIcon } from '@/components/ui/icons';
+import type { SiteImage } from '@/lib/content/site-images';
 import { Logo } from './Logo';
 
 function isActive(pathname: string, href: string) {
   return href === '/' ? pathname === '/' : pathname.startsWith(href);
 }
 
-export function Header() {
+/** `logo`: logo oficial da escola (trocável no painel), vem do layout porque este componente roda no navegador. */
+export function Header({ logo }: { logo?: SiteImage | null }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   /** Onde o painel do menu começa: logo abaixo do cabeçalho, que pode não estar no topo (faixa "Entrar" acima). */
@@ -50,7 +52,7 @@ export function Header() {
     // Sem backdrop-filter: ele criaria um bloco de contenção e quebraria o painel `fixed` do menu mobile.
     <header ref={headerRef} className="sticky top-0 z-40 border-b border-gb-line bg-gb-white">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-[4.5rem] lg:gap-3 lg:px-8 xl:gap-4">
-        <Logo />
+        <Logo image={logo} />
 
         <nav aria-label="Principal" className="hidden lg:block">
           <ul className="flex items-center gap-0.5 xl:gap-2">
