@@ -3,6 +3,7 @@ import schoolLogo from '@/assets/marca/logo-escola-jda.png';
 import premiumSeal from '@/assets/selo-escola-premium-2026.jpg';
 import { site } from '@/config/site';
 import { history } from './history';
+import { instructors } from './instructors';
 import { legacyWall } from './legacy';
 
 /**
@@ -70,6 +71,15 @@ export const siteImageSlots: SiteImageSlot[] = [
     default: null,
     suggestedAlt: 'Alunos da Gracie Barra Jardim das Américas no tatame',
   },
+  ...instructors.map((instructor) => ({
+    key: `professor-${instructor.id}`,
+    group: 'Professores',
+    label: instructor.name,
+    hint: 'Retrato vertical (formato 3:4), de preferência de kimono.',
+    maxSide: 1200,
+    default: null,
+    suggestedAlt: `Foto de ${instructor.name}`,
+  })),
   ...legacyWall.map((master) => ({
     key: `legado-${master.id}`,
     group: 'Mural do Legado',

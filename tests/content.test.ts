@@ -1,6 +1,7 @@
 import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import { curriculumGroups } from '@/data/curriculums';
+import { instructors } from '@/data/instructors';
 import { legacyWall } from '@/data/legacy';
 import { siteImageSlots } from '@/data/site-images';
 import { processContentImage } from '@/lib/content/image';
@@ -16,6 +17,7 @@ describe('espaços de foto do site', () => {
   it('cobrem todos os mestres do Mural do Legado e as fotos já usadas', () => {
     const keys = new Set(siteImageSlots.map((slot) => slot.key));
     for (const master of legacyWall) expect(keys.has(`legado-${master.id}`)).toBe(true);
+    for (const instructor of instructors) expect(keys.has(`professor-${instructor.id}`)).toBe(true);
     for (const key of ['home-hero', 'home-unidade', 'sobre-historia', 'marca-selo-premium', 'marca-logo-escola']) expect(keys.has(key)).toBe(true);
   });
 
