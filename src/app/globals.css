@@ -112,3 +112,9 @@ h3 {
 @utility animate-rise {
   animation: gb-rise 0.9s ease-out both;
 }
+
+/* Abertura do legado (LegacyIntro): barra de progresso de cada cena e aproximação lenta da foto. */
+@keyframes gb-intro-fill { from { width: 0; } to { width: 100%; } }
+@keyframes gb-ken-burns { from { scale: 1.04; } to { scale: 1.16; } }
+@utility animate-intro-fill { animation: gb-intro-fill linear both; }
+@utility animate-ken-burns { animation: gb-ken-burns 4.5s ease-out both; }

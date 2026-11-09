@@ -1,3 +1,4 @@
+import { LegacyIntro } from '@/components/about/LegacyIntro';
 import { ContactCTA } from '@/components/home/ContactCTA';
 import { Hero } from '@/components/home/Hero';
 import { MuralPreview } from '@/components/home/MuralPreview';
@@ -16,16 +17,21 @@ import { contact, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { about } from '@/data/about';
 import { benefits } from '@/data/benefits';
 import { externalLinks } from '@/data/external-links';
+import { legacyWall } from '@/data/legacy';
 import { getSiteImages } from '@/lib/content/site-images';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
 
 /** Renderizada por requisição (fotos do painel), então o "Hoje no tatame" sempre acompanha o dia. */
 export default async function HomePage() {
   const today = defaultDay(new Date(), academyTimeZone);
-  const unitPhoto = (await getSiteImages())['home-unidade'];
+  const images = await getSiteImages();
+  const unitPhoto = images['home-unidade'];
+  // Abertura do legado: só o que a tela usa (fotos trocáveis no painel, chave `legado-<id>`).
+  const introMasters = legacyWall.map(({ id, name, subtitle, headline }) => ({ id, name, subtitle, headline, photo: images[`legado-${id}`] }));
 
   return (
     <>
+      <LegacyIntro masters={introMasters} ctaHref={whatsappTrialUrl} ctaLabel={primaryCta.label} />
       <Hero />
 
       {/* Quem somos */}
