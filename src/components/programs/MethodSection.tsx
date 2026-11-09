@@ -1,12 +1,17 @@
 import { Container } from '@/components/ui/Container';
+import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
+import { SitePhoto } from '@/components/ui/SitePhoto';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { method, methodPrograms } from '@/data/method';
+import { getSiteImages } from '@/lib/content/site-images';
 
 /**
  * Apresentação do Método Gracie Barra (página Programas): introdução, os quatro
- * programas em cards e o fechamento "Muito além do tatame".
+ * programas em cards e o fechamento "Muito além do tatame", com foto trocável no painel.
  */
-export function MethodSection() {
+export async function MethodSection() {
+  const photo = (await getSiteImages())['programas-alem-do-tatame'];
+
   return (
     <>
       <section aria-labelledby="metodo" className="py-16 sm:py-20">
@@ -66,9 +71,23 @@ export function MethodSection() {
 
       <section aria-labelledby="alem-do-tatame" className="py-16 sm:py-20">
         <Container className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
-          <h2 id="alem-do-tatame" className="font-display text-5xl font-bold uppercase leading-none sm:text-6xl">
-            {method.beyond.title}
-          </h2>
+          <div>
+            <h2 id="alem-do-tatame" className="font-display text-5xl font-bold uppercase leading-none sm:text-6xl">
+              {method.beyond.title}
+            </h2>
+            {/* Ampliação leve ao passar o mouse (sem animação para quem pede menos movimento, ver globals.css). */}
+            {photo ? (
+              <div className="group mt-8 overflow-hidden">
+                <SitePhoto
+                  image={photo}
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+              </div>
+            ) : (
+              <PhotoPlaceholder label="Foto a definir" className="mt-8 aspect-[4/3] w-full" />
+            )}
+          </div>
           <div>
             {method.beyond.paragraphs.map((paragraph) => (
               <p key={paragraph} className="mt-4 text-lg leading-relaxed text-gb-mute first:mt-0">

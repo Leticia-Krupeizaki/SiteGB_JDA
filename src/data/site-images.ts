@@ -61,6 +61,15 @@ export const siteImageSlots: SiteImageSlot[] = [
     default: null,
     suggestedAlt: 'Espaço da academia',
   })),
+  {
+    key: 'programas-alem-do-tatame',
+    group: 'Programas',
+    label: 'Muito além do tatame',
+    hint: 'Foto abaixo do título "Muito além do tatame". Cortada no formato 4:3 (horizontal).',
+    maxSide: 1600,
+    default: null,
+    suggestedAlt: 'Alunos da Gracie Barra Jardim das Américas no tatame',
+  },
   ...legacyWall.map((master) => ({
     key: `legado-${master.id}`,
     group: 'Mural do Legado',
