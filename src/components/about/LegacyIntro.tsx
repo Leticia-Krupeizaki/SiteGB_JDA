@@ -12,9 +12,9 @@ const SEEN_KEY = 'gb-abertura-vista';
 const OVERLAY_ID = 'gb-abertura';
 
 /** Duração de cada cena, em ms: abertura, um mestre, fechamento. */
-const OPENING_MS = 3000;
-const MASTER_MS = 3600;
-const CLOSING_MS = 7000;
+const OPENING_MS = 1800;
+const MASTER_MS = 2000;
+const CLOSING_MS = 4500;
 
 type Props = {
   masters: IntroMaster[];
@@ -126,9 +126,9 @@ export function LegacyIntro({ masters, ctaHref, ctaLabel }: Props) {
           <div key={scene} className="relative flex flex-1 items-end sm:items-center">
             {scene === 0 && (
               <div className="mx-auto w-full max-w-4xl px-6 pb-24 text-center sm:pb-0">
-                <p className="animate-rise font-display text-lg font-semibold uppercase tracking-[0.3em] text-gb-red">De 1914 até hoje</p>
-                <p className="animate-rise mt-4 font-display text-6xl leading-[0.9] font-bold uppercase [animation-delay:0.25s] sm:text-8xl">O legado Gracie Barra</p>
-                <p className="animate-rise mx-auto mt-6 max-w-xl text-xl text-gb-line [animation-delay:0.6s]">Cinco mestres. Uma linhagem. Um caminho que chega ao nosso tatame.</p>
+                <p className="animate-rise [animation-duration:0.6s] font-display text-lg font-semibold uppercase tracking-[0.3em] text-gb-red">De 1914 até hoje</p>
+                <p className="animate-rise [animation-duration:0.6s] mt-4 font-display text-6xl leading-[0.9] font-bold uppercase [animation-delay:0.15s] sm:text-8xl">O legado Gracie Barra</p>
+                <p className="animate-rise [animation-duration:0.6s] mx-auto mt-6 max-w-xl text-xl text-gb-line [animation-delay:0.3s]">Cinco mestres. Uma linhagem. Um caminho que chega ao nosso tatame.</p>
               </div>
             )}
 
@@ -141,11 +141,11 @@ export function LegacyIntro({ masters, ctaHref, ctaLabel }: Props) {
                   </div>
                 )}
                 <div className="relative w-full px-6 pb-16 sm:px-12 lg:w-1/2 lg:pb-0 lg:pl-[max(3rem,calc((100vw-72rem)/2+2rem))]">
-                  <p className="animate-rise font-display text-lg font-semibold uppercase tracking-[0.25em] text-gb-red">
+                  <p className="animate-rise [animation-duration:0.6s] font-display text-lg font-semibold uppercase tracking-[0.25em] text-gb-red">
                     0{scene} · {master.subtitle}
                   </p>
-                  <p className="animate-rise mt-3 font-display text-6xl leading-[0.9] font-bold uppercase [animation-delay:0.2s] sm:text-8xl">{master.name}</p>
-                  <p className="animate-rise mt-5 max-w-lg font-display text-2xl leading-tight font-semibold uppercase text-gb-line [animation-delay:0.5s] sm:text-3xl">
+                  <p className="animate-rise [animation-duration:0.6s] mt-3 font-display text-6xl leading-[0.9] font-bold uppercase [animation-delay:0.1s] sm:text-8xl">{master.name}</p>
+                  <p className="animate-rise [animation-duration:0.6s] mt-5 max-w-lg font-display text-2xl leading-tight font-semibold uppercase text-gb-line [animation-delay:0.25s] sm:text-3xl">
                     {master.headline}
                   </p>
                 </div>
@@ -154,11 +154,11 @@ export function LegacyIntro({ masters, ctaHref, ctaLabel }: Props) {
 
             {scene === last && (
               <div className="mx-auto w-full max-w-3xl px-6 pb-20 text-center sm:pb-0">
-                <p className="animate-rise font-display text-lg font-semibold uppercase tracking-[0.3em] text-gb-red">Capítulo 06</p>
-                <p className="animate-rise mt-4 font-display text-6xl leading-[0.9] font-bold uppercase [animation-delay:0.2s] sm:text-8xl">O próximo capítulo é seu</p>
-                <p className="animate-rise mx-auto mt-6 max-w-xl text-xl text-gb-line [animation-delay:0.5s]">A história que começou em 1914 continua a cada treino.</p>
-                <p className="animate-rise mt-4 font-display text-3xl font-bold uppercase text-gb-red [animation-delay:0.9s] sm:text-4xl">A história continua com você.</p>
-                <div className="animate-rise mt-10 flex flex-col justify-center gap-3 [animation-delay:1.2s] sm:flex-row">
+                <p className="animate-rise [animation-duration:0.6s] font-display text-lg font-semibold uppercase tracking-[0.3em] text-gb-red">Capítulo 06</p>
+                <p className="animate-rise [animation-duration:0.6s] mt-4 font-display text-6xl leading-[0.9] font-bold uppercase [animation-delay:0.1s] sm:text-8xl">O próximo capítulo é seu</p>
+                <p className="animate-rise [animation-duration:0.6s] mx-auto mt-6 max-w-xl text-xl text-gb-line [animation-delay:0.25s]">A história que começou em 1914 continua a cada treino.</p>
+                <p className="animate-rise [animation-duration:0.6s] mt-4 font-display text-3xl font-bold uppercase text-gb-red [animation-delay:0.45s] sm:text-4xl">A história continua com você.</p>
+                <div className="animate-rise [animation-duration:0.6s] mt-10 flex flex-col justify-center gap-3 [animation-delay:0.65s] sm:flex-row">
                   <a
                     href={ctaHref}
                     target="_blank"
