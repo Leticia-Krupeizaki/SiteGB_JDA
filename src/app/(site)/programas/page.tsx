@@ -6,6 +6,7 @@ import { ButtonLink } from '@/components/ui/ButtonLink';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { CurriculumSection } from '@/components/programs/CurriculumSection';
+import { MethodSection } from '@/components/programs/MethodSection';
 import { site } from '@/config/site';
 import { trainingFocuses } from '@/data/programs';
 import { scheduleValidFrom } from '@/data/schedule';
@@ -23,8 +24,13 @@ export default function ProgramasPage() {
     <>
       <PageHeader title="Turmas e treinos" description={`Conforme a grade oficial da unidade, vigente desde ${validFrom}.`} />
 
-      <section className="py-16 sm:py-20">
+      <MethodSection />
+
+      <section aria-labelledby="turmas" className="border-t border-gb-line py-16 sm:py-20">
         <Container>
+          <div id="turmas" className="mb-10">
+            <SectionHeading title="Turmas da unidade" />
+          </div>
           <ProgramList />
         </Container>
       </section>
@@ -35,7 +41,7 @@ export default function ProgramasPage() {
 
       <section className="bg-gb-line/60 py-16 sm:py-20">
         <Container className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
-          <SectionHeading title="Focos de treino" description="Alguns horários das turmas GB1 + GB2 têm um foco específico, indicado na grade." />
+          <SectionHeading title="Em busca do desenvolvimento" description="Alguns horários das turmas GB1 + GB2 têm um foco específico, indicado na grade." />
           <div>
             <dl>
               {trainingFocuses.map((focus) => (
