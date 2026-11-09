@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { INTRO_CLOSED_EVENT } from '@/components/about/LegacyIntro';
 import { ClockIcon, CloseIcon } from '@/components/ui/icons';
 import type { Weekday } from '@/data/schedule';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
@@ -9,7 +10,8 @@ import { TodayOnMat } from './TodayOnMat';
 
 /**
  * Botão flutuante "Aulas de hoje", ao lado do botão do WhatsApp (pedido do
- * cliente), que abre o quadro "Hoje no tatame". Não abre sozinho.
+ * cliente), que abre o quadro "Hoje no tatame". Abre sozinho só logo depois da
+ * abertura do legado (página inicial, uma vez por visita), a pedido do cliente.
  * <dialog> nativo: prende o foco, fecha com Esc, com o botão ou clicando fora, e
  * devolve o foco ao botão flutuante ao fechar.
  */
@@ -28,6 +30,12 @@ export function TodayPopup() {
 
   // O dia é calculado na hora do clique, então vale mesmo com a página aberta desde ontem.
   const open = () => setDay(defaultDay(new Date(), academyTimeZone));
+
+  useEffect(() => {
+    const onIntroClosed = () => setDay(defaultDay(new Date(), academyTimeZone));
+    window.addEventListener(INTRO_CLOSED_EVENT, onIntroClosed);
+    return () => window.removeEventListener(INTRO_CLOSED_EVENT, onIntroClosed);
+  }, []);
   const close = () => ref.current?.close();
 
   return (

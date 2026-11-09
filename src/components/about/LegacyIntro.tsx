@@ -10,6 +10,8 @@ export type IntroMaster = Pick<LegacyMaster, 'id' | 'name' | 'subtitle' | 'headl
 /** Guardado ao terminar ou pular: a abertura passa uma vez por visita (aba do navegador). */
 const SEEN_KEY = 'gb-abertura-vista';
 const OVERLAY_ID = 'gb-abertura';
+/** Avisado ao fechar a abertura: o quadro "Aulas de hoje" (TodayPopup) abre em seguida. */
+export const INTRO_CLOSED_EVENT = 'gb:abertura-fechada';
 
 /** Duração de cada cena, em ms: abertura, um mestre, fechamento. */
 const OPENING_MS = 1800;
@@ -43,6 +45,7 @@ export function LegacyIntro({ masters, ctaHref, ctaLabel }: Props) {
       sessionStorage.setItem(SEEN_KEY, '1');
     } catch {}
     setOpen(false);
+    window.dispatchEvent(new Event(INTRO_CLOSED_EVENT));
   }, []);
 
   // Decide no navegador se passa ou não.
