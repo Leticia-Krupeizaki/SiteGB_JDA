@@ -16,7 +16,7 @@ export async function LegacySection() {
     name: master.name,
     subtitle: master.subtitle,
     headline: master.headline,
-    summary: master.summary,
+    story: master.story,
     photo: images[`legado-${master.id}`],
   }));
 

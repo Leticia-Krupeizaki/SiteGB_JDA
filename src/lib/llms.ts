@@ -83,7 +83,7 @@ export function buildLlmsTxt(): string {
     '',
     legacy.intro[0],
     '',
-    ...legacyWall.map((m) => `- ${m.name}: ${m.subtitle}. ${m.summary}`),
+    ...legacyWall.map((m) => `- ${m.name}: ${m.headline}. ${m.story[0].replaceAll("**", "")}`),
     '',
     '## Optional',
     '',
