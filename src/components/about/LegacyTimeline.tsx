@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type MouseEvent } from 'react';
+import { useRef, useState } from 'react';
 import { SitePhoto } from '@/components/ui/SitePhoto';
 import type { LegacyMaster } from '@/data/legacy';
 import type { SiteImage } from '@/lib/content/site-images';
@@ -36,9 +36,15 @@ export function LegacyTimeline({ masters, mobile = 'horizontal' }: { masters: Ti
   const [revealed, setRevealed] = useState<number | null>(null);
   const css = layout[mobile];
 
-  function toggle(i: number, event: MouseEvent) {
-    const pointer = event.nativeEvent instanceof PointerEvent ? event.nativeEvent.pointerType : '';
-    if (pointer !== 'mouse') setRevealed(revealed === i ? null : i);
+  // Tipo do ponteiro no início do toque/clique: no Safari do iPhone o próprio clique
+  // chega como "mouse", então não dá para ler o tipo nele.
+  const pointer = useRef('');
+
+  function toggle(i: number) {
+    // Mouse de verdade: quem mostra e esconde é o hover; o clique não deixa aberto.
+    const mouse = pointer.current === 'mouse' && window.matchMedia('(hover: hover)').matches;
+    pointer.current = '';
+    if (!mouse) setRevealed(revealed === i ? null : i);
   }
 
   return (
@@ -58,7 +64,7 @@ export function LegacyTimeline({ masters, mobile = 'horizontal' }: { masters: Ti
               {!last && <span className={`-mr-5 h-px flex-1 bg-gb-white/25 ${mobile === 'vertical' ? 'hidden lg:block' : ''}`} />}
             </div>
 
-            <button type="button" onClick={(event) => toggle(i, event)} aria-expanded={isOpen} data-open={isOpen} className="group focus-ring block w-full text-left">
+            <button type="button" onPointerDown={(event) => (pointer.current = event.pointerType)} onClick={() => toggle(i)} aria-expanded={isOpen} data-open={isOpen} className="group focus-ring block w-full text-left">
               <span className={`relative block overflow-hidden ${css.photo}`}>
                 {master.photo ? (
                   <SitePhoto
