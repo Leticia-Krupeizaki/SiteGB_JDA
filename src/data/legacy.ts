@@ -35,44 +35,66 @@ export type LegacyMaster = {
   /** Usado na chave da foto no painel (`legado-<id>`). */
   id: string;
   name: string;
-  role: string;
+  /** Sempre visível abaixo do nome, na linha do tempo. */
+  subtitle: string;
+  /** Título e breve história que surgem sobre a foto (hover ou toque). */
+  headline: string;
+  summary: string;
   /** Retrato oficial do Mural do Legado (ver aviso no topo do arquivo). */
   photo: null | { src: StaticImageData; alt: string };
   /** true: o manual exige autorização por escrito do franqueador para usar a imagem. */
   requiresWrittenAuthorization?: boolean;
 };
 
-/** Mural do Legado, na ordem da página oficial (linhagem). */
+/**
+ * Linha do tempo do Legado, na ordem da linhagem. Breves histórias resumidas dos
+ * textos enviados pelo cliente em 09/11/2026 (pediu menos texto na página).
+ */
 export const legacyWall: LegacyMaster[] = [
   {
     id: 'mitsuyo-maeda',
     name: 'Mitsuyo Maeda',
-    role: 'Mestre japonês, um dos grandes responsáveis por trazer o Jiu-Jitsu ao Brasil.',
+    subtitle: 'O início de um grande legado',
+    headline: 'O início de um grande legado',
+    summary:
+      'Conhecido como Conde Koma, o mestre japonês chegou ao Brasil em 1914 e ensinou Carlos Gracie, dando início a uma tradição de disciplina, respeito, coragem e superação.',
     photo: { src: mitsuyoMaeda, alt: 'Retrato em preto e branco de Mitsuyo Maeda, de kimono' },
   },
   {
     id: 'carlos-gracie-sr',
     name: 'Carlos Gracie Sr.',
-    role: 'Pioneiro do Jiu-Jitsu Brasileiro, dedicou-se a desenvolver e difundir a arte.',
+    subtitle: 'Uma filosofia de vida',
+    headline: 'O Jiu-Jitsu como filosofia de vida',
+    summary:
+      'Discípulo de Maeda, transformou os ensinamentos em uma filosofia de vida e acreditava que o Jiu-Jitsu deveria ser acessível a todos. Seu legado inspirou o filho, Carlos Gracie Jr.',
     photo: { src: carlosGracieSr, alt: 'Retrato em preto e branco do Mestre Carlos Gracie Sr.' },
     requiresWrittenAuthorization: true,
   },
   {
     id: 'helio-gracie',
     name: 'Hélio Gracie',
-    role: 'Pioneiro do Jiu-Jitsu Brasileiro, dedicou a vida ao aperfeiçoamento da técnica.',
+    subtitle: 'A técnica supera a força',
+    headline: 'A força da superação',
+    summary:
+      'Mesmo com dificuldades físicas desde a infância, provou que a técnica pode superar a força e revolucionou o Jiu-Jitsu Brasileiro com coragem, inteligência e perseverança.',
     photo: { src: helioGracie, alt: 'Retrato em preto e branco de Hélio Gracie, de kimono' },
   },
   {
     id: 'rolls-gracie',
     name: 'Rolls Gracie',
-    role: 'Inovador da sua geração, levou ao Jiu-Jitsu uma abordagem moderna e atlética.',
+    subtitle: 'A coragem de inovar',
+    headline: 'Um verdadeiro visionário',
+    summary:
+      'Visionário, integrou conhecimentos de outras artes marciais e mostrou que respeitar a tradição também é ter coragem para inovar. Influenciou profundamente Carlos Gracie Jr.',
     photo: { src: rollsGracie, alt: 'Retrato em preto e branco de Rolls Gracie, de kimono' },
   },
   {
     id: 'carlos-gracie-jr',
     name: 'Carlos Gracie Jr.',
-    role: 'Fundador da Gracie Barra, transformou o Jiu-Jitsu Para Todos em um movimento global.',
+    subtitle: 'Fundador da Gracie Barra',
+    headline: 'O visionário que transformou o Jiu-Jitsu em um legado mundial',
+    summary:
+      'Fundador da Gracie Barra, levou o “Jiu-Jitsu para Todos” a mais de 40 países, com uma metodologia que acolhe pessoas de todas as idades e níveis de experiência.',
     photo: { src: carlosGracieJr, alt: 'Retrato em preto e branco do Mestre Carlos Gracie Jr., de kimono Gracie Barra' },
     requiresWrittenAuthorization: true,
   },

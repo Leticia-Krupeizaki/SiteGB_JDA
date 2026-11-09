@@ -1,15 +1,24 @@
 import { Container } from '@/components/ui/Container';
 import { ExternalIcon } from '@/components/ui/icons';
-import { SitePhoto } from '@/components/ui/SitePhoto';
 import { legacy, legacySourceUrl, legacyWall } from '@/data/legacy';
 import { getSiteImages } from '@/lib/content/site-images';
+import { LegacyTimeline, type TimelineMaster } from './LegacyTimeline';
 
 /**
- * "O legado Gracie Barra": história da rede e o Mural do Legado (5 mestres).
+ * "O legado Gracie Barra": história da rede e a linha do tempo dos 5 mestres.
  * Fundo preto, como uma parede de honra. Retratos pendentes: ver src/data/legacy.ts.
  */
 export async function LegacySection() {
   const images = await getSiteImages();
+  // Só o que o componente do navegador usa (fotos trocáveis no painel, chave `legado-<id>`).
+  const masters: TimelineMaster[] = legacyWall.map((master) => ({
+    id: master.id,
+    name: master.name,
+    subtitle: master.subtitle,
+    headline: master.headline,
+    summary: master.summary,
+    photo: images[`legado-${master.id}`],
+  }));
 
   return (
     <section id="legado" aria-labelledby="legado-titulo" className="scroll-mt-24 bg-gb-ink py-16 text-gb-white sm:py-24">
@@ -35,31 +44,9 @@ export async function LegacySection() {
           </dl>
         </div>
 
-        <h3 className="mt-16 font-display text-3xl font-bold uppercase">Mural do Legado</h3>
-        <p className="mt-2 text-gb-line">Os mestres que construíram o caminho que seguimos no tatame.</p>
-        <ol className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-          {legacyWall.map((master) => {
-            const photo = images[`legado-${master.id}`];
-            return (
-            <li key={master.name}>
-              <figure>
-                {photo ? (
-                  // Retratos oficiais (quadrados, P&B), sem edição; trocáveis no painel.
-                  <SitePhoto image={photo} sizes="(min-width: 1024px) 205px, (min-width: 640px) 33vw, 50vw" className="aspect-square h-auto w-full object-cover" />
-                ) : (
-                  <div role="img" aria-label={`Retrato de ${master.name} a definir`} className="flex aspect-square w-full items-end border border-gb-white/20 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.05)_0_1px,transparent_1px_10px)] p-3">
-                    <span className="border border-dashed border-gb-line/50 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-gb-line">Retrato oficial a definir</span>
-                  </div>
-                )}
-                <figcaption className="mt-3">
-                  <span className="block font-display text-xl font-bold uppercase leading-tight">{master.name}</span>
-                  <span className="mt-1 block text-sm leading-snug text-gb-line">{master.role}</span>
-                </figcaption>
-              </figure>
-            </li>
-            );
-          })}
-        </ol>
+        <h3 className="mt-16 font-display text-3xl font-bold uppercase">Linha do tempo do legado</h3>
+        <p className="mt-2 text-gb-line">Cinco mestres, uma linhagem. Passe o mouse ou toque na foto para conhecer a história de cada um.</p>
+        <LegacyTimeline masters={masters} mobile="vertical" />
 
         <a
           href={legacySourceUrl}

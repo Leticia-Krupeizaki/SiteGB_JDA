@@ -83,7 +83,7 @@ export function buildLlmsTxt(): string {
     '',
     legacy.intro[0],
     '',
-    ...legacyWall.map((m) => `- ${m.name}: ${m.role}`),
+    ...legacyWall.map((m) => `- ${m.name}: ${m.subtitle}. ${m.summary}`),
     '',
     '## Optional',
     '',

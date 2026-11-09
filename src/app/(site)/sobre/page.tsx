@@ -81,8 +81,6 @@ export default async function SobrePage() {
         </Container>
       </section>
 
-      <LegacySection />
-
       <section className="border-t border-gb-line py-16 sm:py-20">
         <Container className="space-y-6">
           <SectionHeading title="Estrutura" />
@@ -98,6 +96,8 @@ export default async function SobrePage() {
           <PlaceholderNotice>{structurePhotos.length > 0 ? 'descrição do espaço, com material oficial.' : 'fotos e descrição do espaço, com material oficial.'}</PlaceholderNotice>
         </Container>
       </section>
+
+      <LegacySection />
 
       <section className="bg-gb-line/60 py-16 sm:py-20">
         <Container>

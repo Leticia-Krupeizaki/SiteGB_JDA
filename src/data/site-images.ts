@@ -84,7 +84,7 @@ export const siteImageSlots: SiteImageSlot[] = [
     key: `legado-${master.id}`,
     group: 'Mural do Legado',
     label: master.name,
-    hint: 'Retrato quadrado (cortado no centro se não for).',
+    hint: 'Retrato quadrado ou vertical; aparece cortado no formato 4:5, centralizado.',
     maxSide: 800,
     default: master.photo,
     suggestedAlt: `Retrato de ${master.name}`,
