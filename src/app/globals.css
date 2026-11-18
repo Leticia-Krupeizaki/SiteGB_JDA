@@ -73,6 +73,27 @@ h3 {
   }
 }
 
+/*
+ * Card de professor aberto no computador (>= 1024 px): mouse sobre o card, toque
+ * (data-open) ou foco do teclado dentro dele. Uso: `card-open:w-...` nos elementos
+ * dentro de `.instructor-card`.
+ */
+@custom-variant card-open {
+  @media (width >= 64rem) {
+    @media (hover: hover) {
+      .instructor-card:hover & {
+        @slot;
+      }
+    }
+    .instructor-card[data-open='true'] & {
+      @slot;
+    }
+    .instructor-card:has(:focus-visible) & {
+      @slot;
+    }
+  }
+}
+
 @keyframes gb-marquee {
   from {
     transform: translateX(0);
