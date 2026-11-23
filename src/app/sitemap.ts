@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { mainNavigation } from '@/config/navigation';
 import { siteUrl } from '@/config/site';
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return mainNavigation.map((item) => ({
     url: new URL(item.href, siteUrl).toString(),

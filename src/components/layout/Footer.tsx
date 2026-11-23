@@ -30,7 +30,7 @@ export async function Footer() {
             {/*
              * Logo da escola (arquivo do cliente, assets/marca/logo-jda.pdf, com disco branco
              * atrás para o texto preto do anel aparecer no fundo preto) ao lado do selo Premium.
-             * Os dois são trocáveis no painel (Fotos do site → Marca).
+             * Os dois ficam em src/data/site-images.ts (chaves `marca-*`).
              */}
             <div className="mt-6 flex items-center gap-5">
               {schoolLogo && <SitePhoto image={schoolLogo} sizes="96px" className="h-auto w-24" />}

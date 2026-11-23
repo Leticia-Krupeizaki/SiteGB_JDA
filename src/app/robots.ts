@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { siteUrl } from '@/config/site';
 
-// A área administrativa (Etapa 5) será protegida no servidor; o robots apenas evita indexação.
+export const dynamic = 'force-static';
+
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: '*', allow: '/', disallow: ['/admin', '/api'] },
+    rules: { userAgent: '*', allow: '/' },
     sitemap: new URL('/sitemap.xml', siteUrl).toString(),
   };
 }

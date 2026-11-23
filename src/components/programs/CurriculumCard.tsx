@@ -46,8 +46,8 @@ export function CurriculumCard({ curriculum }: { curriculum: Curriculum }) {
     <li className="flex flex-col bg-gb-white">
       {/* Miniatura clicável. Decorativa para leitor de tela (o botão "Ver currículo" já descreve a ação). */}
       <button type="button" onClick={show} tabIndex={-1} aria-hidden className="block cursor-zoom-in border-b border-gb-line">
-        {/* Pôster enviado pelo painel já vem no tamanho do card: dispensa o otimizador. */}
-        <Image src={curriculum.preview} alt="" unoptimized={curriculum.custom} sizes="(min-width: 1024px) 270px, (min-width: 640px) 45vw, 90vw" className="h-auto w-full select-none" {...noSave} />
+        {/* Miniatura já no tamanho do card (480 px). */}
+        <Image src={curriculum.preview} alt="" sizes="(min-width: 1024px) 270px, (min-width: 640px) 45vw, 90vw" className="h-auto w-full select-none" {...noSave} />
       </button>
       <div className="flex flex-1 flex-col p-4">
         <h4 className="font-display text-2xl font-bold uppercase leading-tight">{name}</h4>

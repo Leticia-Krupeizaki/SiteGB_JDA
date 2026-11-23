@@ -32,7 +32,7 @@ export const legacy = {
 };
 
 export type LegacyMaster = {
-  /** Usado na chave da foto no painel (`legado-<id>`). */
+  /** Usado na chave da foto em src/data/site-images.ts (`legado-<id>`). */
   id: string;
   name: string;
   /** Sempre visível abaixo do nome, na linha do tempo. */

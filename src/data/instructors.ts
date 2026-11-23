@@ -1,6 +1,6 @@
 /**
  * Professores da unidade (nomes enviados pelo cliente em 09/11/2026; textos em
- * 18/11/2026; o Fabio é chamado de "Fabinho"). Fotos pelo painel (Fotos do site → Professores, chave
+ * 18/11/2026; o Fabio é chamado de "Fabinho"). Fotos em src/data/site-images.ts (chave
  * `professor-<id>`). Sem `quote`/`bio`, o card mostra o aviso "a confirmar" e não
  * se expande.
  */

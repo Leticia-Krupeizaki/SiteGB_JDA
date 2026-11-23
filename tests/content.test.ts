@@ -1,12 +1,11 @@
-import sharp from 'sharp';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { curriculumGroups } from '@/data/curriculums';
 import { instructors } from '@/data/instructors';
 import { legacyWall } from '@/data/legacy';
+import { muralCategories, muralPosts } from '@/data/mural';
 import { siteImageSlots } from '@/data/site-images';
-import { processContentImage } from '@/lib/content/image';
-import { ImageRejectedError } from '@/lib/mural/image';
-import { curriculumFormSchema, siteImageFormSchema } from '@/lib/validation/admin';
 
 describe('espaços de foto do site', () => {
   it('têm chaves únicas', () => {
@@ -21,49 +20,29 @@ describe('espaços de foto do site', () => {
     for (const key of ['home-hero', 'home-unidade', 'sobre-historia', 'marca-selo-premium', 'marca-logo-escola']) expect(keys.has(key)).toBe(true);
   });
 
-  it('pedem descrição da foto', () => {
-    expect(siteImageFormSchema.safeParse({ alt: '  ' }).success).toBe(false);
-    expect(siteImageFormSchema.parse({ alt: ' Treino de terça ' }).alt).toBe('Treino de terça');
+  it('toda foto definida tem descrição', () => {
+    for (const slot of siteImageSlots) if (slot.image) expect(slot.image.alt.trim(), slot.key).not.toBe('');
   });
 });
 
-describe('formulário de currículo', () => {
-  it('aceita mês AAAA-MM ou vazio', () => {
-    expect(curriculumFormSchema.parse({ version: '4.1', referenceMonth: '2026-11' }).referenceMonth).toBe('2026-11');
-    expect(curriculumFormSchema.parse({ version: '4.1', referenceMonth: '' }).referenceMonth).toBeNull();
-    expect(curriculumFormSchema.safeParse({ version: '4.1', referenceMonth: '2026-13' }).success).toBe(false);
-    // Versão é opcional: vazia, o servidor mantém a atual.
-    expect(curriculumFormSchema.parse({ version: '', referenceMonth: '' }).version).toBeNull();
-  });
-
+describe('currículos', () => {
   it('slugs dos currículos são únicos', () => {
     const slugs = curriculumGroups.flatMap((group) => group.items.map((item) => item.slug));
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 });
 
-describe('reprocessamento das imagens do painel', () => {
-  it('gera as versões pedidas em WebP, sem aumentar imagem pequena e sem EXIF', async () => {
-    const input = await sharp({ create: { width: 3600, height: 4800, channels: 3, background: '#ffffff' } })
-      .jpeg()
-      .withExif({ IFD0: { Artist: 'Fulano' } })
-      .toBuffer();
-    const [full, preview] = await processContentImage(input, [{ width: 1800 }, { width: 800 }]);
-    expect([full.width, full.height]).toEqual([1800, 2400]);
-    expect([preview.width, preview.height]).toEqual([800, 1067]);
-    expect((await sharp(full.data).metadata()).exif).toBeUndefined();
+describe('fotos do mural', () => {
+  const categories = new Set(muralCategories.map((category) => category.id));
 
-    const small = await sharp({ create: { width: 300, height: 200, channels: 4, background: '#00000000' } }).png().toBuffer();
-    const [kept] = await processContentImage(small, [{ width: 600, height: 600 }]);
-    expect([kept.width, kept.height]).toEqual([300, 200]);
-    // PNG transparente (logo) continua transparente.
-    expect((await sharp(kept.data).metadata()).hasAlpha).toBe(true);
-  });
-
-  it('recusa o que não é JPG, PNG ou WebP de verdade', async () => {
-    await expect(processContentImage(new TextEncoder().encode('%PDF-1.7 ...'), [{ width: 800 }])).rejects.toBeInstanceOf(ImageRejectedError);
-    await expect(processContentImage(new Uint8Array(), [{ width: 800 }])).rejects.toBeInstanceOf(ImageRejectedError);
-    const truncated = (await sharp({ create: { width: 64, height: 64, channels: 3, background: '#000' } }).jpeg().toBuffer()).subarray(0, 120);
-    await expect(processContentImage(truncated, [{ width: 800 }])).rejects.toBeInstanceOf(ImageRejectedError);
+  it('têm id único, categoria válida e o arquivo em public/', () => {
+    const ids = muralPosts.map((post) => post.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const post of muralPosts) {
+      expect(categories.has(post.category), post.id).toBe(true);
+      expect(post.imageUrl.startsWith('/fotos/mural/'), post.id).toBe(true);
+      expect(existsSync(join('public', post.imageUrl)), post.imageUrl).toBe(true);
+      expect(post.width > 0 && post.height > 0, post.id).toBe(true);
+    }
   });
 });

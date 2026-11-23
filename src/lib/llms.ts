@@ -63,7 +63,7 @@ export function buildLlmsTxt(): string {
     `- [A Academia](${url('/sobre')}): história da unidade e o legado Gracie Barra`,
     `- [Programas](${url('/programas')}): turmas, currículos de treino e focos de treino`,
     `- [Horários](${url('/horarios')}): grade semanal completa, com filtro por turma`,
-    `- [Mural](${url('/mural')}): fotos da comunidade, enviadas pelos alunos e revisadas pela equipe`,
+    `- [Mural](${url('/mural')}): fotos da comunidade: treinos, graduações, campeonatos e eventos`,
     `- [Contato](${url('/contato')}): telefone, WhatsApp e Instagram`,
     '',
     '## Currículos de treino',

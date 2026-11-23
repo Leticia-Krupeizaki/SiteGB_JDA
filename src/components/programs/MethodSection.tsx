@@ -7,7 +7,7 @@ import { getSiteImages } from '@/lib/content/site-images';
 
 /**
  * Apresentação do Método Gracie Barra (página Programas): introdução, os quatro
- * programas em cards e o fechamento "Muito além do tatame", com foto trocável no painel.
+ * programas em cards e o fechamento "Muito além do tatame", com foto em src/data/site-images.ts.
  */
 export async function MethodSection() {
   const photo = (await getSiteImages())['programas-alem-do-tatame'];

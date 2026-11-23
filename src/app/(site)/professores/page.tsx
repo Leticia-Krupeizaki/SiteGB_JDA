@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function ProfessoresPage() {
   const images = await getSiteImages();
-  // Só o que o componente do navegador usa (foto trocável no painel, chave `professor-<id>`).
+  // Só o que o componente do navegador usa (foto em src/data/site-images.ts, chave `professor-<id>`).
   const cards = instructors.map((instructor) => ({ ...instructor, photo: images[`professor-${instructor.id}`] ?? null }));
 
   return (

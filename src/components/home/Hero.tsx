@@ -15,7 +15,7 @@ const values = [
 ];
 
 /**
- * Hero em tela cheia. Com foto de treino (enviada pelo painel): P&B com sobreposição
+ * Hero em tela cheia. Com foto de treino (src/data/site-images.ts, `home-hero`): P&B com sobreposição
  * escura. Sem foto: fundo gráfico preto com brilho vermelho à esquerda e azul GB no
  * canto, listras diagonais e vinheta. A logo da escola entra pela esquerda como
  * marca d'água em degradê; o conteúdo fica à direita dela (centralizado no celular).

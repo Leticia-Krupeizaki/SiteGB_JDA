@@ -1,53 +1,22 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { categoryLabel, muralCategories } from '@/data/mural';
-import type { MuralCategory, PublicMuralPage, PublicMuralPost } from '@/types/mural';
+import type { MuralCategory, MuralPost } from '@/types/mural';
 import { MuralPhoto } from './MuralPhoto';
 import { PhotoLightbox } from './PhotoLightbox';
 
 type Filter = MuralCategory | 'TODAS';
 
-async function fetchPage(category: Filter, cursor?: string | null): Promise<PublicMuralPage> {
-  const params = new URLSearchParams();
-  if (category !== 'TODAS') params.set('category', category);
-  if (cursor) params.set('cursor', cursor);
-  const response = await fetch(`/api/mural?${params}`);
-  if (!response.ok) throw new Error(String(response.status));
-  return response.json();
-}
-
-/** Galeria das fotos aprovadas. A primeira página vem do servidor; filtros e "Carregar mais" buscam na API. */
-export function MuralGallery({ initial }: { initial: PublicMuralPage }) {
+/** Galeria do mural com filtro por categoria e foto ampliada. As fotos vêm de src/data/mural.ts. */
+export function MuralGallery({ posts: allPosts }: { posts: MuralPost[] }) {
   const [category, setCategory] = useState<Filter>('TODAS');
-  const [posts, setPosts] = useState<PublicMuralPost[]>(initial.items);
-  const [cursor, setCursor] = useState(initial.nextCursor);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [open, setOpen] = useState<number | null>(null);
-  const request = useRef(0);
-
-  const load = async (next: Filter, after?: string | null) => {
-    const id = ++request.current;
-    setLoading(true);
-    setError(false);
-    try {
-      const page = await fetchPage(next, after);
-      if (id !== request.current) return; // resposta de um filtro antigo
-      setPosts((current) => (after ? [...current, ...page.items] : page.items));
-      setCursor(page.nextCursor);
-    } catch {
-      if (id === request.current) setError(true);
-    } finally {
-      if (id === request.current) setLoading(false);
-    }
-  };
+  const posts = category === 'TODAS' ? allPosts : allPosts.filter((post) => post.category === category);
 
   const select = (next: Filter) => {
-    if (next === category) return;
     setCategory(next);
     setOpen(null);
-    void load(next);
   };
 
   const options = [{ id: 'TODAS' as const, label: 'Todas' }, ...muralCategories];
@@ -74,11 +43,11 @@ export function MuralGallery({ initial }: { initial: PublicMuralPage }) {
       </div>
 
       <div aria-live="polite" className="sr-only">
-        {loading ? 'Carregando fotos…' : `${posts.length} ${posts.length === 1 ? 'foto' : 'fotos'} exibidas.`}
+        {`${posts.length} ${posts.length === 1 ? 'foto' : 'fotos'} exibidas.`}
       </div>
 
       {posts.length > 0 ? (
-        <ul className={`mt-8 columns-2 gap-3 sm:columns-3 [&>li]:mb-3 ${loading && !cursor ? 'opacity-60' : ''}`}>
+        <ul className="mt-8 columns-2 gap-3 sm:columns-3 [&>li]:mb-3">
           {posts.map((post, i) => (
             <li key={post.id} className="break-inside-avoid">
               <button
@@ -93,37 +62,9 @@ export function MuralGallery({ initial }: { initial: PublicMuralPage }) {
           ))}
         </ul>
       ) : (
-        !loading && (
-          <div className="mt-8 border border-dashed border-gb-mute/40 bg-gb-white p-8 text-center">
-            <p className="font-display text-2xl font-bold uppercase">
-              {category === 'TODAS' ? 'O mural ainda está vazio' : 'Nenhuma foto nesta categoria'}
-            </p>
-            <p className="mt-2 text-gb-mute">
-              Que tal ser o primeiro a enviar?{' '}
-              <a href="#enviar" className="focus-ring font-semibold text-gb-navy underline">
-                Compartilhar minha foto
-              </a>
-            </p>
-          </div>
-        )
-      )}
-
-      {error && (
-        <p role="alert" className="mt-6 text-center font-semibold text-gb-red-dark">
-          Não foi possível carregar as fotos. Verifique sua conexão e tente de novo.
-        </p>
-      )}
-
-      {cursor && (
-        <div className="mt-6 text-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => void load(category, cursor)}
-            className="focus-ring min-h-12 border-2 border-gb-ink px-6 font-display text-lg font-semibold uppercase hover:bg-gb-ink hover:text-gb-white disabled:opacity-60"
-          >
-            {loading ? 'Carregando…' : 'Carregar mais'}
-          </button>
+        <div className="mt-8 border border-dashed border-gb-mute/40 bg-gb-white p-8 text-center">
+          <p className="font-display text-2xl font-bold uppercase">{category === 'TODAS' ? 'O mural ainda está vazio' : 'Nenhuma foto nesta categoria'}</p>
+          <p className="mt-2 text-gb-mute">Novas fotos dos treinos, graduações e eventos aparecem aqui em breve.</p>
         </div>
       )}
 

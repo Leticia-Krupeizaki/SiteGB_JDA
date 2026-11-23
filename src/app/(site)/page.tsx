@@ -21,12 +21,12 @@ import { legacyWall } from '@/data/legacy';
 import { getSiteImages } from '@/lib/content/site-images';
 import { academyTimeZone, defaultDay } from '@/lib/schedule';
 
-/** Renderizada por requisição (fotos do painel), então o "Hoje no tatame" sempre acompanha o dia. */
+/** O "Hoje no tatame" sai com o dia do build e o navegador corrige para o dia de hoje ao abrir. */
 export default async function HomePage() {
   const today = defaultDay(new Date(), academyTimeZone);
   const images = await getSiteImages();
   const unitPhoto = images['home-unidade'];
-  // Abertura do legado: só o que a tela usa (fotos trocáveis no painel, chave `legado-<id>`).
+  // Abertura do legado: só o que a tela usa (fotos em src/data/site-images.ts, chave `legado-<id>`).
   const introMasters = legacyWall.map(({ id, name, subtitle, headline }) => ({ id, name, subtitle, headline, photo: images[`legado-${id}`] }));
 
   return (
@@ -130,13 +130,10 @@ export default async function HomePage() {
           <div className="space-y-6 lg:order-2">
             <SectionHeading
               title="Nosso tatame, nossa história"
-              description="Treinos, graduações, campeonatos e eventos registrados pelos próprios alunos no Mural da Comunidade. Cada foto é revisada pela equipe antes de aparecer."
+              description="Treinos, graduações, campeonatos e eventos da nossa comunidade, reunidos no Mural."
             />
             <div className="flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/mural#enviar">Enviar minha foto</ButtonLink>
-              <ButtonLink href="/mural" variant="outline">
-                Ver o mural
-              </ButtonLink>
+              <ButtonLink href="/mural">Ver o mural</ButtonLink>
             </div>
           </div>
           <MuralPreview />

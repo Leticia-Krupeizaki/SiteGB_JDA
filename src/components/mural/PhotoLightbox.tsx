@@ -3,11 +3,11 @@
 import { useEffect, useRef } from 'react';
 import { CloseIcon } from '@/components/ui/icons';
 import { categoryLabel } from '@/data/mural';
-import type { PublicMuralPost } from '@/types/mural';
+import type { MuralPost } from '@/types/mural';
 import { MuralPhoto } from './MuralPhoto';
 
 type Props = {
-  post: PublicMuralPost | null;
+  post: MuralPost | null;
   index: number;
   total: number;
   onClose: () => void;

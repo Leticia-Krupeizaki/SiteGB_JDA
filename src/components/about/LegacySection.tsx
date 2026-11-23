@@ -10,7 +10,7 @@ import { LegacyTimeline, type TimelineMaster } from './LegacyTimeline';
  */
 export async function LegacySection() {
   const images = await getSiteImages();
-  // Só o que o componente do navegador usa (fotos trocáveis no painel, chave `legado-<id>`).
+  // Só o que o componente do navegador usa (fotos em src/data/site-images.ts, chave `legado-<id>`).
   const masters: TimelineMaster[] = legacyWall.map((master) => ({
     id: master.id,
     name: master.name,

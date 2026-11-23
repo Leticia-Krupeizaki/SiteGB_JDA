@@ -4,7 +4,7 @@ node_modules
 .github
 .env*
 !.env.example
-src/generated
+out
 coverage
 *.tsbuildinfo
 next-env.d.ts

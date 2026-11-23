@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { mainNavigation, primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, whatsappTrialUrl } from '@/config/site';
-import { CloseIcon, LockIcon, MenuIcon, PhoneIcon } from '@/components/ui/icons';
+import { CloseIcon, MenuIcon, PhoneIcon } from '@/components/ui/icons';
 import { Logo } from './Logo';
 
 function isActive(pathname: string, href: string) {
@@ -15,7 +15,7 @@ function isActive(pathname: string, href: string) {
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  /** Onde o painel do menu começa: logo abaixo do cabeçalho, que pode não estar no topo (faixa "Entrar" acima). */
+  /** Onde o painel do menu começa: logo abaixo do cabeçalho. */
   const [panelTop, setPanelTop] = useState(64);
   const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -74,18 +74,6 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* Acesso da equipe ao painel. A proteção é o login, não esconder o endereço. */}
-          <Link
-            href="/admin/login"
-            rel="nofollow"
-            title="Entrar na área administrativa"
-            className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 border-2 border-gb-ink px-3 font-display text-lg font-semibold uppercase tracking-wide whitespace-nowrap text-gb-ink transition-colors hover:bg-gb-ink hover:text-gb-white lg:text-base"
-          >
-            <LockIcon className="h-4 w-4" />
-            {/* Entre 1024 e 1279 px não há espaço para o texto: fica só o cadeado (com título e texto para leitor de tela). */}
-            <span className="lg:max-xl:sr-only">Entrar</span>
-            <span className="sr-only"> na área administrativa</span>
-          </Link>
           <a
             href={whatsappTrialUrl}
             target="_blank"

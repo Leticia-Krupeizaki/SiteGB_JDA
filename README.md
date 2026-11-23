@@ -1,32 +1,27 @@
 # Gracie Barra Jardim das Américas — Website
 
-Site institucional da unidade Gracie Barra Jardim das Américas (Curitiba–PR): apresentação da academia, programas, grade de horários, mural da comunidade moderado e contato via WhatsApp.
+Site institucional da unidade Gracie Barra Jardim das Américas (Curitiba–PR): apresentação da academia, programas, professores, grade de horários, mural da comunidade e contato via WhatsApp.
+
+**Site 100% estático** (desde 23/11/2026): o build gera HTML, CSS, JS e imagens na pasta `out/`, servida por nginx. Não há servidor de aplicação, banco de dados, armazenamento externo nem painel administrativo.
 
 ## Stack
 
-- [Next.js](https://nextjs.org/) (App Router) + TypeScript
+- [Next.js](https://nextjs.org/) (App Router, `output: 'export'`) + TypeScript
 - Tailwind CSS v4
-- Zod (validação) e Vitest (testes)
-- Mural: PostgreSQL + Prisma 7, storage compatível com S3 (bucket privado + bucket público só para aprovadas), `sharp` e `file-type` no upload
+- Vitest (testes)
+- nginx (hospedagem, ver [`nginx.conf`](nginx.conf))
 
 ## Requisitos
 
 - Node.js 20 ou superior
 - npm
-- Docker (para o banco e o storage locais do mural)
 
 ## Como rodar
 
 ```bash
-npm install                  # também gera o cliente do Prisma
-cp .env.example .env.local   # os valores padrão batem com o docker-compose.yml
-docker compose up -d         # PostgreSQL (5432) e storage S3 local (8333)
-npm run db:migrate           # aplica as migrações
-npm run storage:init         # cria os buckets locais
-npm run dev                  # http://localhost:3000
+npm install
+npm run dev        # http://localhost:3000
 ```
-
-Sem banco configurado, todas as páginas funcionam, menos `/mural` e as APIs do mural.
 
 Outros comandos:
 
@@ -34,35 +29,36 @@ Outros comandos:
 npm run lint
 npx tsc --noEmit
 npm test
-npm run build && npm start
+npm run build      # gera o site estático em out/
+npm start          # serve a pasta out/ para conferir o resultado
 ```
 
-## Painel administrativo
+## Como atualizar o conteúdo
 
-A moderação do mural fica em `/admin` (sem link no site público). As contas são criadas por linha de comando; a senha é gerada e mostrada uma única vez:
+Todo o conteúdo fica no código; cada mudança é um commit seguido de deploy.
 
-```bash
-npm run admin -- criar equipe@exemplo.com ADMIN Nome da Pessoa   # ou MODERATOR
-npm run admin -- listar
-npm run admin -- nova-senha equipe@exemplo.com    # encerra as sessões abertas
-npm run admin -- desativar equipe@exemplo.com     # encerra as sessões abertas
-```
+| O quê | Onde |
+|---|---|
+| Fotos do site (topo, unidade, estrutura, professores, legado, selo, logo) | arquivo em `src/assets/` + `src/data/site-images.ts` |
+| Fotos do mural | arquivo em `public/fotos/mural/` + `src/data/mural.ts` |
+| Professores (frase, credenciais, biografia) | `src/data/instructors.ts` |
+| Grade de horários | `src/data/schedule.ts` |
+| Currículos de treino | imagens em `src/assets/curriculos/` + `src/data/curriculums.ts` |
+| Dados da unidade, contato e links | `src/config/` |
 
-Em produção (Coolify), o mesmo script roda no terminal do container: `node scripts/admin.mjs criar ...`.
+Cada arquivo de dados explica, no comentário do topo, o formato e o tamanho das imagens.
 
 ## Deploy
 
-Produção roda no **Coolify** com Docker Compose (site + PostgreSQL + storage SeaweedFS). Passo a passo em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md). As migrações são aplicadas sozinhas quando o container inicia.
+Produção roda no **Coolify** com Docker Compose (um único serviço: build do site + nginx). Passo a passo em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md).
 
 ## Estrutura e próximos passos
 
-O mapa completo dos arquivos, o que já foi feito e tudo o que falta (backend do mural, painel administrativo, deploy e pendências do cliente) está em [`docs/PROXIMOS-PASSOS.md`](docs/PROXIMOS-PASSOS.md).
-
-Dados da unidade, grade de horários, turmas e links externos ficam em `src/config` e `src/data`, separados do layout.
+O mapa dos arquivos, o que já foi feito e o que falta está em [`docs/PROXIMOS-PASSOS.md`](docs/PROXIMOS-PASSOS.md).
 
 ## Conteúdo provisório
 
-Endereço, redes sociais, logotipo, professores, história da unidade e fotos ainda não foram fornecidos pelo cliente. Até lá, o site usa placeholders identificados. Não inventar esses dados.
+Fotos da unidade e dos professores ainda não foram fornecidas pelo cliente. Até lá, o site mostra os quadros "Foto a definir". Não inventar esses dados nem usar fotos genéricas como se fossem da unidade.
 
 ## Contribuição
 

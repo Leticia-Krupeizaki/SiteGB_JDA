@@ -3,7 +3,7 @@ import { SitePhoto } from './SitePhoto';
 
 /**
  * Selo "Escola Premium · Certificação 2026" da Gracie Barra, arquivo enviado
- * pelo cliente (original em assets/marca/; trocável no painel, ex.: selo do ano
+ * pelo cliente (original em assets/marca/; trocar em src/data/site-images.ts, ex.: selo do ano
  * seguinte). É um JPG com cantos pretos, sem transparência: usar SÓ sobre fundo
  * preto. `mix-blend-lighten` deixa o preto dos cantos sumir sobre a textura do
  * fundo sem alterar o dourado nem o branco.

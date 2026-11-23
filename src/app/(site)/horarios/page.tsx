@@ -11,8 +11,7 @@ import { academyTimeZone, defaultDay } from '@/lib/schedule';
 
 const validFrom = scheduleValidFrom.split('-').reverse().join('/');
 
-/** Regera a página a cada hora para a aba inicial acompanhar o dia. */
-export const revalidate = 3600;
+/** A aba do dia sai com o dia do build e o navegador corrige para o dia de hoje ao abrir. */
 
 export const metadata: Metadata = {
   title: 'Horários',
