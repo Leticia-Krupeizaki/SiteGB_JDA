@@ -2,14 +2,14 @@
 
 Site institucional da unidade Gracie Barra Jardim das Américas (Curitiba–PR): apresentação da academia, programas, professores, grade de horários, mural da comunidade e contato via WhatsApp.
 
-**Site 100% estático** (desde 23/11/2026): o build gera HTML, CSS, JS e imagens na pasta `out/`, servida por nginx. Não há servidor de aplicação, banco de dados, armazenamento externo nem painel administrativo.
+**Site 100% estático** (desde 23/11/2026): o build gera HTML, CSS, JS e imagens na pasta `out/`, publicada no GitHub Pages. Não há servidor de aplicação, banco de dados, armazenamento externo nem painel administrativo.
 
 ## Stack
 
 - [Next.js](https://nextjs.org/) (App Router, `output: 'export'`) + TypeScript
 - Tailwind CSS v4
 - Vitest (testes)
-- nginx (hospedagem, ver [`nginx.conf`](nginx.conf))
+- GitHub Pages (hospedagem, via GitHub Actions)
 
 ## Requisitos
 
@@ -50,7 +50,9 @@ Cada arquivo de dados explica, no comentário do topo, o formato e o tamanho das
 
 ## Deploy
 
-Produção roda no **Coolify** com Docker Compose (um único serviço: build do site + nginx). Passo a passo em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md).
+Produção roda no **GitHub Pages**: cada push na `main` testa, gera e publica o site sozinho ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)). Configuração e domínio em [`docs/DEPLOY-GITHUB-PAGES.md`](docs/DEPLOY-GITHUB-PAGES.md).
+
+A hospedagem anterior (Coolify, com nginx) continua documentada em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md); lá também ficam guardados o banco e o storage do antigo mural.
 
 ## Estrutura e próximos passos
 
