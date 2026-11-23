@@ -1,12 +1,13 @@
 # Deploy no Coolify
 
-O site é **estático** e sobe como **um recurso Docker Compose** no Coolify, com um único serviço definido em [`docker-compose.coolify.yml`](../docker-compose.coolify.yml):
+O site é **estático** e sobe como **um recurso Docker Compose** no Coolify, definido em [`docker-compose.coolify.yml`](../docker-compose.coolify.yml):
 
 | Serviço | O que é | Exposto na internet |
 |---|---|---|
-| `app` | nginx servindo os arquivos gerados por `npm run build` (imagem do [`Dockerfile`](../Dockerfile), configuração em [`nginx.conf`](../nginx.conf)) | Sim, domínio principal (porta interna 3000) |
+| `app` | **O site:** nginx servindo os arquivos gerados por `npm run build` (imagem do [`Dockerfile`](../Dockerfile), configuração em [`nginx.conf`](../nginx.conf)) | Sim, domínio principal (porta interna 3000) |
+| `db`, `storage` | **Guardados**, sem uso pelo site: dados do antigo mural/painel (ver "Migração para o site estático") | `storage` ainda responde em `fotos-gb.besteweb.com.br` |
 
-O `Dockerfile` tem duas etapas: o Node gera o site (`out/`) e a imagem final leva só o nginx com esses arquivos. Não há banco, armazenamento, segredos nem variáveis a preencher além do domínio.
+O `Dockerfile` tem duas etapas: o Node gera o site (`out/`) e a imagem final leva só o nginx com esses arquivos. O site não usa banco, armazenamento, segredos nem variáveis além do domínio.
 
 ---
 
@@ -27,7 +28,7 @@ O servidor hospeda outros projetos: altere apenas o projeto "Site GB".
 
 ### Migração para o site estático (23/11/2026)
 
-Até 23/11/2026 o recurso tinha também os serviços `db` (PostgreSQL) e `storage` (SeaweedFS, domínio `fotos-gb.besteweb.com.br`), usados pelo painel `/admin` e pelo envio de fotos do mural. Com o site estático eles saíram do compose. Os volumes `db-data` e `storage-data` continuam no servidor até serem apagados à mão no Coolify; antes de apagar, decida se é preciso guardar uma cópia (o banco tem os dados de contato de quem enviou fotos e pedidos de retirada).
+Até 23/11/2026 o recurso tinha também os serviços `db` (PostgreSQL) e `storage` (SeaweedFS, domínio `fotos-gb.besteweb.com.br`), usados pelo painel `/admin` e pelo envio de fotos do mural. Os dois serviços **continuam no compose, guardados**: o site não os usa, mas os dados (envios do mural, pedidos de retirada, contas do painel) ficam preservados caso o cliente queira voltar atrás. Para apagar de vez, remova `db`, `storage` e os volumes do compose, faça deploy e apague os volumes `db-data` e `storage-data` no Coolify. O banco tem dados pessoais (contatos de quem enviou fotos): não manter além do necessário.
 
 ## 1. Antes de começar
 

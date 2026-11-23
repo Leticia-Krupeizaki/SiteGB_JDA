@@ -17,15 +17,8 @@ export const categoryLabel = Object.fromEntries(muralCategories.map((c) => [c.id
  * de quem aparece (e dos responsáveis, se houver menores). Para retirar, apague o
  * item e o arquivo.
  *
- * A primeira foto veio do mural antigo (aprovada no painel em 2026), em 23/11/2026.
+ * Exemplo de item:
+ *   { id: 'graduacao-nov-2026', category: 'GRADUACOES', caption: 'Graduação de novembro',
+ *     imageUrl: '/fotos/mural/graduacao-nov-2026.webp', width: 1600, height: 1067 },
  */
-export const muralPosts: MuralPost[] = [
-  {
-    id: 'comunidade-leticia',
-    category: 'COMUNIDADE',
-    studentName: 'Leticia',
-    imageUrl: '/fotos/mural/comunidade-leticia.webp',
-    width: 631,
-    height: 644,
-  },
-];
+export const muralPosts: MuralPost[] = [];

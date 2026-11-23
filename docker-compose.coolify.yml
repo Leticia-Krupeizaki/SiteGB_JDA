@@ -1,6 +1,6 @@
 # Deploy no Coolify (build pack "Docker Compose"). Guia: docs/DEPLOY-COOLIFY.md
 #
-# Site estático: um único serviço (nginx servindo os arquivos gerados no build).
+# Site estático: o serviço `app` (nginx servindo os arquivos gerados no build) é o site.
 # SERVICE_URL_APP é o domínio definido no Coolify para o serviço `app`.
 services:
   app:
@@ -18,3 +18,42 @@ services:
       retries: 3
       start_period: 10s
     restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # GUARDADOS (23/11/2026): banco e storage do antigo mural/painel. O site não usa
+  # mais nenhum dos dois; ficam aqui só para preservar os dados (envios do mural,
+  # pedidos de retirada, contas do painel) caso o cliente queira voltar atrás.
+  # Mantê-los no compose também preserva as senhas geradas pelo Coolify
+  # (SERVICE_*), sem as quais o banco não abre. Para apagar de vez: remova os dois
+  # serviços e os volumes abaixo, faça deploy e apague os volumes no Coolify.
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER=${SERVICE_USER_POSTGRES}
+      - POSTGRES_PASSWORD=${SERVICE_PASSWORD_POSTGRES}
+      - POSTGRES_DB=sitegb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', '${SERVICE_USER_POSTGRES}', '-d', 'sitegb']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  storage:
+    build:
+      context: ./docker/seaweedfs
+    environment:
+      - SERVICE_URL_STORAGE_8333
+      - S3_ACCESS_KEY_ID=${SERVICE_USER_S3}
+      - S3_SECRET_ACCESS_KEY=${SERVICE_PASSWORD_64_S3}
+      - S3_BUCKET_PUBLIC=sitegb-public
+    volumes:
+      - storage-data:/data
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  storage-data:
