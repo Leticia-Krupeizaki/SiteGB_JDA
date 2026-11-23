@@ -2,7 +2,7 @@
 
 > **23/11/2026 — o site virou 100% estático.** Saíram o backend do mural, o painel `/admin`, o banco (PostgreSQL/Prisma), o storage (SeaweedFS) e as APIs (Etapas 4 e 5 abaixo ficam só como histórico; o código continua no git, antes do commit da migração). Hoje:
 > - Fotos do site, currículos e fotos do mural são arquivos do projeto; como atualizar está no [README](../README.md#como-atualizar-o-conteúdo).
-> - O mural é uma galeria fixa (`src/data/mural.ts`), sem envio pelo site; pedidos de retirada vão pelo WhatsApp da academia.
+> - O mural é uma galeria fixa (`src/data/mural.ts`), sem envio pelo site (pedidos de retirada chegam pelos contatos gerais da academia).
 > - Hospedagem: nginx num único serviço do Coolify ([DEPLOY-COOLIFY.md](DEPLOY-COOLIFY.md)).
 
 > Estado em 14/10/2026: Etapas 4 e 5 implementadas e testadas localmente (banco e storage em Docker).
