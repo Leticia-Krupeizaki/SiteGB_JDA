@@ -20,8 +20,8 @@ import gbkPequenos2Full from '@/assets/curriculos/gbk-pequenos-campeoes-2-comple
  * Currículos oficiais Gracie Barra enviados pelo cliente em 20/10/2026 (pôsteres de
  * uma página: 16 semanas, aulas A e B). Só visualização, sem download (pedido do
  * cliente, 26/10/2026): o site mostra uma imagem do pôster (1800 px de largura,
- * gerada do PDF) e não publica o PDF. Os PDFs otimizados ficam em assets/curriculos/,
- * fora da pasta pública, como fonte para gerar as imagens.
+ * gerada do PDF) e não publica o PDF. Os PDFs ficam em assets/curriculos/ só na
+ * máquina local (fora do git, ver .gitignore), como fonte para gerar as imagens.
  * Informações abaixo tiradas dos próprios PDFs e da legenda oficial da grade.
  *
  * Para trocar um pôster: gere as imagens novas a partir do PDF (mesmos tamanhos),

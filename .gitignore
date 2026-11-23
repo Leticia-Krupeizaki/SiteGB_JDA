@@ -44,3 +44,7 @@ next-env.d.ts
 # prisma (cliente gerado por `prisma generate`)
 /src/generated/
 /dist-scripts/
+
+# PDFs originais dos currículos: só visualização no site (pedido do cliente, 26/10/2026).
+# Ficam apenas na máquina local, como fonte para gerar as imagens em src/assets/curriculos/.
+/assets/curriculos/*.pdf
