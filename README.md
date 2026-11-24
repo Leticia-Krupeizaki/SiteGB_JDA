@@ -52,7 +52,7 @@ Cada arquivo de dados explica, no comentário do topo, o formato e o tamanho das
 
 Produção roda no **GitHub Pages**: cada push na `main` testa, gera e publica o site sozinho ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)). Configuração e domínio em [`docs/DEPLOY-GITHUB-PAGES.md`](docs/DEPLOY-GITHUB-PAGES.md).
 
-A hospedagem anterior (Coolify, com nginx) continua documentada em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md); lá também ficam guardados o banco e o storage do antigo mural.
+A hospedagem anterior (Coolify, com nginx) fica documentada em [`docs/DEPLOY-COOLIFY.md`](docs/DEPLOY-COOLIFY.md). O recurso do Coolify foi excluído em 23/11/2026; os dados do antigo mural (banco e fotos) ficaram num backup fora do repositório.
 
 ## Estrutura e próximos passos
 

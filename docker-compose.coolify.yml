@@ -20,12 +20,10 @@ services:
     restart: unless-stopped
 
   # ---------------------------------------------------------------------------
-  # GUARDADOS (23/11/2026): banco e storage do antigo mural/painel. O site não usa
-  # mais nenhum dos dois; ficam aqui só para preservar os dados (envios do mural,
-  # pedidos de retirada, contas do painel) caso o cliente queira voltar atrás.
-  # Mantê-los no compose também preserva as senhas geradas pelo Coolify
-  # (SERVICE_*), sem as quais o banco não abre. Para apagar de vez: remova os dois
-  # serviços e os volumes abaixo, faça deploy e apague os volumes no Coolify.
+  # REFERÊNCIA (23/11/2026): banco e storage do antigo mural/painel. O site não usa
+  # mais nenhum dos dois. O recurso do Coolify foi excluído em 23/11/2026, depois
+  # de um backup dos dados (fora do repositório). Estas definições ficam só para
+  # restaurar esse backup, se o cliente quiser voltar atrás.
   # ---------------------------------------------------------------------------
   db:
     image: postgres:17-alpine
