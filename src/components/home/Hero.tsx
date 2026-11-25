@@ -6,13 +6,12 @@ import { PremiumSeal } from '@/components/ui/PremiumSeal';
 import { SitePhoto } from '@/components/ui/SitePhoto';
 import { getSiteImages } from '@/lib/content/site-images';
 
-/** Valores da Gracie Barra (Manual da Marca, p. 5), cada um numa faixa numerada. */
-const values = [
-  { word: 'Irmandade', size: '' },
-  { word: 'Integridade', size: '' },
-  // A mais longa sai menor para as três faixas caberem na mesma largura, a partir de 360 px.
-  { word: 'Desenvolvimento', size: 'text-[0.8em]' },
-];
+/**
+ * Valores da Gracie Barra (Manual da Marca, p. 5), cada um numa faixa numerada, os três
+ * no mesmo tamanho (pedido do cliente). O tamanho do celular é o maior em que
+ * "Desenvolvimento" cabe na faixa a partir de 360 px.
+ */
+const values = ['Irmandade', 'Integridade', 'Desenvolvimento'];
 
 /**
  * Hero em tela cheia. Com foto de treino (src/data/site-images.ts, `home-hero`): P&B com sobreposição
@@ -60,13 +59,13 @@ export async function Hero() {
             {site.name}
             <span aria-hidden className="hidden h-0.5 w-10 shrink-0 bg-gb-red sm:block" />
           </p>
-          <h1 className="animate-rise w-full font-display text-[3.5rem] leading-none font-extrabold uppercase [animation-delay:0.2s] sm:text-[4rem] lg:text-[4.5rem]">
-            {values.map(({ word, size }, i) => (
+          <h1 className="animate-rise w-full font-display text-[2.75rem] leading-none font-extrabold uppercase [animation-delay:0.2s] sm:text-[4rem] lg:text-[4.5rem]">
+            {values.map((word, i) => (
               <span key={word} className="flex items-center justify-between gap-4 border-t border-gb-white/20 py-2.5 last:border-b">
                 <span aria-hidden className="font-display text-xl font-semibold text-gb-red">
                   0{i + 1}
                 </span>
-                <span className={size}>
+                <span>
                   {word}
                   <span className="sr-only">.</span>
                 </span>
