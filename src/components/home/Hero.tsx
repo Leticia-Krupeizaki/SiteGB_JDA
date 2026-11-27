@@ -4,7 +4,9 @@ import { Belt } from '@/components/ui/Belt';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { PremiumSeal } from '@/components/ui/PremiumSeal';
 import { SitePhoto } from '@/components/ui/SitePhoto';
+import { heroPhotos } from '@/data/hero-photos';
 import { getSiteImages } from '@/lib/content/site-images';
+import { HeroCarousel } from './HeroCarousel';
 
 /**
  * Valores da Gracie Barra (Manual da Marca, p. 5), cada um numa faixa numerada, os três
@@ -14,25 +16,28 @@ import { getSiteImages } from '@/lib/content/site-images';
 const values = ['Irmandade', 'Integridade', 'Desenvolvimento'];
 
 /**
- * Hero em tela cheia. Com foto de treino (src/data/site-images.ts, `home-hero`): P&B com sobreposição
- * escura. Sem foto: fundo gráfico preto com brilho vermelho à esquerda e azul GB no
- * canto, listras diagonais e vinheta. A logo da escola entra pela esquerda como
- * marca d'água em degradê; o conteúdo fica à direita dela (centralizado no celular).
+ * Hero em tela cheia. Com fotos (src/data/hero-photos.ts): carrossel no fundo, escurecido
+ * atrás do texto. Sem fotos: fundo gráfico preto com brilho vermelho à esquerda e azul
+ * GB no canto, listras diagonais, vinheta e a logo da escola entrando pela esquerda
+ * como marca d'água. O conteúdo fica à direita (centralizado no celular).
  */
 export async function Hero() {
-  const images = await getSiteImages();
-  const photo = images['home-hero'];
-  const logo = images['marca-logo-escola'];
+  const images = getSiteImages();
+  const photos = heroPhotos;
+  // Com fotos, a marca d'água da logo sai para não brigar com elas.
+  const logo = photos.length > 0 ? null : images['marca-logo-escola'];
 
   return (
     <section className="relative isolate overflow-hidden bg-gb-ink text-gb-white">
-      {photo ? (
+      {photos.length > 0 ? (
         <>
-          <SitePhoto image={photo} fill priority sizes="100vw" className="-z-20 object-cover grayscale" />
+          <HeroCarousel photos={photos} />
+          {/* Escurece as fotos para o texto ler bem: mais forte à direita (onde fica o texto no desktop) e embaixo. */}
           <div
             aria-hidden
-            className="absolute inset-0 -z-20 bg-[linear-gradient(to_bottom,color-mix(in_srgb,var(--color-gb-ink)_20%,transparent),color-mix(in_srgb,var(--color-gb-ink)_85%,transparent))]"
+            className="absolute inset-0 -z-20 bg-[linear-gradient(to_bottom,rgb(0_0_0/0.25),rgb(0_0_0/0.75))] lg:bg-[linear-gradient(to_right,rgb(0_0_0/0.25),rgb(0_0_0/0.8)_60%),linear-gradient(to_bottom,transparent_60%,rgb(0_0_0/0.6))]"
           />
+          <div aria-hidden className="absolute inset-0 -z-20 bg-black/45 lg:bg-black/20" />
         </>
       ) : (
         <div
@@ -42,7 +47,11 @@ export async function Hero() {
       )}
       <div
         aria-hidden
-        className="absolute inset-0 -z-20 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.035)_0_1px,transparent_1px_12px),radial-gradient(120%_90%_at_50%_40%,transparent_55%,rgb(0_0_0/0.75))]"
+        className={`absolute inset-0 -z-20 ${
+          photos.length > 0
+            ? 'bg-[radial-gradient(120%_90%_at_50%_40%,transparent_55%,rgb(0_0_0/0.6))]'
+            : 'bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.035)_0_1px,transparent_1px_12px),radial-gradient(120%_90%_at_50%_40%,transparent_55%,rgb(0_0_0/0.75))]'
+        }`}
       />
       {logo && (
         <SitePhoto

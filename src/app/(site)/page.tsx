@@ -8,10 +8,10 @@ import { ValuesBand } from '@/components/home/ValuesBand';
 import { Belt } from '@/components/ui/Belt';
 import { ButtonLink } from '@/components/ui/ButtonLink';
 import { Container } from '@/components/ui/Container';
+import { ExpandablePhoto } from '@/components/ui/ExpandablePhoto';
 import { ExternalLinkCard } from '@/components/ui/ExternalLinkCard';
 import { PhotoPlaceholder } from '@/components/ui/PhotoPlaceholder';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { SitePhoto } from '@/components/ui/SitePhoto';
 import { primaryCta } from '@/config/navigation';
 import { contact, phoneUrl, site, whatsappTrialUrl } from '@/config/site';
 import { about } from '@/data/about';
@@ -35,27 +35,73 @@ export default async function HomePage() {
       <Hero />
 
       {/* Quem somos */}
-      <section className="py-16 sm:py-24">
-        <Container className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
-          {/* Foto acompanha a leitura no computador (o texto é mais alto que ela). */}
+      <section aria-labelledby="quem-somos" className="pb-16 sm:pb-24">
+        {/*
+         * Foto da turma em faixa larga. No computador o título fica por cima, sobre um
+         * degradê escuro; no celular a foto aparece inteira e o título vem logo abaixo.
+         * Clicar na foto amplia (ExpandablePhoto).
+         */}
+        <div className="relative lg:h-[36rem]">
           {unitPhoto ? (
-            <SitePhoto image={unitPhoto} sizes="(min-width: 1024px) 50vw, 100vw" className="aspect-[4/3] h-auto w-full max-w-full object-cover lg:sticky lg:top-28" />
+            <ExpandablePhoto
+              image={unitPhoto}
+              sizes="100vw"
+              className="w-full lg:absolute lg:inset-0 lg:h-full"
+              imageClassName="h-auto w-full lg:h-full lg:object-cover lg:object-[center_40%]"
+            />
           ) : (
-            <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[4/3] w-full max-w-full lg:sticky lg:top-28" />
+            <PhotoPlaceholder label="Foto da unidade a definir" className="aspect-[16/7] w-full lg:absolute lg:inset-0 lg:aspect-auto lg:h-full" />
           )}
-          <div className="space-y-6">
-            <SectionHeading title={`Somos ${site.name}`} />
-            <p className="font-display text-2xl font-bold uppercase text-balance text-gb-red sm:text-3xl">{about.lead}</p>
-            <div className="space-y-4 text-lg leading-relaxed">
-              {about.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-              ))}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_top,rgb(0_0_0/0.85),rgb(0_0_0/0.35)_45%,transparent_70%)] lg:block"
+          />
+          <Container className="pt-10 lg:pointer-events-none lg:absolute lg:inset-x-0 lg:bottom-0 lg:pt-0 lg:pb-14">
+            <div className="max-w-3xl">
+              <span aria-hidden className="mb-5 block h-1 w-16 bg-gb-red" />
+              <h2 id="quem-somos" className="font-display text-4xl leading-none font-bold text-balance uppercase sm:text-5xl lg:text-6xl lg:text-gb-white">
+                Somos {site.name}
+              </h2>
+              <p className="mt-4 font-display text-2xl font-bold text-balance text-gb-red uppercase sm:text-3xl lg:text-gb-white/90">
+                {about.lead}
+              </p>
             </div>
-            <p className="border-l-4 border-gb-red pl-4 font-display text-2xl font-bold uppercase leading-snug text-balance">{about.closing}</p>
-            <ButtonLink href="/sobre" variant="outline">
-              Conheça a academia
-            </ButtonLink>
+          </Container>
+        </div>
+
+        <Container className="mt-10 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:items-start lg:gap-16">
+          <div className="space-y-5 text-lg leading-relaxed lg:col-span-7">
+            {about.paragraphs.map((paragraph, i) => (
+              <p key={paragraph.slice(0, 32)} className={i === 0 ? 'text-xl font-medium text-gb-ink sm:text-2xl sm:leading-snug' : ''}>
+                {paragraph}
+              </p>
+            ))}
           </div>
+
+          {/* Fechamento em destaque, no mesmo estilo dos cards dos professores (preto com faixa vermelha). */}
+          <aside className="relative bg-gb-ink p-8 text-gb-white lg:sticky lg:top-28 lg:col-span-5">
+            <span aria-hidden className="absolute inset-y-0 left-0 w-1.5 bg-gb-red" />
+            <ol className="space-y-4">
+              {about.closing
+                .split(/(?<=\.)\s+/)
+                .map((sentence, i) => (
+                  <li key={sentence} className="flex items-baseline gap-4 border-b border-gb-white/15 pb-4 last:border-0 last:pb-0">
+                    <span aria-hidden className="font-display text-lg font-semibold text-gb-red">
+                      0{i + 1}
+                    </span>
+                    <span className="font-display text-2xl leading-tight font-bold uppercase sm:text-3xl">{sentence}</span>
+                  </li>
+                ))}
+            </ol>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col">
+              <ButtonLink href={whatsappTrialUrl} external>
+                {primaryCta.label}
+              </ButtonLink>
+              <ButtonLink href="/sobre" variant="outline-light">
+                Conheça a academia
+              </ButtonLink>
+            </div>
+          </aside>
         </Container>
       </section>
 

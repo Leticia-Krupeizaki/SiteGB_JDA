@@ -40,6 +40,7 @@ Todo o conteúdo fica no código; cada mudança é um commit seguido de deploy.
 | O quê | Onde |
 |---|---|
 | Fotos do site (topo, unidade, estrutura, professores, legado, selo, logo) | arquivo em `src/assets/` + `src/data/site-images.ts` |
+| Carrossel de fotos do topo da página inicial | arquivo em `src/assets/home/` + `src/data/hero-photos.ts` |
 | Fotos do mural | arquivo em `public/fotos/mural/` + `src/data/mural.ts` |
 | Professores (frase, credenciais, biografia) | `src/data/instructors.ts` |
 | Grade de horários | `src/data/schedule.ts` |

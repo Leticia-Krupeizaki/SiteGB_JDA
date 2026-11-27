@@ -17,7 +17,7 @@ describe('espaços de foto do site', () => {
     const keys = new Set(siteImageSlots.map((slot) => slot.key));
     for (const master of legacyWall) expect(keys.has(`legado-${master.id}`)).toBe(true);
     for (const instructor of instructors) expect(keys.has(`professor-${instructor.id}`)).toBe(true);
-    for (const key of ['home-hero', 'home-unidade', 'sobre-historia', 'marca-selo-premium', 'marca-logo-escola']) expect(keys.has(key)).toBe(true);
+    for (const key of ['home-unidade', 'sobre-historia', 'marca-selo-premium', 'marca-logo-escola']) expect(keys.has(key)).toBe(true);
   });
 
   it('toda foto definida tem descrição', () => {

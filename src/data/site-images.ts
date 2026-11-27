@@ -1,5 +1,6 @@
 import type { StaticImageData } from 'next/image';
 import schoolLogo from '@/assets/marca/logo-escola-jda.png';
+import unitPhoto from '@/assets/home/unidade-turma-tatame.webp';
 import premiumSeal from '@/assets/selo-escola-premium-2026.jpg';
 import { site } from '@/config/site';
 import { history } from './history';
@@ -22,14 +23,12 @@ export type SiteImageSlot = {
 
 export const siteImageSlots: SiteImageSlot[] = [
   {
-    key: 'home-hero',
-    hint: 'Página inicial, fundo do topo. Foto de treino na horizontal (até 2400 px); aparece em preto e branco e escurecida atrás do título.',
-    image: null,
-  },
-  {
     key: 'home-unidade',
-    hint: 'Página inicial, seção "Somos…". Horizontal, cortada em 4:3 (até 1600 px).',
-    image: null,
+    hint: 'Página inicial, seção "Somos…". Horizontal, aparece inteira, sem corte (até 1600 px).',
+    image: {
+      src: unitPhoto,
+      alt: 'Alunos e professores da Gracie Barra Jardim das Américas reunidos no tatame, de kimonos azuis e brancos, com o retrato do Mestre Carlos Gracie Jr. ao fundo',
+    },
   },
   {
     key: 'sobre-historia',
