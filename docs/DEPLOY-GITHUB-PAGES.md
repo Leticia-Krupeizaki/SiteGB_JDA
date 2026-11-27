@@ -5,7 +5,7 @@ Desde 23/11/2026 o site é publicado pelo **GitHub Pages**, no lugar do Coolify.
 | | |
 |---|---|
 | Repositório | `Leticia-Krupeizaki/SiteGB_JDA` (público) |
-| Domínio | `gb.besteweb.com.br` (definido em `SITE_URL`, no workflow) |
+| Domínio | `gbjardimdasamericas.com.br` desde 27/11/2026 (antes `gb.besteweb.com.br`); definido em `SITE_URL`, no workflow |
 
 ## Configuração (uma vez só)
 

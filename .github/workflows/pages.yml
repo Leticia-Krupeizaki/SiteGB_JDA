@@ -19,7 +19,7 @@ concurrency:
 
 env:
   # Domínio do site: entra no HTML gerado (SEO, Open Graph, sitemap).
-  SITE_URL: https://gb.besteweb.com.br
+  SITE_URL: https://gbjardimdasamericas.com.br
 
 jobs:
   build:
